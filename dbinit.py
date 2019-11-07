@@ -15,7 +15,7 @@ INIT_STATEMENTS = [
                       email VARCHAR(100) UNIQUE NOT NULL,
                       schoolName VARCHAR(100) NOT NULL,
                       campusName VARCHAR(100),
-                      wishlistId INTERGER,
+                      wishlistId INTERGER
 
                                               
                      );
@@ -26,7 +26,7 @@ INIT_STATEMENTS = [
                      lenderId INTEGER NOT NULL UNIQUE,
                      borrowerId INTEGER NOT NULL UNIQUE,
                      time TIMESTAMP,
-                     bookId INTEGER NOT NULL UNIQUE,
+                     bookId INTEGER NOT NULL UNIQUE
 
                      
       

@@ -5,7 +5,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-	return render_template('homepage.html')
+	user_logged_in = True
+	return render_template('homepage.html', user_logged_in=user_logged_in)
 
 
 

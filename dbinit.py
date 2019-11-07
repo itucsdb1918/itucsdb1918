@@ -6,44 +6,48 @@ import psycopg2 as dbapi2
 
 INIT_STATEMENTS = {
     """
-    CREATE TABLE user_list( 
-        userId SERIAL PRIMARY KEY,
-        username VARCHAR(15) NOT NULL UNIQUE,
-        password VARCHAR(16) NOT NULL,
-        name VARCHAR(40) NOT NULL,
-        surname VARCHAR(40) NOT NULL,
-        email VARCHAR(100) UNIQUE NOT NULL,
-        schoolName VARCHAR(100) NOT NULL,
-        campusName VARCHAR(100),
-        wishlistId INTERGER,
-        FOREIGN KEY wishlistId REFERENCES wish_list(wishlistId) ON DELETE RESTRICT ON UPDATE CASCADE                          
-                    );
+    CREATE TABLE "user_list" (
+    "userId" serial   NOT NULL,
+    "username" VARCHAR(15)   NOT NULL,
+    "name" VARCHAR(40)   NOT NULL,
+    "surname" VARCHAR(40)   NOT NULL,
+    "email" VARCHAR(100)   NOT NULL,
+    "schoolName" VARCHAR(100)   NOT NULL,
+    "campusName" VARCHAR(100)   NOT NULL,
+    "wishlistId" INTERGER   NOT NULL,
+    CONSTRAINT "pk_user_list" PRIMARY KEY (
+        "userId"
+     )
+);
 
-    CREATE TABLE interchange_event_list( 
-        interchangeId SERIAL PRIMARY KEY,
-        lenderId INTEGER NOT NULL UNIQUE,
-        borrowerId INTEGER NOT NULL UNIQUE,
-        time TIMESTAMP,
-        bookId INTEGER NOT NULL UNIQUE,
-		FOREIGN KEY lenderId REFERENCES user_list(userId) ON DELETE RESTRICT ON UPDATE CASCADE
-	    FOREIGN KEY borrowerId REFERENCES user_list(userId) ON DELETE RESTRICT ON UPDATE CASCADE
-        FOREIGN KEY bookId REFERENCES book_info_list(bookId) ON DELETE RESTRICT ON UPDATE CASCADE
-        );
+CREATE TABLE "interchange_event_list" (
+    "interchangeId" SERIAL   NOT NULL,
+    "lenderId" INTEGER   NOT NULL,
+    "borrowerId" INTEGER   NOT NULL,
+    "time" TIMESTAMP   NOT NULL,
+    "bookId" INTEGER   NOT NULL,
+    CONSTRAINT "pk_interchange_event_list" PRIMARY KEY (
+        "interchangeId"
+     )
+);
 
+CREATE TABLE "book_info_list" (
+    "bookId" SERIAL   NOT NULL,
+    "bookName" VARCHAR(40)   NOT NULL,
+    "bookAuthor" VARCHAR(40)   NOT NULL,
+    "TotalPages" INTEGER   NOT NULL,
+    CONSTRAINT "pk_book_info_list" PRIMARY KEY (
+        "bookId"
+     )
+);
 
-    CREATE TABLE book_info_list( 
-        bookId SERIAL PRIMARY KEY,
-        bookName VARCHAR(40) NOT NULL,
-        bookAuthor VARCHAR(40) NOT NULL,
-        totalPages INTEGER NOT NULL              
-                     );  
-
-    CREATE TABLE wish_list( 
-        wishlistID INTEGER NOT NULL,
-        bookId INTEGER NOT NULL,
-        PRIMARY KEY (wishlistID,bookId),
-        FOREIGN KEY bookId REFERENCES book_info_list(bookId) ON DELETE RESTRICT ON UPDATE CASCADE
-                        );
+CREATE TABLE "wish_list" (
+    "wishlistID" SERIAL   NOT NULL,
+    "bookId" INTEGER   NOT NULL,
+    CONSTRAINT "pk_wish_list" PRIMARY KEY (
+        "wishlistID","bookId"
+     )
+);
 
     
     """

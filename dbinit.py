@@ -17,9 +17,10 @@ INIT_STATEMENTS = [
                       campusName VARCHAR(100),
                       wishlistId INTERGER,
 
-                      FOREIGN KEY wishlistId REFERENCES wish_list(wishlistId) ON DELETE RESTRICT ON UPDATE CASCADE                          
+                                              
                      );
-
+    
+    
     CREATE TABLE interchange_event_list( 
                      interchangeId SERIAL PRIMARY KEY,
                      lenderId INTEGER NOT NULL UNIQUE,
@@ -27,7 +28,7 @@ INIT_STATEMENTS = [
                      time TIMESTAMP,
                      bookId INTEGER NOT NULL UNIQUE,
 
-                     FOREIGN KEY bookId REFERENCES book_info_list(bookId) ON DELETE RESTRICT ON UPDATE CASCADE
+                     
       
                      );
 
@@ -35,6 +36,8 @@ INIT_STATEMENTS = [
     """
 ]
 
+# FOREIGN KEY wishlistId REFERENCES wish_list(wishlistId) ON DELETE RESTRICT ON UPDATE CASCADE  add to 1st table
+# FOREIGN KEY bookId REFERENCES book_info_list(bookId) ON DELETE RESTRICT ON UPDATE CASCADE add to 2nd table
 
 def initialize(url):
     with dbapi2.connect(url) as connection:

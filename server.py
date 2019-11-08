@@ -5,10 +5,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-	#return "itucsdb1918 team's project InterBooks' homepage"
-	return render_template("project/templates/index.html")
+	return "itucsdb1918 team's project InterBooks' homepage"
+	#return render_template("project/templates/index.html")
 
 
 if __name__ == "__main__":
-		app.run(debug=True)
-
+	app.run(debug=True)

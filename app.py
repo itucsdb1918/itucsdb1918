@@ -1,15 +1,14 @@
-from flask import Flask, redirect, render_template, flash, url_for
-from forms import RegistrationForm, LoginForm
+from flask import Flask, render_template, escape, request
 
 app = Flask(__name__)
 
 
-status = 0
+@app.route("/")
+def index():
+	#return "itucsdb1918 team's project InterBooks' homepage"
+	return render_template("project/index.html")
 
 
-@app.route('/')
-def homepage():
-    global status
-    return render_template('templates/index.html', Status=status, title="Home Page")
-if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+if __name__ == "__main__":
+		app.run(debug=True)
+

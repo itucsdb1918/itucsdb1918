@@ -6,9 +6,9 @@ import psycopg2 as dbapi2
 
 INIT_STATEMENTS = {
     """
-    CREATE TABLE "user_list" (
+    CREATE TABLE IF NOT EXISTS "user_list" (
     "userId" serial   NOT NULL,
-    "username" VARCHAR(15)   NOT NULL,
+    "username" VARCHAR(15) IF NOT EXISTS  NOT NULL,
     "name" VARCHAR(40)   NOT NULL,
     "surname" VARCHAR(40)   NOT NULL,
     "email" VARCHAR(100)   NOT NULL,
@@ -20,7 +20,7 @@ INIT_STATEMENTS = {
      )
 );
 
-CREATE TABLE "interchange_event_list" (
+CREATE TABLE IF NOT EXISTS "interchange_event_list" (
     "interchangeId" SERIAL   NOT NULL,
     "lenderId" INTEGER   NOT NULL,
     "borrowerId" INTEGER   NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE "interchange_event_list" (
      )
 );
 
-CREATE TABLE "book_info_list" (
+CREATE TABLE IF NOT EXISTS "book_info_list" (
     "bookId" SERIAL   NOT NULL,
     "bookName" VARCHAR(40)   NOT NULL,
     "bookAuthor" VARCHAR(40)   NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE "book_info_list" (
      )
 );
 
-CREATE TABLE "wish_list" (
+CREATE TABLE IF NOT EXISTS "wish_list" (
     "wishlistID" SERIAL   NOT NULL,
     "bookId" INTEGER   NOT NULL,
     CONSTRAINT "pk_wish_list" PRIMARY KEY (

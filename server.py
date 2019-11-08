@@ -1,13 +1,14 @@
-from flask import Flask
-
+from flask import Flask, render_template, escape, request
 
 app = Flask(__name__)
 
 
 @app.route("/")
-def home_page():
-    return "Hello, world!"
+def index():
+	#return "itucsdb1918 team's project InterBooks' homepage"
+	return render_template("project/index.html")
 
 
 if __name__ == "__main__":
-    app.run()
+		app.run(debug=True)
+

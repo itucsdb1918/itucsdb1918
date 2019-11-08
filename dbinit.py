@@ -32,7 +32,24 @@ CREATE TABLE IF NOT EXISTS "interchange_event_list" (
 );
 
 
-    
+CREATE TABLE IF NOT EXISTS "book_info_list" (
+    "bookId" SERIAL   NOT NULL,
+    "bookName" VARCHAR(40)   NOT NULL,
+    "bookAuthor" VARCHAR(40)   NOT NULL,
+    "TotalPages" INTEGER   NOT NULL,
+    CONSTRAINT "pk_book_info_list" PRIMARY KEY (
+        "bookId"
+     )
+);
+CREATE TABLE IF NOT EXISTS "wish_list" (
+    "wishlistID" SERIAL   NOT NULL,
+    "bookId" INTEGER   NOT NULL,
+    CONSTRAINT "pk_wish_list" PRIMARY KEY (
+        "wishlistID","bookId"
+     )
+);
+
+
     """
 }
 
@@ -51,4 +68,3 @@ if __name__ == "__main__":
         print("Usage: DATABASE_URL=url python dbinit.py", file=sys.stderr)
         sys.exit(1)
     initialize(url)
-

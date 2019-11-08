@@ -12,7 +12,7 @@ status=0
 @app.route('/Home')
 def homepage():
     global status
-    return render_template('index.html',Status =status,title = "Home Page")
+    return render_template('layout.html',Status =status,title = "Home Page")
 
 
 if __name__ == '__main__':

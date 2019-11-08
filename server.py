@@ -1,14 +1,16 @@
-from flask import Flask, render_template, escape, request
+#from flask import Flask, render_template, escape, request
+from flask import *
 
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route('/')
 def index():
-	return "itucsdb1918 team's project InterBooks' homepage"
+	return render_template('index.html',title = "Home Page")
+	#return "itucsdb1918 team's project InterBooks' homepage"
 	#return render_template("project/homepage.html")
 	#return render_template("project/templates/index.html")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 	app.run(debug=True)

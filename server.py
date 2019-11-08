@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-	#return "itucsdb1918 team's project InterBooks' homepage"
-	return render_template("project/homepage.html")
+	return "itucsdb1918 team's project InterBooks' homepage"
+	#return render_template("project/homepage.html")
 	#return render_template("project/templates/index.html")
 
 

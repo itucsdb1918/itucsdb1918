@@ -14,7 +14,7 @@ INIT_STATEMENTS = {
     "email" VARCHAR(100)   NOT NULL,
     "schoolName" VARCHAR(100)   NOT NULL,
     "campusName" VARCHAR(100)   NOT NULL,
-    "wishlistId" INTERGER   NOT NULL,
+    "wishlistId" INTEGER   NOT NULL,
     CONSTRAINT "pk_user_list" PRIMARY KEY (
         "userId"
      )

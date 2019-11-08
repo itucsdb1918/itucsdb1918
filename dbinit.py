@@ -8,7 +8,7 @@ INIT_STATEMENTS = {
     """
     CREATE TABLE IF NOT EXISTS "user_list" (
     "userId" serial   NOT NULL,
-    "username" VARCHAR(15) IF NOT EXISTS  NOT NULL,
+    "username" VARCHAR(15)  NOT NULL,
     "name" VARCHAR(40)   NOT NULL,
     "surname" VARCHAR(40)   NOT NULL,
     "email" VARCHAR(100)   NOT NULL,

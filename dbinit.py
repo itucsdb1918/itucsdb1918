@@ -6,55 +6,54 @@ import psycopg2 as dbapi2
 
 INIT_STATEMENTS = {
     """
-    CREATE TABLE IF NOT EXISTS "user_list" (
-    "userId" serial   NOT NULL,
-    "userName" VARCHAR(15)  NOT NULL,
-    "firstName" VARCHAR(40)   NOT NULL,
-    "lastName" VARCHAR(40)   NOT NULL,
+CREATE TABLE IF NOT EXISTS "book_info_list" (
+    "bookid" SERIAL   NOT NULL,
+    "bookname" VARCHAR(40)   NOT NULL,
+    "bookauthor" VARCHAR(40)   NOT NULL,
+    "totalpages" INTEGER   NOT NULL,
+    CONSTRAINT "pk_book_info_list" PRIMARY KEY (
+        "bookid"
+     )
+);
+
+CREATE TABLE IF NOT EXISTS "wish_list" (
+    "wishlistid" SERIAL   NOT NULL,
+    "bookid" INTEGER   NOT NULL,
+    CONSTRAINT "pk_wish_list" PRIMARY KEY (
+        "wishlistid","bookid"
+     )
+);
+
+CREATE TABLE IF NOT EXISTS "user_list" (
+    "userid" serial   NOT NULL,
+    "username" VARCHAR(15)  NOT NULL,
+    "firstname" VARCHAR(40)   NOT NULL,
+    "lastname" VARCHAR(40)   NOT NULL,
     "email" VARCHAR(100)   NOT NULL,
-    "schoolName" VARCHAR(100)   NOT NULL,
-    "campusName" VARCHAR(100)   NOT NULL,
-    "wishlistId" INTEGER   NOT NULL,
+    "schoolname" VARCHAR(100)   NOT NULL,
+    "campusname" VARCHAR(100)   NOT NULL,
+    "wishlistid" INTEGER   NOT NULL,
     CONSTRAINT "pk_user_list" PRIMARY KEY (
-        "userId"
+        "userid"
      )
 );
 
 CREATE TABLE IF NOT EXISTS "interchange_event_list" (
-    "interchangeId" SERIAL   NOT NULL,
-    "lenderId" INTEGER   NOT NULL,
-    "borrowerId" INTEGER   NOT NULL,
-    "time" TIMESTAMP   WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "bookId" INTEGER   NOT NULL,
+    "interchangeid" SERIAL   NOT NULL,
+    "lenderid" INTEGER   NOT NULL,
+    "borrowerid" INTEGER   NOT NULL,
+    "time" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "bookid" INTEGER   NOT NULL,
     CONSTRAINT "pk_interchange_event_list" PRIMARY KEY (
-        "interchangeId"
+        "interchangeid"
      )
 );
-
-
-CREATE TABLE IF NOT EXISTS "book_info_list" (
-    "bookId" SERIAL   NOT NULL,
-    "bookName" VARCHAR(40)   NOT NULL,
-    "bookAuthor" VARCHAR(40)   NOT NULL,
-    "totalPages" INTEGER   NOT NULL,
-    CONSTRAINT "pk_book_info_list" PRIMARY KEY (
-        "bookId"
-     )
-);
-CREATE TABLE IF NOT EXISTS "wish_list" (
-    "wishlistID" SERIAL   NOT NULL,
-    "bookId" INTEGER   NOT NULL,
-    CONSTRAINT "pk_wish_list" PRIMARY KEY (
-        "wishlistID","bookId"
-     )
-);
-
-INSERT INTO user_list (userName,firstName,lastName, email,schoolName,campusName)
-VALUES ('admin','admin','admin','admin@gmail.com', 'itu','maslak');
-INSERT INTO interchange_event_list(lenderId,borrowerId, bookId)
-VALUES (1,2,1);
-INSERT INTO book_info_list(bookName,bookAuthor, totalPages)
-VALUES ('cinali tatilde','erdem celik',10');
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)
+VALUES ('cinali tatilde','erdem celik',10);
+INSERT INTO wish_list(bookid)
+VALUES (1);
+INSERT INTO user_list (username,firstname,lastname, email,schoolname,campusname,wishlistid)
+VALUES ('admin','admin','admin','admin@gmail.com', 'itu','maslak',1);
 
     """
 }

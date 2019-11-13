@@ -1,7 +1,7 @@
 # USER DATA MODEL CLASS
 
 class User:
-    def __init__(self, userId, userName, password, firstName, lastName, schoolName, campusName):
+    def __init__(self, userId, userName, password=None, firstName, lastName, schoolName, campusName):
         self.userId = userId
         self.userName = userName
         self.password = password

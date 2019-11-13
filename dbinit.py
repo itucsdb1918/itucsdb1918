@@ -8,9 +8,9 @@ INIT_STATEMENTS = {
     """
     CREATE TABLE IF NOT EXISTS "user_list" (
     "userId" serial   NOT NULL,
-    "username" VARCHAR(15)  NOT NULL,
-    "name" VARCHAR(40)   NOT NULL,
-    "surname" VARCHAR(40)   NOT NULL,
+    "userName" VARCHAR(15)  NOT NULL,
+    "firstName" VARCHAR(40)   NOT NULL,
+    "lastName" VARCHAR(40)   NOT NULL,
     "email" VARCHAR(100)   NOT NULL,
     "schoolName" VARCHAR(100)   NOT NULL,
     "campusName" VARCHAR(100)   NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS "interchange_event_list" (
     "interchangeId" SERIAL   NOT NULL,
     "lenderId" INTEGER   NOT NULL,
     "borrowerId" INTEGER   NOT NULL,
-    "time" TIMESTAMP   NOT NULL,
+    "time" TIMESTAMP   WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     "bookId" INTEGER   NOT NULL,
     CONSTRAINT "pk_interchange_event_list" PRIMARY KEY (
         "interchangeId"
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS "book_info_list" (
     "bookId" SERIAL   NOT NULL,
     "bookName" VARCHAR(40)   NOT NULL,
     "bookAuthor" VARCHAR(40)   NOT NULL,
-    "TotalPages" INTEGER   NOT NULL,
+    "totalPages" INTEGER   NOT NULL,
     CONSTRAINT "pk_book_info_list" PRIMARY KEY (
         "bookId"
      )
@@ -49,6 +49,12 @@ CREATE TABLE IF NOT EXISTS "wish_list" (
      )
 );
 
+INSERT INTO user_list (userName,firstName,lastName, email,schoolName,campusName)
+VALUES ('admin','admin','admin','admin@gmail.com', 'itu','maslak');
+INSERT INTO interchange_event_list(lenderId,borrowerId, bookId)
+VALUES (1,2,1);
+INSERT INTO book_info_list(bookName,bookAuthor, totalPages)
+VALUES ('cinali tatilde','erdem celik',10');
 
     """
 }

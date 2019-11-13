@@ -1,7 +1,9 @@
 from flask import Flask, render_template
+from dbRemote import Database
 
 app = Flask(__name__)
 
+db = Database()
 
 @app.route('/')
 def homepage():

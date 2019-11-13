@@ -63,3 +63,28 @@ class Database:
             book_ =  Book(book.bookId, book.bookName, book.authorName, book.totalPages)
             books.append((bookKey, book_))
         return books
+
+
+    # INTERCHANGE METHODS
+    def addInterchange(self, interchange):
+        self._lastInterchangeKey += 1
+        self.interchangeEvents[self._lastInterchangeKey] = interchange
+        return self._lastInterchangeKey
+
+    def deletInterchange(self, interchangeKey):
+        if interchangeKey in self.interchangeEvents:
+            del self.interchangeEvents[interchangeKey]
+
+    def getInterchange(self, interchangeKey):
+        interchange = self.interchangeEvents.get(interchangeKey)
+        if interchange is None:
+            return None
+        interchange_ = Interchange(interchange.interchangeId, interchange.lenderId, interchange.borrowerId, interchange.bookId, interchange.time)
+        return interchange_
+
+    def get_interchangeEvents(self):
+        interchangeEvents = []
+        for interchangeKey, interchange in self.interchangeEvents.items():
+            interchange_ =  Interchange(interchange.interchangeId, interchange.lenderId, interchange.borrowerId, interchange.bookId, interchange.time)
+            interchangeEvents.append((interchangeKey, interchange_))
+        return interchangeEvents

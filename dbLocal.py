@@ -1,3 +1,5 @@
+"""
+
 from model.book import *
 from model.user import *
 from model.interchange import *
@@ -88,3 +90,5 @@ class Database:
             interchange_ =  Interchange(interchange.interchangeId, interchange.lenderId, interchange.borrowerId, interchange.bookId, interchange.time)
             interchangeEvents.append((interchangeKey, interchange_))
         return interchangeEvents
+
+"""

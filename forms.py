@@ -2,6 +2,7 @@ from wtforms import Form,StringField, PasswordField, SubmitField, BooleanField, 
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 
+
 class signUp(Form):
     username = StringField(u'User Name', validators=[validators.input_required(),validators.Length(min = 2, max = 20)])
     password = PasswordField("Password:",validators=[

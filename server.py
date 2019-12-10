@@ -15,27 +15,41 @@ def homepage():
 
 @app.route('/login',methods = ["GET","POST"])
 def login():
+    db.userid = 0
     formLogIn = logIn(request.form)
+    print("Control1")
     if request.method == "POST" and formLogIn.validate():
-        return redirect(url_for("homepage"))
+        db.userid = db.loginCheck(formLogIn.username.data,formLogIn.password.data)
+        if db.userid > 0:
+            #flash('You loggin in successfully', 'success')
+            return redirect(url_for("homepage"))
+
+    print("Control2")
+    return render_template('login.html', form = formLogIn)
+
+    """
     else:
         return render_template('login.html', form = formLogIn)
-
+    """
 
 @app.route('/signup',methods = ["GET","POST"])
 def signup():
     formSignUp = signUp(request.form)
     if request.method == "POST" and formSignUp.validate():
-        return redirect(url_for("homepage"))
-    else:
-        return render_template('signup.html', form = formSignUp)
+        #flash(f'Account created for {formSignUp.username.data}!', 'success')
+        db.userid =  db.addNewUser(formSignUp)
+        if db.userid > 0:
+            return redirect(url_for("homepage"))
+
+    return render_template("signup.html", form = formSignUp)
+
 
 
 
 @app.route('/signup_success')
 def signup_success():
-    return render_template('signup_success.html')
-
+    #return render_template('signup_success.html')
+    return redirect(url_for("login"))
 
 
 

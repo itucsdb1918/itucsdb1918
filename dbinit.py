@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS "book_info_list" (
 );
 
 CREATE TABLE IF NOT EXISTS "wish_list" (
-    "wishlistid" SERIAL   NOT NULL,
-    "bookid" INTEGER   NOT NULL,
+    "wishlistid" SERIAL,
+    "bookid" INTEGER,
     CONSTRAINT "pk_wish_list" PRIMARY KEY (
         "wishlistid","bookid"
      )
@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS "wish_list" (
 CREATE TABLE IF NOT EXISTS "user_list" (
     "userid" serial   NOT NULL,
     "username" VARCHAR(15)  NOT NULL,
+    "password" VARCHAR(50)  NOT NULL,
     "firstname" VARCHAR(40)   NOT NULL,
     "lastname" VARCHAR(40)   NOT NULL,
     "email" VARCHAR(100)   NOT NULL,
@@ -48,12 +49,37 @@ CREATE TABLE IF NOT EXISTS "interchange_event_list" (
         "interchangeid"
      )
 );
-INSERT INTO book_info_list(bookname,bookauthor, totalpages)
-VALUES ('cinali tatilde','erdem celik',10);
-INSERT INTO wish_list(bookid)
-VALUES (1);
-INSERT INTO user_list (username,firstname,lastname, email,schoolname,campusname,wishlistid)
-VALUES ('admin','admin','admin','admin@gmail.com', 'itu','maslak',1);
+
+
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('1984','George Orwell',237);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Count of Monte Cristo','Alexandre Dumas',276);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('Animal Farm','George Orwell',141);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Brothers Karamazov','Fyodor Dostoyevsky',10);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Little Prince','Antoine de Saint-Exupery',10);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('Romeo and Juliet','William Shakespeare',10);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('War and Peace','Leo Tolstoy ',10);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('Robinson Crusoe','Daniel Defoe',10);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('David Copperfield','Charles Dickens',10);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('Anna Karenina','George Eliot',10);
+INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Call of the Wild','Jack London',10);
+
+
+INSERT INTO wish_list(wishlistid ) VALUES (1);
+INSERT INTO wish_list(wishlistid ) VALUES (2);
+INSERT INTO wish_list(wishlistid ) VALUES (3);
+INSERT INTO wish_list(wishlistid ) VALUES (4);
+INSERT INTO wish_list(wishlistid ) VALUES (5);
+INSERT INTO wish_list(wishlistid ) VALUES (6);
+INSERT INTO wish_list(wishlistid ) VALUES (7);
+INSERT INTO wish_list(wishlistid ) VALUES (8);
+INSERT INTO wish_list(wishlistid ) VALUES (9);
+INSERT INTO wish_list(wishlistid ) VALUES (10);
+
+
+
+
+INSERT INTO user_list (username,password,firstname,lastname, email,schoolname,campusname,wishlistid)
+VALUES ('admin','12345','admin','admin','admin@gmail.com', 'itu','maslak',1);
 
     """
 }

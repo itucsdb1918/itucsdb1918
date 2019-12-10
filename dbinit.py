@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS "user_list" (
     "email" VARCHAR(100)   NOT NULL,
     "schoolname" VARCHAR(100)   NOT NULL,
     "campusname" VARCHAR(100)   NOT NULL,
-    "wishlistid" INTEGER   NOT NULL,
+    "wishlistid" INTEGER ,
     CONSTRAINT "pk_user_list" PRIMARY KEY (
         "userid"
      )
@@ -64,16 +64,8 @@ INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('Anna Karenin
 INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Call of the Wild','Jack London',10);
 
 
-INSERT INTO wish_list(wishlistid ) VALUES (1);
-INSERT INTO wish_list(wishlistid ) VALUES (2);
-INSERT INTO wish_list(wishlistid ) VALUES (3);
-INSERT INTO wish_list(wishlistid ) VALUES (4);
-INSERT INTO wish_list(wishlistid ) VALUES (5);
-INSERT INTO wish_list(wishlistid ) VALUES (6);
-INSERT INTO wish_list(wishlistid ) VALUES (7);
-INSERT INTO wish_list(wishlistid ) VALUES (8);
-INSERT INTO wish_list(wishlistid ) VALUES (9);
-INSERT INTO wish_list(wishlistid ) VALUES (10);
+INSERT INTO wish_list(wishlistid, bookid ) VALUES (1,1);
+
 
 
 

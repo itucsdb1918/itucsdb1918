@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS "book_info_list" (
 );
 
 CREATE TABLE IF NOT EXISTS "wish_list" (
-    "wishlistid" SERIAL,
-    "bookid" INTEGER,
+    "wishlistid" SERIAL NOT NULL,
+    "bookid" INTEGER NOT NULL,
     CONSTRAINT "pk_wish_list" PRIMARY KEY (
         "wishlistid","bookid"
      )

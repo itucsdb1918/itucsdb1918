@@ -9,6 +9,7 @@ class Database:
         self.con = psycopg2.connect(database=dbname, user=user, password=password, host=host)
         self.cur = self.con.cursor()
         self.userid = 0
+        self.wishlistid = 0
 
 
     def addNewUser(self,form):
@@ -36,14 +37,15 @@ class Database:
         queryRes = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT userid, username, password FROM user_list WHERE username='%s' and password = '%s';" %(username,password)
+            query = "SELECT userid, username, password, wishlistid FROM user_list WHERE username='%s' and password = '%s';" %(username,password)
             cursor.execute(query)
             queryRes = cursor.fetchone()
 
         if queryRes is not None:
             userid = queryRes[0]
+            wishlistid = queryRes[3]
 
-        return userid
+        return (userid,wishlistid)
 
 
     def profile(self,userid):
@@ -54,4 +56,14 @@ class Database:
             cursor.execute(query)
             queryRes = cursor.fetchall()
 
+        return queryRes
+
+    def wishlist(self,wishlistid):
+        queryRes = []
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN wish_list ON (book_info_list.bookid = wish_list.bookid) WHERE wishlistid = {}".format(wishlistid)
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+        #print("QUERY RESULT: {}".format(queryRes))
         return queryRes

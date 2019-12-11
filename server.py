@@ -21,7 +21,7 @@ def login():
     formLogIn = logIn()
 
     if request.method == "POST" and formLogIn.validate_on_submit():
-        db.userid = db.loginCheck(formLogIn.username.data,formLogIn.password.data)
+        db.userid = db.loginCheck(formLogIn.username.data,formLogIn.password.data)[0]
         if db.userid > 0:
             #flash('You loggin in successfully', 'success')
             return redirect(url_for("homepage"))
@@ -52,7 +52,22 @@ def signup_success():
 def profile():
     uid = db.userid
     profile = db.profile(uid)
+
+    if request.method == "POST":
+        if request.form["btn"] == "wishlist" :
+            return redirect(url_for('wishlist'))
+
     return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile)
+
+
+@app.route('/wishlist',methods = ["GET","POST"])
+def wishlist():
+    #wid = db.wishlistid
+    wid = 1
+    wl = db.wishlist(wid)
+
+    #if wl != None:
+    return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
 
 
 if __name__ == '__main__':

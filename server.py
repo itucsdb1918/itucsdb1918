@@ -4,6 +4,7 @@ from dbRemote import Database
 from forms import signUp, logIn
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '68461841as98d4asg86fd4h86as4as'
 
 db = Database()
 
@@ -55,5 +56,7 @@ def signup_success():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
 
 ##BACKUP

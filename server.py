@@ -8,7 +8,7 @@ app.config['SECRET_KEY'] = '68461841as98d4asg86fd4h86as4as'
 
 db = Database()
 
-@app.route('/')
+@app.route('/',methods = ["GET","POST"])
 def homepage():
     return render_template('index.html')
     #return redirect(url_for("login"))

@@ -67,3 +67,24 @@ class Database:
             queryRes = cursor.fetchall()
         #print("QUERY RESULT: {}".format(queryRes))
         return queryRes
+
+    def rmWishlist(self,wishlistid):
+        queryRes = []
+        queryDel = []
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "DELETE FROM wish_list WHERE wishlistid = {}".format(wishlistid)
+            cursor.execute(query)
+            #queryDel = cursor.fetchall()
+
+        #print("QUERY DEL RESULT: {}".format(queryDel))
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN wish_list ON (book_info_list.bookid = wish_list.bookid) WHERE wishlistid = {}".format(wishlistid)
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+        #print("QUERY RESULT: {}".format(queryRes))
+        return queryRes
+
+        print("QUERY RESULT: {}".format(queryRes))
+        return queryRes

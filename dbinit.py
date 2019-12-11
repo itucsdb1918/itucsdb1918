@@ -64,6 +64,7 @@ INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('Anna Karenin
 INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Call of the Wild','Jack London',10);
 
 INSERT INTO wish_list(bookid) VALUES (1);
+INSERT INTO wish_list(bookid) VALUES (2);
 
 INSERT INTO user_list (username,password,firstname,lastname, email,schoolname,campusname,wishlistid)
 VALUES ('admin','12345','admin','admin','admin@gmail.com', 'itu','maslak',1);

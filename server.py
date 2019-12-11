@@ -52,22 +52,29 @@ def signup_success():
 def profile():
     uid = db.userid
     profile = db.profile(uid)
-
-    if request.method == "POST":
-        if request.form["btn"] == "wishlist" :
-            return redirect(url_for('wishlist'))
-
     return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile)
 
 
 @app.route('/wishlist',methods = ["GET","POST"])
 def wishlist():
-    #wid = db.wishlistid
-    wid = 1
-    wl = db.wishlist(wid)
+    wid = db.wishlistid
 
-    #if wl != None:
+    #wid = 1
+
+    if request.method == "POST":
+        if request.form["btn"] == "w0" :
+            wl = db.rmWishlist(wid)
+            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
+
+        elif  request.form["btn"] == "p0" :
+            wl = db.wishlist(wid)
+            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
+
+
+    wl = db.wishlist(wid)
     return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
+
+
 
 
 if __name__ == '__main__':

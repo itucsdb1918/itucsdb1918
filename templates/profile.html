@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title%}
+Profile
+{% endblock %}
+
+
+{% block content %}
+
+<table class="table is-hoverable">
+    <tr>
+      <th>User ID</th>
+      <td>{{profile[0]}}</td>
+    </tr>
+
+    <tr>
+        <th>Username</th>
+        <td>{{profile[1]}}</td>
+    </tr>
+
+    <tr>
+        <th>Firstname</th>
+        <td>{{profile[2]}}</td>
+    </tr>
+
+
+
+    <tr>
+        <th>Lastname</th>
+        <td>{{profile[3]}}</td>
+    </tr>
+
+    <tr>
+        <th>E-mail</th>
+        <td>{{profile[4]}}</td>
+    </tr>
+
+    <tr>
+        <th>School Name</th>
+        <td>{{profile[5]}}</td>
+    </tr>
+
+    <tr>
+        <th>Campus Name</th>
+        <td>{{profile[6]}}</td>
+    </tr>
+
+</table>
+  
+
+
+
+{% endblock %}

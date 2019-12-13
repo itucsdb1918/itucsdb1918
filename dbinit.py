@@ -68,8 +68,9 @@ INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Call of 
 INSERT INTO user_list (username,password,firstname,lastname, email,schoolname,campusname,wishlistid)
 VALUES ('admin','12345','admin','admin','admin@interbooks.com', 'Istanbul Technical University','Ayazaga',1);
 
-INSERT INTO wish_list(bookid) VALUES (1);
-INSERT INTO wish_list(bookid) VALUES (2);
+INSERT INTO wish_list(bookid, wishlistid) VALUES (1, 1);
+INSERT INTO wish_list(bookid, wishlistid) VALUES (4, 1);
+INSERT INTO wish_list(bookid, wishlistid) VALUES (5, 1);
 
     """
 }

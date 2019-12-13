@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn
+from forms import signUp, logIn, AddBookToWishlist
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '68461841as98d4asg86fd4h86as4as'
@@ -64,21 +64,36 @@ def wishlist():
 
     wid = 1
 
+    formWishlist = AddBookToWishlist()
+
     if request.method == "POST":
         if request.form["btn"] == "w0" :
             wl = db.rmWishlist(wid)
-            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
+            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, wl=wl, shape = len(wl), form = formWishlist)
 
         elif  request.form["btn"] == "p0" :
             wl = db.getWishlist(wid)
             wishlist = []
             for item in wl:
                 wishlist.append(item)
-            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, shape = len(wl))
+            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, shape = len(wl), form = formWishlist)
 
-        elif  request.form["btn"] == "addToWishlist" :
-            wishlist = db.getWishlist(wid)
-            return render_template('wishlist.html', title = "Wishlist", wishlist=wishlist)
+        elif  request.form["btn"] == "add" :
+            wl = db.getWishlist(wid)
+            bookName = formWishlist.bookName.data
+            bookWriter = formWishlist.bookWriter.data
+            bookPages = formWishlist.pages.data
+
+            newBook = [bookName, bookWriter, bookPages]
+            wishlist = []
+            for item in wl:
+                wishlist.append(item)
+
+            book1984 = ["1984", "George Orwell"]
+            db.isBookExist(book1984)
+
+            wishlist.append(newBook)
+            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, shape = len(wl), form = formWishlist)
 
 
     wl = db.wishlist(wid)

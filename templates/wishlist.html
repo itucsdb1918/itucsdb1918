@@ -4,8 +4,9 @@
 wl
 {% endblock %}
 
-
 {% block content %}
+{% from "includes/formhelpers.html" import render_field %}
+
 <style>
   p {
     margin: 25px;
@@ -15,13 +16,27 @@ wl
   table {
     margin: 25px;
   }
-
+  li {
+    display: inline;
+  }
   tr {
     margin: 25px;
   }
 </style>
 
-
+<h2>Add Book to Wishlist</h2>
+<form method=post>
+  <ul>
+    <li>{{ render_field(form.bookName) }}</li>
+    <li>{{ render_field(form.bookWriter) }}</li>
+    <li>{{ render_field(form.pages) }}</li>
+  </ul>
+  <p><button type=submit class="btn btn-primary" action="submit" id="add" name="btn" value="add">
+    Add to Wishlist
+  </button>
+  <!-- TODO: Make the elements inline (listed horizontally)  -->
+</form>
+<br>
 
 <p> Wish List </p>
 

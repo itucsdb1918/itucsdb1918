@@ -36,7 +36,7 @@ def signup():
     #if request.method == "POST" and formSignUp.validate_on_submit():
         db.userid =  db.addNewUser(formSignUp)
         if db.userid > 0:
-            return redirect(url_for("homepage"))
+            return redirect(url_for("homepage"))# Go to login after signup
 
     return render_template("signup.html", form = formSignUp)
 

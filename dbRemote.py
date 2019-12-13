@@ -54,8 +54,9 @@ class Database:
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = "SELECT userid, username, firstname, lastname, email, schoolname, campusname FROM user_list WHERE userid = {}".format(userid)
             cursor.execute(query)
-            queryRes = cursor.fetchall()
+            queryRes = cursor.fetchone()
 
+            print('Query result {}'.format(queryRes))
         return queryRes
 
     def wishlist(self,wishlistid):

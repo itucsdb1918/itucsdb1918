@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS "book_info_list" (
     "bookauthor" VARCHAR(40)   NOT NULL,
     "totalpages" INTEGER   NOT NULL,
     CONSTRAINT "pk_book_info_list" PRIMARY KEY (
-        "bookid"
+        "bookname", "bookauthor"
      )
 );
 

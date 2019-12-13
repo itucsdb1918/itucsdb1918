@@ -1,5 +1,5 @@
 #from flask import Flask, render_template
-from flask import Flask,redirect,render_template,url_for,session,request
+from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
 from forms import signUp, logIn
 
@@ -19,11 +19,10 @@ def homepage():
 def login():
     db.userid = 0
     formLogIn = logIn()
-
-    if request.method == "POST" and formLogIn.validate_on_submit():
+    #if request.method == "POST" and formLogIn.validate_on_submit():
+    if request.method == "POST":
         db.userid = db.loginCheck(formLogIn.username.data,formLogIn.password.data)[0]
         if db.userid > 0:
-            #flash('You loggin in successfully', 'success')
             return redirect(url_for("homepage"))
 
 
@@ -33,8 +32,8 @@ def login():
 @app.route('/signup',methods = ["GET","POST"])
 def signup():
     formSignUp = signUp()
-    if request.method == "POST" and formSignUp.validate_on_submit():
-        #flash(f'Account created for {formSignUp.username.data}!', 'success')
+    if request.method == "POST":
+    #if request.method == "POST" and formSignUp.validate_on_submit():
         db.userid =  db.addNewUser(formSignUp)
         if db.userid > 0:
             return redirect(url_for("homepage"))

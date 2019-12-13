@@ -20,7 +20,7 @@ class Database:
 
         if queryRes is None:
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "INSERT INTO user_list (username,firstname,lastname,email,schoolname,campusname)VALUES ('%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.firstname.data,form.lastname.data,form.email.data,form.schoolname.data,form.campusname.data)
+                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolname,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,form.schoolname.data,form.campusname.data)
                 cursor.execute(query)
 
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:

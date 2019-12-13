@@ -48,7 +48,7 @@ class Database:
         return (userid,wishlistid)
 
 
-    def profile(self,userid):
+    def getProfileInformations(self,userid):
         queryRes = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
@@ -59,7 +59,7 @@ class Database:
             print('Query result {}'.format(queryRes))
         return queryRes
 
-    def wishlist(self,wishlistid):
+    def getWishlist(self,wishlistid):
         queryRes = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:

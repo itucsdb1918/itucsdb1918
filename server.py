@@ -18,10 +18,13 @@ def homepage():
 @app.route('/login',methods = ["GET","POST"])
 def login():
     db.userid = 0
+    # Create a form object
     formLogIn = logIn()
     #if request.method == "POST" and formLogIn.validate_on_submit():
     if request.method == "POST":
+        # Get user id from database after successful login operation
         db.userid = db.loginCheck(formLogIn.username.data,formLogIn.password.data)[0]
+        # If there is an ID returned, then navigate user to the homepage
         if db.userid > 0:
             return redirect(url_for("homepage"))
 
@@ -50,15 +53,16 @@ def signup_success():
 @app.route('/profile',methods = ["GET","POST"])
 def profile():
     uid = db.userid
-    profile = db.profile(uid)
+    profile = db.getProfileInformations(uid)
     return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile)
 
 
 @app.route('/wishlist',methods = ["GET","POST"])
 def wishlist():
     wid = db.wishlistid
+    #print("Wishlist id is {}".format(wid))
 
-    #wid = 1
+    wid = 1
 
     if request.method == "POST":
         if request.form["btn"] == "w0" :
@@ -66,7 +70,7 @@ def wishlist():
             return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
 
         elif  request.form["btn"] == "p0" :
-            wl = db.wishlist(wid)
+            wl = db.getWishlist(wid)
             return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
 
 

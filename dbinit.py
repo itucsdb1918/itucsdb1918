@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS "user_list" (
     "email" VARCHAR(100)   NOT NULL,
     "schoolname" VARCHAR(100)   NOT NULL,
     "campusname" VARCHAR(100)   NOT NULL,
-    "wishlistid" SERIAL INTEGER ,
+    "wishlistid" SERIAL NOT NULL,
     CONSTRAINT "pk_user_list" PRIMARY KEY (
         "userid"
      )

@@ -7,10 +7,18 @@ wl
 
 {% block content %}
 <style>
-p {margin: 25px;font-size:200%; }
-table {margin: 25px;}
-tr {margin: 25px;}
+  p {
+    margin: 25px;
+    font-size: 200%;
+  }
 
+  table {
+    margin: 25px;
+  }
+
+  tr {
+    margin: 25px;
+  }
 </style>
 
 
@@ -20,100 +28,31 @@ tr {margin: 25px;}
 
 <table class="table is-hoverable">
 
-{% if shape >= 0 %}
-
-    <tr>
-      <th>Book Name</th>
-      <th>Author</th>
-      <th>Total Pages</th>
-    </tr>
-{% endif %}
-
-{% if shape >= 1 %}
-    <tr>
-      <td>{{  wl[0][0]  }}</td>
-      <td>{{  wl[0][1]  }}</td>
-      <td>{{  wl[0][2]  }}</td>
-      <form method="POST"  action="/wishlist"><input type="hidden" name="w0" ><<td><button class="button is-danger" action="submit" id="w0" name="btn" value="w0">Interchanged</button></td></form>
-      </tr>
-
- {% endif %}
-{% if shape >= 2 %}
-<tr>
-  <td>{{  wl[1][0]  }}</td>
-  <td>{{  wl[1][1]  }}</td>
-  <td>{{  wl[1][2]  }}</td>
-</tr>
-{% endif %}
+  <tr>
+    <th>Book Name</th>
+    <th>Author</th>
+    <th>Total Pages</th>
+  </tr>
 
 
-{% if shape >=3 %}
-<tr>
-  <td>{{  wl[2][0]  }}</td>
-  <td>{{  wl[2][1]  }}</td>
-  <td>{{  wl[2][2]  }}</td>
-</tr>
-{% endif %}
+  {% for item in wishlist %}
+  <tr>
+    <td>{{ item[0] }}</td>
+    <td>{{ item[1] }}</td>
+    <td>{{ item[2] }}</td>
 
+    <form method="POST" action="/wishlist"><input type="hidden" name="w0">
+      <<td>
+        <button class="button is-danger" action="submit" id="w0" name="btn" value="w0">
+          Interchanged
+        </button>
+      </td>
+    </form>
+  </tr>
 
-{% if shape >= 4 %}
-<tr>
-  <td>{{  wl[3][0]  }}</td>
-  <td>{{  wl[3][1]  }}</td>
-  <td>{{  wl[3][2]  }}</td>
-</tr>
-{% endif %}
-
-{% if shape >= 5 %}
-<tr>
-  <td>{{  wl[4][0]  }}</td>
-  <td>{{  wl[4][1]  }}</td>
-  <td>{{  wl[4][2]  }}</td>
-</tr>
-{% endif %}
-
-{% if shape >= 6 %}
-<tr>
-  <td>{{  wl[5][0]  }}</td>
-  <td>{{  wl[5][1]  }}</td>
-  <td>{{  wl[5][2]  }}</td>
-</tr>
-{% endif %}
-
-{% if shape >= 7 %}
-<tr>
-  <td>{{  wl[6][0]  }}</td>
-  <td>{{  wl[6][1]  }}</td>
-  <td>{{  wl[6][2]  }}</td>
-</tr>
-{% endif %}
-
-{% if shape >= 8 %}
-<tr>
-  <td>{{  wl[7][0]  }}</td>
-  <td>{{  wl[7][1]  }}</td>
-  <td>{{  wl[7][2]  }}</td>
-</tr>
-{% endif %}
-
-{% if shape >= 9 %}
-<tr>
-  <td>{{  wl[8][0]  }}</td>
-  <td>{{  wl[8][1]  }}</td>
-  <td>{{  wl[8][2]  }}</td>
-</tr>
-{% endif %}
-
-{% if shape >= 10 %}
-<tr>
-  <td>{{  wl[9][0]  }}</td>
-  <td>{{  wl[9][1]  }}</td>
-  <td>{{  wl[9][2]  }}</td>
-</tr>
-{% endif %}
+  {% endfor %}
 
 </table>
-
 
 
 {% endblock %}

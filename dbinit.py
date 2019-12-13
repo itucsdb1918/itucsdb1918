@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "book_info_list" (
 );
 
 CREATE TABLE IF NOT EXISTS "wish_list" (
-    "wishlistid" SERIAL NOT NULL,
+    "wishlistid" INTEGER NOT NULL,
     "bookid" INTEGER NOT NULL,
     CONSTRAINT "pk_wish_list" PRIMARY KEY (
         "wishlistid","bookid"
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS "user_list" (
     "email" VARCHAR(100)   NOT NULL,
     "schoolname" VARCHAR(100)   NOT NULL,
     "campusname" VARCHAR(100)   NOT NULL,
-    "wishlistid" INTEGER ,
+    "wishlistid" SERIAL NOT NULL,
     CONSTRAINT "pk_user_list" PRIMARY KEY (
         "userid"
      )
@@ -68,6 +68,8 @@ INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Call of 
 INSERT INTO user_list (username,password,firstname,lastname, email,schoolname,campusname,wishlistid)
 VALUES ('admin','12345','admin','admin','admin@interbooks.com', 'Istanbul Technical University','Ayazaga',1);
 
+
+
     """
 }
 
@@ -75,6 +77,10 @@ VALUES ('admin','12345','admin','admin','admin@interbooks.com', 'Istanbul Techni
 """
 INSERT INTO wish_list(bookid) VALUES (1);
 INSERT INTO wish_list(bookid) VALUES (2);
+
+INSERT INTO wish_list(bookid, wishlistid) VALUES (1, 1);
+INSERT INTO wish_list(bookid, wishlistid) VALUES (4, 1);
+INSERT INTO wish_list(bookid, wishlistid) VALUES (5, 1);
 """
 
 

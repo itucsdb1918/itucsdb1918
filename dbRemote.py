@@ -48,7 +48,7 @@ class Database:
         return (userid,wishlistid)
 
 
-    def profile(self,userid):
+    def getProfileInformations(self,userid):
         queryRes = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
@@ -59,14 +59,14 @@ class Database:
             print('Query result {}'.format(queryRes))
         return queryRes
 
-    def wishlist(self,wishlistid):
+    def getWishlist(self,wishlistid):
         queryRes = []
-
+        print('wishlist id is -> {}'.format(wishlistid))
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN wish_list ON (book_info_list.bookid = wish_list.bookid) WHERE wishlistid = {}".format(wishlistid)
             cursor.execute(query)
             queryRes = cursor.fetchall()
-        #print("QUERY RESULT: {}".format(queryRes))
+        print("QUERY RESULT: {}".format(queryRes))
         return queryRes
 
     def rmWishlist(self,wishlistid):

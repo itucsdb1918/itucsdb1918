@@ -71,7 +71,14 @@ def wishlist():
 
         elif  request.form["btn"] == "p0" :
             wl = db.getWishlist(wid)
-            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
+            wishlist = []
+            for item in wl:
+                wishlist.append(item)
+            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, shape = len(wl))
+
+        elif  request.form["btn"] == "addToWishlist" :
+            wishlist = db.getWishlist(wid)
+            return render_template('wishlist.html', title = "Wishlist", wishlist=wishlist)
 
 
     wl = db.wishlist(wid)

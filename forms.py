@@ -22,3 +22,9 @@ class logIn(FlaskForm):
     username = StringField(u'User Name', validators=[validators.input_required()])
     password = PasswordField("Password:",validators=[validators.DataRequired()])
     submit = SubmitField('Log In')
+
+class AddBookToWishlist(FlaskForm):
+    bookName = StringField('Book Name', validators=[validators.input_required()])
+    bookWriter = StringField('Author', validators=[validators.input_required()])
+    pages = StringField('Number of Pages', validators=[validators.input_required()])
+    addBook = SubmitField('Add to Wishlist')

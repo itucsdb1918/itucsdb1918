@@ -31,7 +31,6 @@ class Database:
 
         return 0
 
-
     def loginCheck(self,username,password):
         userid = 0
         queryRes = []
@@ -46,6 +45,8 @@ class Database:
             wishlistid = queryRes[3]
 
         return (userid,wishlistid)
+
+
 
 
     def getProfileInformations(self,userid):
@@ -89,3 +90,54 @@ class Database:
 
         print("QUERY RESULT: {}".format(queryRes))
         return queryRes
+
+    # This method searchs a book in book_info_list table and returns true if book exist, otherwise returns false
+    def isBookExist(self, book):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT * FROM book_info_list WHERE bookname = '%s' AND bookauthor = '%s';" %(book[0], book[1])
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+
+        print("isBookExist: Query Result is {}".format(queryRes))
+
+        if not queryRes:
+            print('Book {} does not exist'.format(book[0]))
+            return False
+        else:
+            print('Book {} found in the list'.format(book[0]))
+            return True
+
+    # This method returns book id if exist, otherwise returns -1
+    def getBookId(self, book):
+        if not isBookExist(book):
+            print('getBookId: Book {} does not exist'.format(book[0]))
+            return -1
+
+        else:
+            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = "SELECT bookid FROM book_info_list WHERE bookname = '%s' AND bookauthor = '%s';" %(book[0], book[1])
+                cursor.execute(query)
+                queryRes = cursor.fetchone()
+
+            print('Book id is {}'.format(queryRes))
+            return queryRes;
+
+
+    def insertBookToWishlist(self, book):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT bookid FROM wish_list WHERE email = '%s';" %(form.email.data)
+            cursor.execute(query)
+            queryRes = cursor.fetchone()
+
+        if queryRes is None:
+            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolname,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,form.schoolname.data,form.campusname.data)
+                cursor.execute(query)
+
+            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = "SELECT userid  FROM user_list WHERE email='%s';" %(form.email.data)
+                cursor.execute(query)
+                queryRes = cursor.fetchone()
+                return queryRes[0]
+
+        return 0

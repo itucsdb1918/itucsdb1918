@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS "book_info_list" (
     "bookauthor" VARCHAR(40)   NOT NULL,
     "totalpages" INTEGER   NOT NULL,
     CONSTRAINT "pk_book_info_list" PRIMARY KEY (
-        "bookid"
+        "bookname", "bookauthor"
      )
 );
 
@@ -68,7 +68,9 @@ INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Call of 
 INSERT INTO user_list (username,password,firstname,lastname, email,schoolname,campusname,wishlistid)
 VALUES ('admin','12345','admin','admin','admin@interbooks.com', 'Istanbul Technical University','Ayazaga',1);
 
-
+INSERT INTO wish_list(bookid, wishlistid) VALUES (1, 1);
+INSERT INTO wish_list(bookid, wishlistid) VALUES (4, 1);
+INSERT INTO wish_list(bookid, wishlistid) VALUES (5, 1);
 
     """
 }

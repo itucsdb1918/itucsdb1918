@@ -76,7 +76,7 @@ def profile():
 @app.route('/wishlist',methods = ["GET","POST"])
 def wishlist():
     # Get wishlistId from user object
-    wid = int(user.getWishlistId())
+    wid = user.getWishlistId()
 
     formWishlist = AddBookToWishlist()
 
@@ -111,7 +111,7 @@ def wishlist():
                 newBookId = db.insertBookToBookInfoList(name=newBook[0], author=newBook[1], pages=int(newBook[2]))
 
                 # Also add book into the wish_list table
-                db.insertBookToWishlist(int(user.getWishlistId()), int(newBookId))
+                db.insertBookToWishlist(user.getWishlistId(), newBookId)
 
                 # Add book to the wishlist
                 wishlist.append(newBook)

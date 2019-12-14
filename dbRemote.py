@@ -16,6 +16,7 @@ class Database:
         queryRes = []
         isDone = False
 
+        # Qery returns null SOMETIMES, while loop solved the problem by BUSY WAITING. It is not an efficient way but it works
         while not isDone:
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
                 query = "SELECT userid, username, email, password, firstname, lastname, schoolname, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)

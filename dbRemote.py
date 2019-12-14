@@ -14,17 +14,19 @@ class Database:
 
     def getCurrentUser(self,userid):
         queryRes = []
+        isDone = False
 
-        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT userid, username, email, password, firstname, lastname, schoolname, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)
-            cursor.execute(query)
-            res = cursor.fetchone()
+        while not isDone:
+            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = "SELECT userid, username, email, password, firstname, lastname, schoolname, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)
+                cursor.execute(query)
+                res = cursor.fetchone()
 
-            if res is not None:
-                currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolName=res[6],campusName=res[7],wishlistId=res[8])
-                return currentUser
-            else:
-                return None
+                if res is not None:
+                    currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolName=res[6],campusName=res[7],wishlistId=res[8])
+                    isDone = True
+                    return currentUser
+
 
 
     def addNewUser(self,form):

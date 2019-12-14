@@ -119,7 +119,7 @@ def wishlist():
             return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, shape = len(wl), form = formWishlist)
 
 
-    wl = db.wishlist(wid)
+    wl = db.getWishlist(wid)
     return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
 
 

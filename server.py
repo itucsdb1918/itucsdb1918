@@ -77,6 +77,7 @@ def profile():
 def wishlist():
     # Get wishlistId from user object
     wid = user.getWishlistId()
+    print('INSIDE wishlist func: wid={}'.format(wid))
 
     formWishlist = AddBookToWishlist()
 
@@ -120,7 +121,7 @@ def wishlist():
 
 
     wl = db.getWishlist(wid)
-    return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl))
+    return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
 
 
 

@@ -76,16 +76,16 @@ def profile():
 @app.route('/wishlist',methods = ["GET","POST"])
 def wishlist():
     # Get wishlistId from user object
-    wid = user.getWishlistId()
+    wid = int(user.getWishlistId())
 
     formWishlist = AddBookToWishlist()
 
     if request.method == "POST":
-        if request.form["btn"] == "w0" :
+        if request.form["btn"] == "w0" : #REMOVE FROM WISHLIST
             wl = db.rmWishlist(wid)
             return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, wl=wl, shape = len(wl), form = formWishlist)
 
-        elif  request.form["btn"] == "p0" :
+        elif  request.form["btn"] == "p0" : # SHOW WISHLIST
             wl = db.getWishlist(wid)
             wishlist = []
             for item in wl:
@@ -108,10 +108,10 @@ def wishlist():
 
             if not db.isBookExist(newBook):
                 # Add book into the book_info_list table
-                newBookId = db.insertBookToBookInfoList(name=newBook[0], author=newBook[1], pages=newBook[2])
+                newBookId = db.insertBookToBookInfoList(name=newBook[0], author=newBook[1], pages=int(newBook[2]))
 
                 # Also add book into the wish_list table
-                db.insertBookToWishlist(user.getWishlistId(), newBookId)
+                db.insertBookToWishlist(int(user.getWishlistId()), int(newBookId))
 
                 # Add book to the wishlist
                 wishlist.append(newBook)

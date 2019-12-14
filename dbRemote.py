@@ -126,10 +126,10 @@ class Database:
     # This method returns bookId if the bok inserted successfully
     def insertBookToBookInfoList(self, name, author, pages):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "INSERT INTO book_info_list (bookname, bookauthor, totalpages) VALUES('%s', '%s', '%s');" %(name, author, pages)
+            query = "INSERT INTO book_info_list (bookname, bookauthor, totalpages) VALUES('%s', '%s', '%d');" %(name, author, pages)
             cursor.execute(query)
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT bookid FROM book_info_list WHERE bookname='%s' AND bookauthor='%s' AND totalpages='%s'" %(name, author, pages)
+            query = "SELECT bookid FROM book_info_list WHERE bookname='%s' AND bookauthor='%s' AND totalpages='%d'" %(name, author, pages)
             cursor.execute(query)
             queryRes = cursor.fetchone()
             #print('INSERT BOOK RESULT: {}'.format(queryRes))
@@ -138,5 +138,5 @@ class Database:
 
     def insertBookToWishlist(self, wishlistId, bookId):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "INSERT INTO wish_list  (wishlistid, bookid) VALUES('%s', '%s');" %(wishlistId, bookId)
+            query = "INSERT INTO wish_list  (wishlistid, bookid) VALUES('%d', '%d');" %(wishlistId, bookId)
             cursor.execute(query)

@@ -53,7 +53,7 @@ class Database:
         queryRes = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT userid, username, firstname, lastname, email, schoolname, campusname FROM user_list WHERE userid = {}".format(userid)
+            query = "SELECT userid, username, password, firstname, lastname, email, schoolname, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)
             cursor.execute(query)
             queryRes = cursor.fetchone()
 
@@ -123,21 +123,20 @@ class Database:
             return queryRes;
 
 
-    def insertBookToWishlist(self, book):
+    # This method returns bookId if the bok inserted successfully
+    def insertBookToBookInfoList(self, name, author, pages):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT bookid FROM wish_list WHERE email = '%s';" %(form.email.data)
+            query = "INSERT INTO book_info_list (bookname, bookauthor, totalpages) VALUES('%s', '%s', '%s');" %(name, author, pages)
+            cursor.execute(query)
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT bookid FROM book_info_list WHERE bookname='%s' AND bookauthor='%s' AND totalpages='%s'" %(name, author, pages)
             cursor.execute(query)
             queryRes = cursor.fetchone()
+            #print('INSERT BOOK RESULT: {}'.format(queryRes))
+            return queryRes[0] # RETURNING THE BOOK ID WHICH IS JUST CREATED
 
-        if queryRes is None:
-            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolname,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,form.schoolname.data,form.campusname.data)
-                cursor.execute(query)
 
-            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "SELECT userid  FROM user_list WHERE email='%s';" %(form.email.data)
-                cursor.execute(query)
-                queryRes = cursor.fetchone()
-                return queryRes[0]
-
-        return 0
+    def insertBookToWishlist(self, wishlistId, bookId):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "INSERT INTO wish_list  (wishlistid, bookid) VALUES('%s', '%s');" %(wishlistId, bookId)
+            cursor.execute(query)

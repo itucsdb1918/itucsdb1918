@@ -1,16 +1,16 @@
 # USER DATA MODEL CLASS
 
 class User:
-    def __init__(self):
-        self.id = ""
-        self.username = ""
-        self.email = ""
-        self.password = ""
-        self.firstname = ""
-        self.lastname = ""
-        self.schoolName = ""
-        self.campusName = ""
-        self.wishlistId = ""
+    def __init__(self, id=-1, username="", email="", password="", firstname="", lastname="", schoolName="", campusName="", wishlistId=-1):
+        self.id = id
+        self.username = username
+        self.email = email
+        self.password = password
+        self.firstname = firstname
+        self.lastname = lastname
+        self.schoolName = schoolName
+        self.campusName = campusName
+        self.wishlistId = wishlistId
 
     def setId(self, id):
         self.id = id

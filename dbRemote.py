@@ -1,5 +1,6 @@
 import psycopg2
 import psycopg2.extras
+from model.user import User
 
 
 class Database:
@@ -11,6 +12,17 @@ class Database:
         self.userid = 0
         self.wishlistid = 0
 
+    def getCurrentUser(self,userid):
+        queryRes = []
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT userid, username, email, password, firstname, lastname, schoolname, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)
+            cursor.execute(query)
+            res = cursor.fetchone()
+
+            currentUser = User(res[0],res[1],res[2],res[3],res[4],res[5],res[6],res[7],res[8])
+
+        return currentUser
 
     def addNewUser(self,form):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
@@ -53,7 +65,7 @@ class Database:
         queryRes = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT userid, username, password, firstname, lastname, email, schoolname, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)
+            query = "SELECT userid, username, password, firstname, lastname, email, schoolname, campusname, wishlistid FROM user_list WHERE userid={}".format(userid)
             cursor.execute(query)
             queryRes = cursor.fetchone()
 

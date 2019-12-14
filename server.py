@@ -8,7 +8,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '68461841as98d4asg86fd4h86as4as'
 
 db = Database()
-user = User()
 
 @app.route('/')
 @app.route('/homepage',methods = ["GET","POST"])
@@ -26,19 +25,15 @@ def login():
     if request.method == "POST":
         # Get user id from database after successful login operation
         db.userid = db.loginCheck(formLogIn.username.data,formLogIn.password.data)[0]
-        user.setId(db.userid)
 
-        # Get User's profile informations and save it into user object to use it everywhere later
-        profile = db.getProfileInformations(db.userid)
-        print('PROFILE OBJECT: {}'.format(profile))
-        user.setUsername(profile['username'])
-        user.setFirstname(profile['firstname'])
-        user.setLastname(profile['lastname'])
-        user.setEmail(profile['email'])
-        user.setPassword(profile['password'])
-        user.setSchoolName(profile['schoolname'])
-        user.setCampusName(profile['campusname'])
-        user.setWishlistId(profile['wishlistid'])
+
+        # Get current user
+        currentUser = db.getCurrentUser(db.userid)
+        #print('CURRENT USER: {}'.format(currentUser.getUsername()))
+
+
+        db.wishlistid = currentUser.getWishlistId()
+        #print('WISHLIST ID: {}'.format(db.wishlistid))
 
         # If there is an ID returned, then navigate user to the homepage
         if db.userid > 0:
@@ -68,15 +63,18 @@ def signup_success():
 
 @app.route('/profile',methods = ["GET","POST"])
 def profile():
-    uid = user.getId()
+    currentUser = db.getCurrentUser(db.userid)
+    uid = currentUser.getId()
+
     profile = db.getProfileInformations(uid)
     return render_template('profile.html', Status=uid, title = "Profile", profile=profile)
 
 
 @app.route('/wishlist',methods = ["GET","POST"])
 def wishlist():
+    currentUser = db.getCurrentUser(db.userid)
     # Get wishlistId from user object
-    wid = user.getWishlistId()
+    wid = currentUser.getWishlistId()
     print('INSIDE wishlist func: wid={}'.format(wid))
 
     formWishlist = AddBookToWishlist()
@@ -112,7 +110,7 @@ def wishlist():
                 newBookId = db.insertBookToBookInfoList(name=newBook[0], author=newBook[1], pages=int(newBook[2]))
 
                 # Also add book into the wish_list table
-                db.insertBookToWishlist(user.getWishlistId(), newBookId)
+                db.insertBookToWishlist(currentUser.getWishlistId(), newBookId)
 
                 # Add book to the wishlist
                 wishlist.append(newBook)

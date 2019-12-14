@@ -68,9 +68,9 @@ def signup_success():
 
 @app.route('/profile',methods = ["GET","POST"])
 def profile():
-    uid = db.userid
+    uid = user.getId()
     profile = db.getProfileInformations(uid)
-    return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile)
+    return render_template('profile.html', Status=uid, title = "Profile", profile=profile)
 
 
 @app.route('/wishlist',methods = ["GET","POST"])

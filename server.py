@@ -83,14 +83,14 @@ def wishlist():
     if request.method == "POST":
         if request.form["btn"] == "w0" : #REMOVE FROM WISHLIST
             wl = db.rmWishlist(wid)
-            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, wl=wl, shape = len(wl), form = formWishlist)
+            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
 
         elif  request.form["btn"] == "p0" : # SHOW WISHLIST
             wl = db.getWishlist(wid)
             wishlist = []
             for item in wl:
                 wishlist.append(item)
-            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, shape = len(wl), form = formWishlist)
+            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
 
         elif  request.form["btn"] == "add" :
             wl = db.getWishlist(wid)
@@ -116,7 +116,7 @@ def wishlist():
                 # Add book to the wishlist
                 wishlist.append(newBook)
 
-            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist",wishlist=wishlist, shape = len(wl), form = formWishlist)
+            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl,wishlist=wishlist, shape = len(wl), form = formWishlist)
 
 
     wl = db.getWishlist(wid)

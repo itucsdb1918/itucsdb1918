@@ -21,9 +21,11 @@ class Database:
             res = cursor.fetchone()
 
             if res is not None:
-                return currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolName=res[6],campusName=res[7],wishlistId=res[8])
+                currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolName=res[6],campusName=res[7],wishlistId=res[8])
+                return currentUser
+            else:
+                return None
 
-        return None
 
     def addNewUser(self,form):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:

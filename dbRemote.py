@@ -20,7 +20,8 @@ class Database:
             cursor.execute(query)
             res = cursor.fetchone()
 
-            currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolName=res[6],campusName=res[7],wishlistId=res[8])
+            if res is not None:
+                currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolName=res[6],campusName=res[7],wishlistId=res[8])
 
         return currentUser
 

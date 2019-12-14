@@ -20,7 +20,7 @@ class Database:
             cursor.execute(query)
             res = cursor.fetchone()
 
-            currentUser = User(res[0],res[1],res[2],res[3],res[4],res[5],res[6],res[7],res[8])
+            currentUser = User(userid=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolname=res[6],campusname=res[7],wishlistid=res[8])
 
         return currentUser
 

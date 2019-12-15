@@ -1,14 +1,14 @@
 # USER DATA MODEL CLASS
 
 class User:
-    def __init__(self, id=-1, username="", email="", password="", firstname="", lastname="", schoolName="", campusName="", wishlistId=-1):
+    def __init__(self, id=-1, username="", email="", password="", firstname="", lastname="", schoolid="", campusName="", wishlistId=-1):
         self.id = id
         self.username = username
         self.email = email
         self.password = password
         self.firstname = firstname
         self.lastname = lastname
-        self.schoolName = schoolName
+        self.schoolid = schoolid
         self.campusName = campusName
         self.wishlistId = wishlistId
 
@@ -24,8 +24,8 @@ class User:
         self.firstname = firstname
     def setLastname(self,lastname):
         self.lastname = lastname
-    def setSchoolName(self,schoolName):
-        self.schoolName = schoolName
+    def setSchoolid(self,schoolName):
+        self.schoolid = schoolid
     def setCampusName(self,campusName):
         self.campusName = campusName
     def setWishlistId(self,wishlistId):
@@ -43,8 +43,8 @@ class User:
         return self.name
     def getLastname(self):
         return self.lastname
-    def getSchoolName(self):
-        return self.schoolName
+    def getSchoolid(self):
+        return self.schoolid
     def getCampusName(self):
         return self.campusName
     def getWishlistId(self):

@@ -19,12 +19,12 @@ class Database:
         # Qery returns null SOMETIMES, while loop solved the problem by BUSY WAITING. It is not an efficient way but it works
         while not isDone:
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "SELECT userid, username, email, password, firstname, lastname, schoolname, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)
+                query = "SELECT userid, username, email, password, firstname, lastname, schoolid, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)
                 cursor.execute(query)
                 res = cursor.fetchone()
 
                 if res is not None:
-                    currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolName=res[6],campusName=res[7],wishlistId=res[8])
+                    currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolid=res[6],campusName=res[7],wishlistId=res[8])
                     isDone = True
                     return currentUser
 
@@ -36,9 +36,19 @@ class Database:
             cursor.execute(query)
             queryRes = cursor.fetchone()
 
+
         if queryRes is None:
+
+            """print(form.schoolname.data)
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolname,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,form.schoolname.data,form.campusname.data)
+                query = "SELECT schoolid FROM school_list WHERE schoolname = {}".format(form.schoolname.data)
+                cursor.execute(query)
+                sid = cursor.fetchone()
+
+                print(sid)"""
+
+            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolid,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,1,form.campusname.data)
                 cursor.execute(query)
 
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
@@ -86,19 +96,15 @@ class Database:
             cursor.execute(query)
             borrowerName = cursor.fetchall()
 
-        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN interchange_event_list ON (interchange_event_list.bookid = book_info_list.bookid)"
-            cursor.execute(query)
-            bookInfo = cursor.fetchall()
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT interchangeid, time FROM interchange_event_list"
+            query = "SELECT interchangeid, time, bookname, bookauthor, totalpages FROM interchange_event_list"
             cursor.execute(query)
             ieID = cursor.fetchall()
 
-        for i in range(len(ieID)):
-            ielistResult.append([ieID[i][0],ieID[i][1],lenderName[i][0],borrowerName[i][0],bookInfo[i][0],bookInfo[i][1],bookInfo[i][2]])
 
+        for i in range(len(ieID)):
+            ielistResult.append([ieID[i][0],ieID[i][1],lenderName[i][0],borrowerName[i][0],ieID[i][2],ieID[i][3],ieID[i][4]])
 
         return ielistResult
 
@@ -108,7 +114,7 @@ class Database:
         queryRes = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT userid, username, password, firstname, lastname, email, schoolname, campusname, wishlistid FROM user_list WHERE userid={}".format(userid)
+            query = "SELECT userid, username, password, firstname, lastname, email, schoolid, campusname, wishlistid FROM user_list WHERE userid={}".format(userid)
             cursor.execute(query)
             queryRes = cursor.fetchone()
 

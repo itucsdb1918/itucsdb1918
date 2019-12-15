@@ -36,9 +36,17 @@ class Database:
             cursor.execute(query)
             queryRes = cursor.fetchone()
 
+
         if queryRes is None:
+
+            print(form.schoolname.data)
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolname,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,form.schoolname.data,form.campusname.data)
+                query = "SELECT schoolid FROM school_list WHERE schoolname = {}".format(form.schoolname.data)
+                cursor.execute(query)
+                sid = cursor.fetchone()
+
+            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolname,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,sid,form.campusname.data)
                 cursor.execute(query)
 
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
@@ -86,19 +94,14 @@ class Database:
             cursor.execute(query)
             borrowerName = cursor.fetchall()
 
-        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN interchange_event_list ON (interchange_event_list.bookid = book_info_list.bookid)"
-            cursor.execute(query)
-            bookInfo = cursor.fetchall()
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT interchangeid, time FROM interchange_event_list"
+            query = "SELECT interchangeid, time, bookname, bookauthor, totalpages FROM interchange_event_list"
             cursor.execute(query)
             ieID = cursor.fetchall()
 
         for i in range(len(ieID)):
-            ielistResult.append([ieID[i][0],ieID[i][1],lenderName[i][0],borrowerName[i][0],bookInfo[i][0],bookInfo[i][1],bookInfo[i][2]])
-
+            ielistResult.append([ieID[i][0],ieID[i][1],lenderName[i][0],borrowerName[i][0],ieID[i][2],ieID[i][3],ieID[i][4]])
 
         return ielistResult
 

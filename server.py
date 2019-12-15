@@ -12,11 +12,19 @@ db = Database()
 @app.route('/')
 @app.route('/homepage',methods = ["GET","POST"])
 def homepage():
-    ielist = db.getInterchangeEventList()
-    #print("IELIST : {}".format(ielist))
 
     if db.userid > 0:
-        return render_template('index.html', ielist = ielist)
+        allAvailableBooks = db.getAllAvailableBooks()
+
+        # SET USER'S FULL NAME AT THE FIRST INDEX WHICH CONTAINS ID CURRENTLY
+        for item in allAvailableBooks:
+            user = db.getProfileInformations(userid = item[0])
+            userName = user[3]
+            userSurname = user[4]
+            fullname = userName + ' ' +userSurname
+            item[0] = fullname
+
+        return render_template('index.html', allAvailableBooks = allAvailableBooks)
 
     else:
         flash("Please log in to see interchange event list!",category="message")

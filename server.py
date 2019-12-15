@@ -89,8 +89,10 @@ def wishlist():
             #wl = db.rmWishlist(wid)
             #print('REMOVE BOOK NAME: {}'.format(request.form['bookname']))
             print('BOOK NAME: {} , AUTHOR: {}, PAGES: {}'.format(bookname, author, pages))
-
-            
+            book = [bookname, author, 0]
+            bookId = db.getBookId(book)
+            print('BOOK ID IS {}'.format(bookId))
+            db.deleteBookFromWishlist(db.wishlistid, bookId)
 
             wl = db.getWishlist(wid)
             wishlist = []

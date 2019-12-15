@@ -88,16 +88,16 @@ class Database:
         print("QUERY RESULT: {}".format(queryRes))
         return queryRes
 
-    def rmWishlist(self,wishlistid):
+    def deleteBookFromWishlist(self, wishlistid, bookid):
         queryRes = []
         queryDel = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "DELETE FROM wish_list WHERE wishlistid = {}".format(wishlistid)
+            query = "DELETE FROM wish_list WHERE wishlistid = {} AND bookid = {}".format(wishlistid, bookid)
             cursor.execute(query)
             #queryDel = cursor.fetchall()
 
-        #print("QUERY DEL RESULT: {}".format(queryDel))
+        print("QUERY DEL RESULT: {}".format(queryDel))
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN wish_list ON (book_info_list.bookid = wish_list.bookid) WHERE wishlistid = {}".format(wishlistid)
@@ -127,7 +127,7 @@ class Database:
 
     # This method returns book id if exist, otherwise returns -1
     def getBookId(self, book):
-        if not isBookExist(book):
+        if not self.isBookExist(book):
             print('getBookId: Book {} does not exist'.format(book[0]))
             return -1
 
@@ -138,7 +138,7 @@ class Database:
                 queryRes = cursor.fetchone()
 
             print('Book id is {}'.format(queryRes))
-            return queryRes;
+            return queryRes[0];
 
 
     # This method returns bookId if the bok inserted successfully

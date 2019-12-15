@@ -74,21 +74,33 @@ class Database:
 
 
     def getInterchangeEventList(self):
-        """with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT * FROM interchange_event_list"
-            cursor.execute(query)
-            queryRes = cursor.fetchall()
-
-        print("INTERCHANGE EVENT LIST: {}".format(queryRes))"""
+        ielistResult = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = "SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.lenderid = user_list.userid)"
             cursor.execute(query)
             lenderName = cursor.fetchall()
-            print('Lender result {}'.format(lenderName))
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.borrowerid = user_list.userid)"
+            cursor.execute(query)
+            borrowerName = cursor.fetchall()
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN interchange_event_list ON (interchange_event_list.bookid = book_info_list.bookid)"
+            cursor.execute(query)
+            bookInfo = cursor.fetchall()
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT interchangeid, time FROM interchange_event_list"
+            cursor.execute(query)
+            ieID = cursor.fetchall()
+
+        for i in range(len(ieID)):
+            ielistResult.append([ieID[i][0],ieID[i][1],lenderName[i][0],borrowerName[i][0],bookInfo[i][0],bookInfo[i][1],bookInfo[i][2]])
 
 
-        return lenderName
+        return ielistResult
 
 
 

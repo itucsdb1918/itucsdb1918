@@ -21,101 +21,204 @@ My Flow
   }
   tr {
     margin: 25px;
+    color: #fff
   }
 
-  /* Style the tab */
-tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
+  * {
+      margin: 0;
+      padding: 0;
+  }
 
-/* Style the buttons that are used to open the tab content */
-tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-}
+  h1, h3{
+    text-transform: uppercase;
+    font-weight: normal;
+  }
 
-/* Change background color of buttons on hover */
-tab button:hover {
-  background-color: #ddd;
-}
+  .tabs{
+      width: 1900px;
+      display: block;
+      margin: 40px auto;
+      position: relative;
+  }
 
-/* Create an active/current tablink class */
-tab button.active {
-  background-color: #ccc;
-}
+  .tabs .tab{
+      float: left;
+      display: block;
+  }
 
-/* Style the tab content */
-tabcontent {
-  display: none;
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  border-top: none;
-}
+  .tabs .tab>input[type="radio"] {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+  }
+
+  .tabs .tab>label {
+      display: block;
+      padding: 6px 21px;
+      font-size: 12px;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      color: #fff;
+      background: #4A83FD;
+  }
+
+  .tabs .content {
+      z-index: 0;/* or display: none; */
+      overflow: hidden;
+      width: 1900px;
+      padding: 25px;
+      position: absolute;
+      top: 27px;
+      left: 0;
+      background: #000000;
+      color: #ffffff;
+
+      opacity:0;
+      transition: opacity 400ms ease-out;
+  }
+
+  .tabs>.tab>[id^="tab"]:checked + label {
+      top: 0;
+      background: #303030;
+      color: #F5F5F5;
+  }
+
+  .tabs>.tab>[id^="tab"]:checked ~ [id^="tab-content"] {
+      z-index: 1;/* or display: block; */
+
+      opacity: 1;
+      transition: opacity 400ms ease-out;
+  }
 </style>
 
+<ul class="tabs">
 
-<div class="tab">
-  <form method="GET"  action="/flow">
-    <input type="hidden" name="My Flow" >
-      <button class="tablinks" action="submit" id="My Flow" name="btn_myFlow" value="My Flow">My Flow</button>
-  </form>
-  <form method="GET"  action="/flow">
-    <input type="hidden" name="gf" >
-      <button class="tablinks" action="submit" id="gf" name="btn_generalFlow" value="gf">General Flow</button>
-  </form>
-  <button class="tablinks" >General Flow</button>
-</div>
+  <li class="tab">
+      <input type="radio" name="tabs" checked="checked" id="tab1" />
+      <label for="tab1">My Flow</label>
+      <div id="tab-content1" class="content">
+
+        <p> Lendered Event List </p>
+
+          <table class="table is-hoverable">
+
+            <tr>
+              <th>Interchange ID</th>
+              <th>Borrower Username</th>
+              <th>Lender Username</th>
+              <th>Time</th>
+              <th>Book Name</th>
+              <th>Book Author</th>
+              <th>Total Pages</th>
+              <th>Publisher</th>
+            </tr>
+
+            {% if lendered != None %}
+
+            {% for item in lendered %}
+            <tr>
+              <td>{{ item[0] }}</td>
+              <td>{{ item[1] }}</td>
+              <td>{{ item[2] }}</td>
+              <td>{{ item[3] }}</td>
+              <td>{{ item[4] }}</td>
+              <td>{{ item[5] }}</td>
+              <td>{{ item[6] }}</td>
+              <td>{{ item[7] }}</td>
+            </tr>
+
+            {% endfor %}
+
+            {% endif %}
+
+          </table>
+
+          <br>
+
+          <p> Borrowed Event List </p>
+
+            <table class="table is-hoverable">
+
+              <tr>
+                <th>Interchange ID</th>
+                <th>Lender Username</th>
+                <th>Borrower Username</th>
+                <th>Time</th>
+                <th>Book Name</th>
+                <th>Book Author</th>
+                <th>Total Pages</th>
+                <th>Publisher</th>
+              </tr>
+
+              {% if borrowed != None %}
+
+              {% for item in borrowed %}
+              <tr>
+                <td>{{ item[0] }}</td>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[3] }}</td>
+                <td>{{ item[4] }}</td>
+                <td>{{ item[5] }}</td>
+                <td>{{ item[6] }}</td>
+                <td>{{ item[7] }}</td>
+              </tr>
+
+              {% endfor %}
+
+              {% endif %}
+
+            </table>
+      </div>
+  </li>
+
+  <li class="tab">
+    <input type="radio" name="tabs" id="tab2" />
+    <label for="tab2">General Flow</label>
+    <div id="tab-content2" class="content">
+
+      <p> Interchange Event List </p>
+
+      <table class="table is-hoverable">
+
+        <tr>
+          <th>Interchange ID</th>
+          <th>Time</th>
+          <th>Lender Username</th>
+          <th>Borrower Username</th>
+          <th>Book Name</th>
+          <th>Book Author</th>
+          <th>Total Pages</th>
+        </tr>
+
+        {% if ielist != None %}
+
+        {% for item in ielist %}
+        <tr>
+          <td>{{ item[0] }}</td>
+          <td>{{ item[1] }}</td>
+          <td>{{ item[2] }}</td>
+          <td>{{ item[3] }}</td>
+          <td>{{ item[4] }}</td>
+          <td>{{ item[5] }}</td>
+          <td>{{ item[6] }}</td>
+        </tr>
+
+        {% endfor %}
+
+        {% endif %}
+
+      </table>
 
 
-<!-- Tab content -->
-<div id="My Flow" class="tabcontent">
-  <h3>London</h3>
-  <p>London is the capital city of England.</p>
-</div>
 
-<div id="General Flow" class="tabcontent">
-  <p> Interchange Event List </p>
-
-  <table class="table is-hoverable">
-
-    <tr>
-      <th>Interchange ID</th>
-      <th>Time</th>
-      <th>Lender Username</th>
-      <th>Borrower Username</th>
-      <th>Book Name</th>
-      <th>Book Author</th>
-      <th>Total Pages</th>
-    </tr>
-
-    {% if ielist != None %}
-
-    {% for item in ielist %}
-    <tr>
-      <td>{{ item[0] }}</td>
-      <td>{{ item[1] }}</td>
-      <td>{{ item[2] }}</td>
-      <td>{{ item[3] }}</td>
-      <td>{{ item[4] }}</td>
-      <td>{{ item[5] }}</td>
-      <td>{{ item[6] }}</td>
-    </tr>
-
-    {% endfor %}
-
-    {% endif %}
-
-  </table>
-</div>
+     </div>
+  </li>
 
 
+
+</ul>
 
 
 

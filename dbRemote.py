@@ -19,12 +19,12 @@ class Database:
         # Qery returns null SOMETIMES, while loop solved the problem by BUSY WAITING. It is not an efficient way but it works
         while not isDone:
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "SELECT userid, username, email, password, firstname, lastname, schoolname, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)
+                query = "SELECT userid, username, email, password, firstname, lastname, schoolid, campusname, wishlistid FROM user_list WHERE userid = {}".format(userid)
                 cursor.execute(query)
                 res = cursor.fetchone()
 
                 if res is not None:
-                    currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolName=res[6],campusName=res[7],wishlistId=res[8])
+                    currentUser = User(id=res[0],username=res[1],email=res[2],password=res[3],firstname=res[4],lastname=res[5],schoolid=res[6],campusName=res[7],wishlistId=res[8])
                     isDone = True
                     return currentUser
 
@@ -39,14 +39,16 @@ class Database:
 
         if queryRes is None:
 
-            print(form.schoolname.data)
+            """print(form.schoolname.data)
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
                 query = "SELECT schoolid FROM school_list WHERE schoolname = {}".format(form.schoolname.data)
                 cursor.execute(query)
                 sid = cursor.fetchone()
 
+                print(sid)"""
+
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolname,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,sid,form.campusname.data)
+                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolid,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,1,form.campusname.data)
                 cursor.execute(query)
 
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:

@@ -28,26 +28,7 @@ def flow():
     ielist = db.getInterchangeEventList()
     flowlist = db.getMyFlow(db.userid)
 
-    print(flowlist[0])
-    print(flowlist[1])
-
     return render_template('flow.html', ielist = ielist, lendered = flowlist[0], borrowed = flowlist[1])
-
-
-    #print("IELIST : {}".format(ielist))
-"""    if request.method == "GET":
-        if request.form["btn_myFlow"] == 'gf' :
-            if db.userid > 0:
-                return render_template('flow.html', ielist = ielist)
-
-            else:
-                flash("Please log in to see interchange event list!",category="message")
-                return render_template('flow.html')
-
-        elif request.form["btn_generalFlow"] == 'gf' :
-            pass"""
-
-
 
 
 

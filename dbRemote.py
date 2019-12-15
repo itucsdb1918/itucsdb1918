@@ -38,17 +38,13 @@ class Database:
 
 
         if queryRes is None:
-
-            """print(form.schoolname.data)
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "SELECT schoolid FROM school_list WHERE schoolname = {}".format(form.schoolname.data)
+                query = "SELECT schoolid FROM school_list WHERE schoolname = '%s';"%(form.schoolname.data)
                 cursor.execute(query)
                 sid = cursor.fetchone()
 
-                print(sid)"""
-
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolid,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,1,form.campusname.data)
+                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolid,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,sid[0],form.campusname.data)
                 cursor.execute(query)
 
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:

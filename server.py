@@ -169,7 +169,7 @@ def wishlist():
 def availablebooks():
     # FILL AVAILABLE LIST WITH CURRENT ITEMS AT DB
     availableList = []
-    dbAvailableList = getAvailableBookList(db.userid)
+    dbAvailableList = db.getAvailableBookList(db.userid)
     for item in dbAvailableList:
         availableList.append(item)
 
@@ -188,12 +188,23 @@ def availablebooks():
         booktype = formAvailableBooks.bookType.data
         additionalinfo = formAvailableBooks.additionalInfo.data
 
-        newBook = [bookName, author, int(totalpages), publisher, booktype, int(pressyear), additionalinfo]
+        newBook = [bookname, author, int(totalpages), publisher, booktype, int(pressyear), additionalinfo]
 
-        # Also add book into the available_book_list table
-        db.insertBookToAvailableBookList(userId, newBook)
-        # Add new book to the end of available list
-        availableList.append(newBook)
+        if not db.isBookExistInAvailableBookList(bookname, author):
+            # Also add book into the available_book_list table
+            db.insertBookToAvailableBookList(userId, newBook)
+            # Add new book to the end of available list
+            availableList.append(newBook)
+
+        #Clear form
+        formAvailableBooks.bookName.data = ""
+        formAvailableBooks.author.data = ""
+        formAvailableBooks.pages.data = ""
+        formAvailableBooks.publisher.data = ""
+        formAvailableBooks.pressyear.data = ""
+        formAvailableBooks.bookType.data = ""
+        formAvailableBooks.additionalInfo.data = ""
+
 
         return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
 

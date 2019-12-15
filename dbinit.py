@@ -116,7 +116,7 @@ INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity
 VALUES (3,'Middle East Technical University','University','Turkey','Ankara','03120000000');
 
 INSERT INTO user_list (username,password,firstname,lastname, email,schoolid,campusname,wishlistid)
-VALUES ('admin','12345','admin','admin','admin@interbooks.com',1 ,'Ayazaga',1);
+VALUES ('admin','12345','admin','admin','admin@interbooks.com',1 ,'Ayazaga',0);
 
 
 

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, validators
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, validators
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 
@@ -28,3 +28,13 @@ class AddBookToWishlist(FlaskForm):
     bookWriter = StringField('Author', validators=[validators.input_required()])
     pages = StringField('Number of Pages', validators=[validators.input_required()])
     addBook = SubmitField('Add to Wishlist')
+
+
+class AddBookToAvailableBooksList(FlaskForm):
+    bookName = StringField('Book Name', validators=[validators.input_required()])
+    author = StringField('Author', validators=[validators.input_required()])
+    pages = StringField('Total Pages', validators=[validators.input_required()])
+    publisher = StringField('Publisher', validators=[validators.input_required()])
+    pressyear = StringField('Press Year', validators=[validators.input_required()])
+    additionaiInfo = TextAreaField('Anything you want to add')
+    addBook = SubmitField('Add to List')

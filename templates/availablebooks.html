@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title%}
+My Available Books
+{% endblock %}
+
+{% block content %}
+{% from "includes/formhelpers.html" import render_field %}
+
+<style>
+  p {
+    margin: 25px;
+    font-size: 200%;
+  }
+
+  table {
+    margin: 25px;
+  }
+  li {
+    display: inline;
+  }
+  tr {
+    margin: 25px;
+  }
+  button {
+    margin: 25px;
+  }
+</style>
+
+<h2>Add Your Available Books to Interchange</h2>
+<form method=post>
+  <ul>
+    <li>{{ render_field(form.bookName) }}</li>
+    <li>{{ render_field(form.author) }}</li>
+    <li>{{ render_field(form.pages) }}</li>
+    <li>{{ render_field(form.publisher) }}</li>
+    <li>{{ render_field(form.pressyear) }}</li>
+    <li>{{ render_field(form.additionaiInfo) }}</li>
+  </ul>
+  <button type=submit class="btn btn-primary" action="submit" id="add" name="btn" value="add">
+    ADD
+  </button>
+  <!-- TODO: Make the elements inline (listed horizontally)  -->
+</form>
+<br>
+
+<p> My Available Books </p>
+
+
+<table class="table is-hoverable">
+
+  <tr>
+    <th>Book Name</th>
+    <th>Author</th>
+    <th>Total Pages</th>
+    <th>Publisher</th>
+    <th>Press Year</th>
+    <th>Anything Else</th>
+  </tr>
+
+
+  {% for item in availableList %}
+
+    <tr>
+          <td >{{ item[0] }}</td>
+          <td >{{ item[1] }}</td>
+          <td >{{ item[2] }}</td>
+          <td >{{ item[3] }}</td>
+          <td >{{ item[4] }}</td>
+          <td >{{ item[5] }}</td>
+
+    </tr>
+
+  {% endfor %}
+
+
+
+</table>
+
+
+{% endblock %}

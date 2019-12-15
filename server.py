@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList
 from model.user import User
 
 app = Flask(__name__)
@@ -125,6 +125,15 @@ def wishlist():
                 wishlist.append(item)
             return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
 
+        elif  request.form["btn"] == "available" : # SHOW WISHLIST
+            availableList = []
+            #wl = db.getWishlist(wid)
+            #wishlist = []
+            #for item in wl:
+            #    wishlist.append(item)
+            return render_template('availablebooks.html', availableList=availableList)
+
+
         elif  request.form["btn"] == "add" :
             wl = db.getWishlist(wid)
             bookName = formWishlist.bookName.data
@@ -154,8 +163,13 @@ def wishlist():
 
     wl = db.getWishlist(wid)
     return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl), form = formWishlist)
+    # TODO: ADD wishlist parameter to render_template function
 
-
+@app.route('/availablebooks',methods = ["GET","POST"])
+def availablebooks():
+    availableList = []
+    formAvailableBooks = AddBookToAvailableBooksList()
+    return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
 
 
 if __name__ == '__main__':

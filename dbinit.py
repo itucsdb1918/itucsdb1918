@@ -118,6 +118,14 @@ VALUES (3,'Middle East Technical University','University','Turkey','Ankara','031
 INSERT INTO user_list (username,password,firstname,lastname, email,schoolid,campusname,wishlistid)
 VALUES ('admin','12345','admin','admin','admin@interbooks.com',1 ,'Ayazaga',0);
 
+INSERT INTO user_list (username,password,firstname,lastname, email,schoolid,campusname)
+VALUES ('cefa','0','fatih','öztürk','fatih@interbooks.com',1 ,'Ayazaga');
+
+INSERT INTO interchange_event_list (lenderid,borrowerid,bookname,bookauthor,totalpages,publisher)
+VALUES (1,2,'sis ve gece','ahmet ümit',288,'yky');
+
+INSERT INTO interchange_event_list (lenderid,borrowerid,bookname,bookauthor,totalpages,publisher)
+VALUES (2,1,'cin ali','erdem çelik',9,'can');
 
 
 

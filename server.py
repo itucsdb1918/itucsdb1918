@@ -23,6 +23,14 @@ def homepage():
         return render_template('index.html')
 
 
+@app.route('/flow',methods = ["GET","POST"])
+def flow():
+    ielist = db.getInterchangeEventList()
+    flowlist = db.getMyFlow(db.userid)
+
+    return render_template('flow.html', ielist = ielist, lendered = flowlist[0], borrowed = flowlist[1])
+
+
 
 @app.route('/login',methods = ["GET","POST"])
 def login():

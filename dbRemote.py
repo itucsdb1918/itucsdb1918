@@ -38,17 +38,13 @@ class Database:
 
 
         if queryRes is None:
-
-            """print(form.schoolname.data)
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "SELECT schoolid FROM school_list WHERE schoolname = {}".format(form.schoolname.data)
+                query = "SELECT schoolid FROM school_list WHERE schoolname = '%s';"%(form.schoolname.data)
                 cursor.execute(query)
                 sid = cursor.fetchone()
 
-                print(sid)"""
-
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolid,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,1,form.campusname.data)
+                query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolid,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,sid[0],form.campusname.data)
                 cursor.execute(query)
 
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
@@ -107,6 +103,22 @@ class Database:
             ielistResult.append([ieID[i][0],ieID[i][1],lenderName[i][0],borrowerName[i][0],ieID[i][2],ieID[i][3],ieID[i][4]])
 
         return ielistResult
+
+    def getMyFlow(self,userid):
+        borrowed = []
+        lendered = []
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT interchangeid, username AS lendername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.borrowerid = user_list.userid) WHERE borrowerid = {}) as borrowername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.lenderid = user_list.userid) where borrowerid = {}".format(userid,userid)
+            cursor.execute(query)
+            borrowed = cursor.fetchall()
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT interchangeid, username AS borrowername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.lenderid = user_list.userid) WHERE lenderid = {}) as lendername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.borrowerid = user_list.userid) where lenderid = {}".format(userid,userid)
+            cursor.execute(query)
+            lendered = cursor.fetchall()
+
+        return (borrowed,lendered)
 
 
 

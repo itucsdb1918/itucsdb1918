@@ -73,6 +73,23 @@ class Database:
         return (userid,wishlistid)
 
 
+    def getInterchangeEventList(self):
+        """with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT * FROM interchange_event_list"
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+
+        print("INTERCHANGE EVENT LIST: {}".format(queryRes))"""
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.lenderid = user_list.userid)"
+            cursor.execute(query)
+            lenderName = cursor.fetchall()
+            print('Lender result {}'.format(lenderName))
+
+
+        return lenderName
+
 
 
     def getProfileInformations(self,userid):

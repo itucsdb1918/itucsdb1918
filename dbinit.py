@@ -50,14 +50,6 @@ CREATE TABLE IF NOT EXISTS "interchange_event_list" (
      )
 );
 
-
-
-
-    """
-}
-
-#Try
-"""
 INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('1984','George Orwell',237);
 INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Count of Monte Cristo','Alexandre Dumas',276);
 INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('Animal Farm','George Orwell',141);
@@ -70,16 +62,28 @@ INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('David Copper
 INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('Anna Karenina','George Eliot',10);
 INSERT INTO book_info_list(bookname,bookauthor, totalpages)VALUES ('The Call of the Wild','Jack London',10);
 
-
-
 INSERT INTO user_list (username,password,firstname,lastname, email,schoolname,campusname,wishlistid)
 VALUES ('admin','12345','admin','admin','admin@interbooks.com', 'Istanbul Technical University','Ayazaga',1);
+
+INSERT INTO user_list (username,password,firstname,lastname, email,schoolname,campusname,wishlistid)
+VALUES ('cefatihozturk','0','M. Fatih','Öztürk','fatih@interbooks.com', 'Istanbul Technical University','Ayazaga',2);
+
+INSERT INTO user_list (username,password,firstname,lastname, email,schoolname,campusname,wishlistid)
+VALUES ('reyhanlioglu','1','Emre','Reyhanlıoğlu','emre@interbooks.com', 'Istanbul Technical University','Ayazaga',3);
 
 INSERT INTO wish_list(bookid, wishlistid) VALUES (1, 1);
 INSERT INTO wish_list(bookid, wishlistid) VALUES (4, 1);
 INSERT INTO wish_list(bookid, wishlistid) VALUES (5, 1);
-"""
 
+
+INSERT INTO interchange_event_list(lenderid, borrowerid, bookid) VALUES (1, 2,8);
+INSERT INTO interchange_event_list(lenderid, borrowerid, bookid) VALUES (1, 3,5);
+
+
+
+
+    """
+}
 
 def initialize(url):
     with dbapi2.connect(url) as connection:

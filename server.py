@@ -12,8 +12,17 @@ db = Database()
 @app.route('/')
 @app.route('/homepage',methods = ["GET","POST"])
 def homepage():
-    return render_template('index.html')
-    #return redirect(url_for("login"))
+    ielist = db.getInterchangeEventList()
+    print("IELIST : {}".format(ielist))
+
+    if db.userid > 0:
+        return render_template('index.html', ielist = ielist)
+
+    else:
+        print("GIRIS YAPILMADI")
+        flash("Please log in to see interchange event list!",category="message")
+        return render_template('index.html')
+
 
 
 @app.route('/login',methods = ["GET","POST"])

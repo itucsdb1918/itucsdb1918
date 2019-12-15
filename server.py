@@ -63,11 +63,21 @@ def signup_success():
 
 @app.route('/profile',methods = ["GET","POST"])
 def profile():
-    currentUser = db.getCurrentUser(db.userid)
-    uid = currentUser.getId()
+    if db.userid is 0 or db.userid is None:
+         return redirect(url_for("login"))
 
-    profile = db.getProfileInformations(uid)
-    return render_template('profile.html', Status=uid, title = "Profile", profile=profile)
+    currentUser = db.getCurrentUser(db.userid)
+    db.userid = currentUser.getId()
+    print("PROFILE UID: {}".format(db.userid))
+
+    # DELETE BUTTON AREA
+    if request.method == "POST":
+        if request.form["btn"] == "d0" : #REMOVE FROM WISHLIST
+            db.userid = db.rmCurrentUser(db.userid)
+
+    profile = db.getProfileInformations(db.userid)
+    print("PROFILE: {}".format(profile))
+    return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile)
 
 
 @app.route('/wishlist',methods = ["GET","POST"])

@@ -49,6 +49,14 @@ class Database:
 
         return 0
 
+    def rmCurrentUser(self,userid):
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "DELETE FROM user_list WHERE userid = {}".format(userid)
+            cursor.execute(query)
+
+        return 0
+
     def loginCheck(self,username,password):
         userid = 0
         queryRes = []

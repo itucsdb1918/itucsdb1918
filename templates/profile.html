@@ -48,16 +48,17 @@ Profile
 </table>
 
 <div class="form-group">
-            <form method="POST"  action="/wishlist">
+  <form method="POST"  action="/wishlist">
+    <input type="hidden" name="p0" >
+      <button class="button is-danger" action="submit" id="p0" name="btn" value="p0">Wishlist</button>
+  </form>
+  <br>
+  <form method="POST"  action="/profile">
+    <input type="hidden" name="d0" >
+      <button class="button is-danger" action="submit" id="d0" name="btn" value="d0">Delete Membership</button>
+  </form>
 
-            <input type="hidden" name="p0" >
-
-                <button class="button is-danger" action="submit" id="p0" name="btn" value="p0">Wishlist</button>
-
-
-        </form>
-
-          </div>
+</div>
 
 
 <!-- <button type = "submit" href = "{{ url_for('wishlist') }}" class="btn btn-primary">Wish List</button></p> -->

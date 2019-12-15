@@ -117,12 +117,12 @@ class Database:
 
     def getWishlist(self,wishlistid):
         queryRes = []
-        print('wishlist id is -> {}'.format(wishlistid))
+        #print('wishlist id is -> {}'.format(wishlistid))
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN wish_list ON (book_info_list.bookid = wish_list.bookid) WHERE wishlistid = {}".format(wishlistid)
             cursor.execute(query)
             queryRes = cursor.fetchall()
-        print("QUERY RESULT: {}".format(queryRes))
+        #print("QUERY RESULT: {}".format(queryRes))
         return queryRes
 
     def deleteBookFromWishlist(self, wishlistid, bookid):
@@ -204,3 +204,13 @@ class Database:
             ('%d', '%s', '%s','%d','%s', '%s', '%d' '%s');
             """ %(userId, book[0], book[1], book[2], book[3], book[4], book[5], book[6], book[7])
             cursor.execute(query)
+
+
+    def getAvailableBookList(self, userId):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT bookname, author, totalpages, publisher, pressyear, booktype, additionalinfo FROM available_book_list WHERE userid = {}".format(userId)
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+        print("AVAILABLE BOOK RESULT: {}".format(queryRes))
+        return queryRes

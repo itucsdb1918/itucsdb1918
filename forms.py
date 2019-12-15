@@ -41,5 +41,5 @@ class AddBookToAvailableBooksList(FlaskForm):
     publisher = StringField('Publisher', validators=[validators.input_required()])
     pressyear = StringField('Press Year', validators=[validators.input_required()])
     bookType = RadioField('Book Type', choices=[('Normal','Normal sized book'),('Mini','Mini book')], validators=[validators.input_required()])
-    additionaiInfo = TextAreaField('Anything you want to add')
+    additionalInfo = TextAreaField('Anything you want to add')
     addBook = SubmitField('Add to List')

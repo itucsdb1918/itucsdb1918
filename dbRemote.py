@@ -45,6 +45,8 @@ class Database:
                 cursor.execute(query)
                 sid = cursor.fetchone()
 
+                print(sid)
+
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
                 query = "INSERT INTO user_list (username,password,firstname,lastname,email,schoolname,campusname)VALUES ('%s','%s','%s','%s','%s','%s', '%s');"%(form.username.data,form.password.data,form.firstname.data,form.lastname.data,form.email.data,sid,form.campusname.data)
                 cursor.execute(query)

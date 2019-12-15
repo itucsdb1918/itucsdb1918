@@ -105,6 +105,23 @@ REFERENCES "user_list" ("wishlistid");
 ALTER TABLE "wish_list" ADD CONSTRAINT "fk_wish_list_bookid" FOREIGN KEY("bookid")
 REFERENCES "book_info_list" ("bookid");
 
+
+INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
+VALUES (1,"Istanbul Technical University","University","Turkey","Istanbul","02120000000");
+
+INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
+VALUES (2,"Bogazici University","University","Turkey","Istanbul","02120000001");
+
+INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
+VALUES (3,"Middle East Technical University","University","Turkey","Ankara","03120000000");
+
+INSERT INTO user_list (username,password,firstname,lastname, email,schoolid,campusname,wishlistid)
+VALUES ('admin','12345','admin','admin','admin@interbooks.com',1 ,'Ayazaga',1);
+
+
+
+
+
     """
 }
 

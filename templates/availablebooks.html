@@ -22,30 +22,17 @@ My Available Books
   tr {
     margin: 25px;
   }
+  h2 {
+    margin:25px;
+  }
   button {
     margin: 25px;
   }
 </style>
 
-<h2>Add Your Available Books to Interchange</h2>
-<form method=post>
-  <ul>
-    <li>{{ render_field(form.bookName) }}</li>
-    <li>{{ render_field(form.author) }}</li>
-    <li>{{ render_field(form.pages) }}</li>
-    <li>{{ render_field(form.publisher) }}</li>
-    <li>{{ render_field(form.pressyear) }}</li>
-    <li>{{ render_field(form.bookType) }}</li>
-    <li>{{ render_field(form.additionaiInfo) }}</li>
-  </ul>
-  <button type=submit class="btn btn-primary" action="submit" id="add" name="btn" value="add">
-    ADD
-  </button>
-  <!-- TODO: Make the elements inline (listed horizontally)  -->
-</form>
-<br>
 
-<p> My Available Books </p>
+
+<h2> My Available Books </h2>
 
 
 <table class="table is-hoverable">
@@ -76,9 +63,29 @@ My Available Books
 
   {% endfor %}
 
-
-
 </table>
+
+<br>
+<br>
+
+
+<h2>Add Your Available Books to Interchange</h2>
+<form method=post>
+  <ul>
+    <li>{{ render_field(form.bookName) }}</li>
+    <li>{{ render_field(form.author) }}</li>
+    <li>{{ render_field(form.pages) }}</li>
+    <li>{{ render_field(form.publisher) }}</li>
+    <li>{{ render_field(form.pressyear) }}</li>
+    <li>{{ render_field(form.bookType) }}</li>
+    <li>{{ render_field(form.additionalInfo) }}</li>
+  </ul>
+  <button type=submit class="btn btn-primary" action="submit" id="addAvailable" name="btn" value="addAvailable">
+    ADD
+  </button>
+  <!-- TODO: Make the elements inline (listed horizontally)  -->
+</form>
+<br>
 
 
 {% endblock %}

@@ -186,8 +186,48 @@ def wishlist():
 
 @app.route('/availablebooks',methods = ["GET","POST"])
 def availablebooks():
+    # FILL AVAILABLE LIST WITH CURRENT ITEMS AT DB
     availableList = []
+    dbAvailableList = db.getAvailableBookList(db.userid)
+    for item in dbAvailableList:
+        availableList.append(item)
+
     formAvailableBooks = AddBookToAvailableBooksList()
+
+    # FILL AVAILABLE LIST USING DB METHOD HERE
+
+
+    if  request.form["btn"] == "addAvailable" :
+        userId = db.userid
+        bookname = formAvailableBooks.bookName.data
+        author = formAvailableBooks.author.data
+        totalpages = formAvailableBooks.pages.data
+        publisher = formAvailableBooks.publisher.data
+        pressyear = formAvailableBooks.pressyear.data
+        booktype = formAvailableBooks.bookType.data
+        additionalinfo = formAvailableBooks.additionalInfo.data
+
+        newBook = [bookname, author, int(totalpages), publisher, booktype, int(pressyear), additionalinfo]
+
+        if not db.isBookExistInAvailableBookList(bookname, author):
+            # Also add book into the available_book_list table
+            db.insertBookToAvailableBookList(userId, newBook)
+            # Add new book to the end of available list
+            availableList.append(newBook)
+
+        #Clear form
+        formAvailableBooks.bookName.data = ""
+        formAvailableBooks.author.data = ""
+        formAvailableBooks.pages.data = ""
+        formAvailableBooks.publisher.data = ""
+        formAvailableBooks.pressyear.data = ""
+        formAvailableBooks.bookType.data = ""
+        formAvailableBooks.additionalInfo.data = ""
+
+
+        return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
+
+
     return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
 
 

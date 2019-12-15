@@ -24,29 +24,24 @@ Index - Interchange Event List
   }
 </style>
 
-
-
-
-
-
-
-<p> Interchange Event List </p>
+<p> Available Books to Interchange </p>
 
 <table class="table is-hoverable">
 
   <tr>
-    <th>Interchange ID</th>
-    <th>Time</th>
-    <th>Lender Username</th>
-    <th>Borrower Username</th>
+    <th>Owner</th>
     <th>Book Name</th>
     <th>Book Author</th>
     <th>Total Pages</th>
+    <th>Publisher</th>
+    <th>Press Year</th>
+    <th>Book Type</th>
+    <th>Additional Informations</th>
   </tr>
 
-  {% if ielist != None %}
+  {% if allAvailableBooks != None %}
 
-  {% for item in ielist %}
+  {% for item in allAvailableBooks %}
   <tr>
     <td>{{ item[0] }}</td>
     <td>{{ item[1] }}</td>
@@ -55,6 +50,7 @@ Index - Interchange Event List
     <td>{{ item[4] }}</td>
     <td>{{ item[5] }}</td>
     <td>{{ item[6] }}</td>
+    <td>{{ item[7] }}</td>
   </tr>
 
   {% endfor %}

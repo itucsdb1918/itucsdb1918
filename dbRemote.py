@@ -224,6 +224,15 @@ class Database:
             cursor.execute(query)
 
 
+    def getAllAvailableBooks(self):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT userid, bookname, bookauthor, totalpages, publisher, pressyear, booktype, additionalinfo FROM available_book_list"
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+        return queryRes
+
+
     def getAvailableBookList(self, userId):
         queryRes = []
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:

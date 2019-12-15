@@ -195,3 +195,12 @@ class Database:
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = "INSERT INTO wish_list  (wishlistid, bookid) VALUES('%d', '%d');" %(wishlistId, bookId)
             cursor.execute(query)
+
+
+    def insertBookToAvailableBookList(self, userId, book):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = """INSERT INTO available_book_list
+            (userid, bookname, bookauthor, totalpages, publisher, booktype, pressyear, additionalinfo) VALUES
+            ('%d', '%s', '%s','%d','%s', '%s', '%d' '%s');
+            """ %(userId, book[0], book[1], book[2], book[3], book[4], book[5], book[6], book[7])
+            cursor.execute(query)

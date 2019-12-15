@@ -23,6 +23,25 @@ def homepage():
         return render_template('index.html')
 
 
+@app.route('/flow',methods = ["GET","POST"])
+def flow():
+    ielist = db.getInterchangeEventList()
+    #print("IELIST : {}".format(ielist))
+    if request.method == "GET":
+        if request.form["btn_myFlow"] == 'gf' :
+            if db.userid > 0:
+                return render_template('flow.html', ielist = ielist)
+
+            else:
+                flash("Please log in to see interchange event list!",category="message")
+                return render_template('flow.html')
+
+        elif request.form["btn_generalFlow"] == 'gf' :
+            pass
+
+
+
+
 
 @app.route('/login',methods = ["GET","POST"])
 def login():

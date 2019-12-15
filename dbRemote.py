@@ -108,6 +108,8 @@ class Database:
 
         return ielistResult
 
+    def getMyFlow():
+        pass
 
 
     def getProfileInformations(self,userid):

@@ -102,6 +102,7 @@ class Database:
             cursor.execute(query)
             ieID = cursor.fetchall()
 
+
         for i in range(len(ieID)):
             ielistResult.append([ieID[i][0],ieID[i][1],lenderName[i][0],borrowerName[i][0],ieID[i][2],ieID[i][3],ieID[i][4]])
 
@@ -113,7 +114,7 @@ class Database:
         queryRes = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT userid, username, password, firstname, lastname, email, schoolname, campusname, wishlistid FROM user_list WHERE userid={}".format(userid)
+            query = "SELECT userid, username, password, firstname, lastname, email, schoolid, campusname, wishlistid FROM user_list WHERE userid={}".format(userid)
             cursor.execute(query)
             queryRes = cursor.fetchone()
 

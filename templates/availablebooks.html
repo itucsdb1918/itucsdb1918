@@ -35,6 +35,7 @@ My Available Books
     <li>{{ render_field(form.pages) }}</li>
     <li>{{ render_field(form.publisher) }}</li>
     <li>{{ render_field(form.pressyear) }}</li>
+    <li>{{ render_field(form.bookType) }}</li>
     <li>{{ render_field(form.additionaiInfo) }}</li>
   </ul>
   <button type=submit class="btn btn-primary" action="submit" id="add" name="btn" value="add">
@@ -55,6 +56,7 @@ My Available Books
     <th>Total Pages</th>
     <th>Publisher</th>
     <th>Press Year</th>
+    <th>Book Type</th>
     <th>Anything Else</th>
   </tr>
 
@@ -68,6 +70,7 @@ My Available Books
           <td >{{ item[3] }}</td>
           <td >{{ item[4] }}</td>
           <td >{{ item[5] }}</td>
+          <td >{{ item[6] }}</td>
 
     </tr>
 

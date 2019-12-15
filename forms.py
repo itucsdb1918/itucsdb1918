@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, validators
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, RadioField, validators
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 
@@ -27,7 +27,11 @@ class AddBookToWishlist(FlaskForm):
     bookName = StringField('Book Name', validators=[validators.input_required()])
     bookWriter = StringField('Author', validators=[validators.input_required()])
     pages = StringField('Number of Pages', validators=[validators.input_required()])
+    publisher = StringField('Publisher', validators=[validators.input_required()])
+    pressYear = StringField('Press Year', validators=[validators.input_required()])
+    bookType = RadioField('Book Type', choices=[('Normal','Normal sized book'),('Mini','Mini book')], validators=[validators.input_required()])
     addBook = SubmitField('Add to Wishlist')
+
 
 
 class AddBookToAvailableBooksList(FlaskForm):
@@ -36,5 +40,6 @@ class AddBookToAvailableBooksList(FlaskForm):
     pages = StringField('Total Pages', validators=[validators.input_required()])
     publisher = StringField('Publisher', validators=[validators.input_required()])
     pressyear = StringField('Press Year', validators=[validators.input_required()])
+    bookType = RadioField('Book Type', choices=[('Normal','Normal sized book'),('Mini','Mini book')], validators=[validators.input_required()])
     additionaiInfo = TextAreaField('Anything you want to add')
     addBook = SubmitField('Add to List')

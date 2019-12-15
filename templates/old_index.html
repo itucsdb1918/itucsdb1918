@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+
+{% block title%}
+OLD Index - Interchange Event List
+{% endblock %}
+
+
+{% block content %}
+<style>
+  p {
+    margin: 25px;
+    font-size: 200%;
+  }
+
+  table {
+    margin: 25px;
+  }
+  li {
+    display: inline;
+  }
+  tr {
+    margin: 25px;
+  }
+</style>
+
+<p> Interchange Event List </p>
+
+<table class="table is-hoverable">
+
+  <tr>
+    <th>Interchange ID</th>
+    <th>Time</th>
+    <th>Lender Username</th>
+    <th>Borrower Username</th>
+    <th>Book Name</th>
+    <th>Book Author</th>
+    <th>Total Pages</th>
+  </tr>
+
+  {% if ielist != None %}
+
+  {% for item in ielist %}
+  <tr>
+    <td>{{ item[0] }}</td>
+    <td>{{ item[1] }}</td>
+    <td>{{ item[2] }}</td>
+    <td>{{ item[3] }}</td>
+    <td>{{ item[4] }}</td>
+    <td>{{ item[5] }}</td>
+    <td>{{ item[6] }}</td>
+  </tr>
+
+  {% endfor %}
+
+  {% endif %}
+
+</table>
+
+{% endblock %}

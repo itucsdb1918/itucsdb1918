@@ -49,6 +49,44 @@ CREATE TABLE IF NOT EXISTS "school_list" (
 );
 
 
+CREATE TABLE IF NOT EXISTS "book_info_list" (
+    "bookid" SERIAL   NOT NULL,
+    "bookname" VARCHAR(40)   NOT NULL,
+    "bookauthor" VARCHAR(40)   NOT NULL,
+    "totalpages" INTEGER   NOT NULL,
+    "publisher" VARCHAR(40)   NOT NULL,
+    "booktype" VARCHAR(40)   NOT NULL,
+    "pressyear" VARCHAR(40)   NOT NULL,
+    CONSTRAINT "pk_book_info_list" PRIMARY KEY (
+        "bookid","bookname"
+     )
+);
+
+
+CREATE TABLE IF NOT EXISTS "available_book_list" (
+    "userid" VARCHAR(40)   NOT NULL,
+    "bookid" SERIAL   NOT NULL,
+    "bookname" VARCHAR(40)   NOT NULL,
+    "bookauthor" VARCHAR(40)   NOT NULL,
+    "totalpages" INTEGER   NOT NULL,
+    "publisher" VARCHAR(40)   NOT NULL,
+    "booktype" VARCHAR(40)   NOT NULL,
+    "pressyear" VARCHAR(40)   NOT NULL,
+    "additionalinfo" VARCHAR(100)   NOT NULL,
+    CONSTRAINT "pk_available_book_list" PRIMARY KEY (
+        "bookname","bookauthor"
+     )
+);
+
+CREATE TABLE IF NOT EXISTS "wish_list" (
+    "wishlistID" SERIAL   NOT NULL,
+    "bookId" INTEGER   NOT NULL,
+    CONSTRAINT "pk_wish_list" PRIMARY KEY (
+        "wishlistID","bookId"
+     )
+);
+
+
 ALTER TABLE "user_list" ADD CONSTRAINT "fk_user_list_schoolid" FOREIGN KEY("schoolid")
 REFERENCES "school_list" ("schoolid");
 
@@ -57,6 +95,15 @@ REFERENCES "user_list" ("userid");
 
 ALTER TABLE "interchange_event_list" ADD CONSTRAINT "fk_interchange_event_list_borrowerid" FOREIGN KEY("borrowerid")
 REFERENCES "user_list" ("userid");
+
+ALTER TABLE "available_book_list" ADD CONSTRAINT "fk_available_book_list_userid" FOREIGN KEY("userid")
+REFERENCES "user_list" ("userid");
+
+ALTER TABLE "wish_list" ADD CONSTRAINT "fk_wish_list_wishlistID" FOREIGN KEY("wishlistID")
+REFERENCES "user_list" ("wishlistid");
+
+ALTER TABLE "wish_list" ADD CONSTRAINT "fk_wish_list_bookId" FOREIGN KEY("bookId")
+REFERENCES "book_info_list" ("bookid");
 
     """
 }

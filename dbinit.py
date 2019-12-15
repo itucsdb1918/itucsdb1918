@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS "wish_list" (
     "wishlistid" SERIAL UNIQUE  NOT NULL,
     "bookid" INTEGER   NOT NULL,
     CONSTRAINT "pk_wish_list" PRIMARY KEY (
-        "wishlistid","bookId"
+        "wishlistid","bookid"
      )
 );
 
@@ -109,7 +109,6 @@ REFERENCES "book_info_list" ("bookid");
 }
 
 
-"""
 
 def initialize(url):
     with dbapi2.connect(url) as connection:

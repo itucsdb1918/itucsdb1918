@@ -8,7 +8,7 @@ INIT_STATEMENTS = {
     """
 
 CREATE TABLE IF NOT EXISTS "user_list" (
-    "userid" serial   NOT NULL,
+    "userid" serial UNIQUE  NOT NULL,
     "username" VARCHAR(15)   NOT NULL,
     "password" VARCHAR(50)   NOT NULL,
     "firstname" VARCHAR(40)   NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "user_list" (
     "email" VARCHAR(100)   NOT NULL,
     "schoolid" INTEGER   NOT NULL,
     "campusname" VARCHAR(100)   NOT NULL,
-    "wishlistid" serial   NOT NULL,
+    "wishlistid" serial UNIQUE  NOT NULL,
     CONSTRAINT "pk_user_list" PRIMARY KEY (
         "userid"
      )
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS "interchange_event_list" (
 );
 
 CREATE TABLE IF NOT EXISTS "school_list" (
-    "schoolid" SERIAL   NOT NULL,
+    "schoolid" SERIAL UNIQUE  NOT NULL,
     "schoolname" VARCHAR(50)   NOT NULL,
     "schooltype" VARCHAR(40)   NOT NULL,
     "schoolcountry" VARCHAR(40)   NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS "school_list" (
 
 
 CREATE TABLE IF NOT EXISTS "book_info_list" (
-    "bookid" SERIAL   NOT NULL,
+    "bookid" SERIAL UNIQUE  NOT NULL,
     "bookname" VARCHAR(40)   NOT NULL,
     "bookauthor" VARCHAR(40)   NOT NULL,
     "totalpages" INTEGER   NOT NULL,
@@ -79,10 +79,10 @@ CREATE TABLE IF NOT EXISTS "available_book_list" (
 );
 
 CREATE TABLE IF NOT EXISTS "wish_list" (
-    "wishlistID" SERIAL   NOT NULL,
-    "bookId" INTEGER   NOT NULL,
+    "wishlistid" SERIAL UNIQUE  NOT NULL,
+    "bookid" INTEGER   NOT NULL,
     CONSTRAINT "pk_wish_list" PRIMARY KEY (
-        "wishlistID","bookId"
+        "wishlistid","bookId"
      )
 );
 
@@ -99,10 +99,10 @@ REFERENCES "user_list" ("userid");
 ALTER TABLE "available_book_list" ADD CONSTRAINT "fk_available_book_list_userid" FOREIGN KEY("userid")
 REFERENCES "user_list" ("userid");
 
-ALTER TABLE "wish_list" ADD CONSTRAINT "fk_wish_list_wishlistID" FOREIGN KEY("wishlistID")
+ALTER TABLE "wish_list" ADD CONSTRAINT "fk_wish_list_wishlistid" FOREIGN KEY("wishlistid")
 REFERENCES "user_list" ("wishlistid");
 
-ALTER TABLE "wish_list" ADD CONSTRAINT "fk_wish_list_bookId" FOREIGN KEY("bookId")
+ALTER TABLE "wish_list" ADD CONSTRAINT "fk_wish_list_bookid" FOREIGN KEY("bookid")
 REFERENCES "book_info_list" ("bookid");
 
     """

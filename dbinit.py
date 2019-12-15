@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS "book_info_list" (
 
 
 CREATE TABLE IF NOT EXISTS "available_book_list" (
-    "userid" VARCHAR(40)   NOT NULL,
+    "userid" INTEGER   NOT NULL,
     "bookid" SERIAL   NOT NULL,
     "bookname" VARCHAR(40)   NOT NULL,
     "bookauthor" VARCHAR(40)   NOT NULL,

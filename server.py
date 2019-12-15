@@ -98,8 +98,24 @@ def wishlist():
     formWishlist = AddBookToWishlist()
 
     if request.method == "POST":
-        if request.form["btn"] == "w0" : #REMOVE FROM WISHLIST
-            wl = db.rmWishlist(wid)
+        bookname = request.form.get("bookname")
+        author = request.form.get("author")
+        pages = request.form.get("pages")
+
+
+        if request.form["btn"] == "removeValue" : #REMOVE FROM WISHLIST
+            #wl = db.rmWishlist(wid)
+            #print('REMOVE BOOK NAME: {}'.format(request.form['bookname']))
+            print('BOOK NAME: {} , AUTHOR: {}, PAGES: {}'.format(bookname, author, pages))
+            book = [bookname, author, 0]
+            bookId = db.getBookId(book)
+            print('BOOK ID IS {}'.format(bookId))
+            db.deleteBookFromWishlist(db.wishlistid, bookId)
+
+            wl = db.getWishlist(wid)
+            wishlist = []
+            for item in wl:
+                wishlist.append(item)
             return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
 
         elif  request.form["btn"] == "p0" : # SHOW WISHLIST
@@ -137,7 +153,7 @@ def wishlist():
 
 
     wl = db.getWishlist(wid)
-    return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
+    return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl), form = formWishlist)
 
 
 

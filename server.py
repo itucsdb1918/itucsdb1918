@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,UpdateAvailableBookForm,updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList, UpdateAvailableBookForm
 from model.user import User
 
 app = Flask(__name__)
@@ -94,24 +94,9 @@ def signup_success():
 
 @app.route('/profile',methods = ["GET","POST"])
 def profile():
-
     userId = session['userId']
     if userId is 0 or userId is None:
-        return redirect(url_for("login"))
-
-
-    updateSchool= updateSchoolForm()
-    rmform = rmSchoolForm()
-    newschool = newSchoolForm()
-    updateprof = updateProfileForm()
-    schoollist = db.getSchoolInfo()
-    userlist = db.getUsers()
-
-    if db.userid is 0 or db.userid is None:
          return redirect(url_for("login"))
-
-    if db.userid is 1:
-        schoollist = db.getSchoolInfo()
 
     currentUser = db.getCurrentUser(db.userid)
     db.userid = currentUser.getId()
@@ -124,48 +109,9 @@ def profile():
             db.userid = db.rmCurrentUser(db.userid) # returns zero
             session['userId'] = db.userid # set to zero
 
-        if request.form["btn"] == "newschool":
-            db.addNewSchool(newschool)
-            if db.userid is 1:
-                schoollist = db.getSchoolInfo()
-                #profile = db.getProfileInformations(db.userid)
-                profile = db.getProfileInformations(session['userId'])
-                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist,updateprof = updateprof)
-
-        if request.form["btn"] == "removeID":
-            db.rmSchoolInfo(rmform)
-            if db.userid is 1:
-                schoollist = db.getSchoolInfo()
-                #profile = db.getProfileInformations(db.userid)
-                profile = db.getProfileInformations(session['userId'])
-                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist,updateprof = updateprof)
-
-        if request.form["btn"] == "updateID":
-            db.updateSchoolInfo(updateSchool)
-            if db.userid is 1:
-                schoollist = db.getSchoolInfo()
-                #profile = db.getProfileInformations(db.userid)
-                profile = db.getProfileInformations(session['userId'])
-                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist, updateprof = updateprof)
-
-
-        if request.form["btn"] == "updateProfile":
-            print("00000000000000000000000000000000000000000000000000")
-            #db.updateProfile(updateprof,db.userid)
-            db.updateProfile(updateprof,session['userId'])
-            if db.userid is 1:
-                schoollist = db.getSchoolInfo()
-                #profile = db.getProfileInformations(db.userid)
-                profile = db.getProfileInformations(session['userId'])
-                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist, updateprof = updateprof)
-
-    #profile = db.getProfileInformations(db.userid)
     profile = db.getProfileInformations(session['userId'])
-    return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist, updateprof = updateprof)
-
-
-
-
+    print("PROFILE: {}".format(profile))
+    return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile)
 
 
 @app.route('/wishlist',methods = ["GET","POST"])
@@ -312,6 +258,10 @@ def availablebooks():
 
     return render_template('availablebooks.html', form=formAvailableBooks, formUpdateBooks=formUpdateBooks, availableList=availableList)
 
+@app.route('/messages',methods = ["GET","POST"])
+def messages():
+
+    return render_template('messages.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

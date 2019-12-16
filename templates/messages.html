@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+
+{% block title%}
+Interchange Event List
+{% endblock %}
+
+
+{% block content %}
+<style>
+  p {
+    margin: 25px;
+    font-size: 200%;
+  }
+
+  table {
+    margin: 25px;
+  }
+  li {
+    display: inline;
+  }
+  tr {
+    margin: 25px;
+  }
+</style>
+
+<p> Available Books to Interchange </p>
+
+<table class="table is-hoverable">
+
+  <tr>
+    <th>Owner</th>
+    <th>Book Name</th>
+    <th>Book Author</th>
+    <th>Total Pages</th>
+    <th>Publisher</th>
+    <th>Press Year</th>
+    <th>Book Type</th>
+    <th>Additional Informations</th>
+  </tr>
+
+  {% if allAvailableBooks != None %}
+
+  {% for item in allAvailableBooks %}
+  <tr>
+    <td>{{ item[0] }}</td>
+    <td>{{ item[1] }}</td>
+    <td>{{ item[2] }}</td>
+    <td>{{ item[3] }}</td>
+    <td>{{ item[4] }}</td>
+    <td>{{ item[5] }}</td>
+    <td>{{ item[6] }}</td>
+    <td>{{ item[7] }}</td>
+  </tr>
+
+  {% endfor %}
+
+  {% endif %}
+
+</table>
+
+{% endblock %}

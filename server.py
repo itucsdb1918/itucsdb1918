@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList, UpdateAvailableBookForm
 from model.user import User
 
 app = Flask(__name__)
@@ -201,7 +201,9 @@ def availablebooks():
     for item in dbAvailableList:
         availableList.append(item)
 
+
     formAvailableBooks = AddBookToAvailableBooksList()
+    formUpdateBooks = UpdateAvailableBookForm()
 
     # FILL AVAILABLE LIST USING DB METHOD HERE
     if request.method == "POST":
@@ -234,24 +236,27 @@ def availablebooks():
             formAvailableBooks.additionalInfo.data = ""
 
 
-            return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
+            return render_template('availablebooks.html', form=formAvailableBooks, formUpdateBooks = formUpdateBooks, availableList=availableList)
 
 
         # If user clicks the update button, then fill the form with clicked book informations
-        elif  request.form["btn"] == "updateAvailable" :
-            print('UPDATE AVAILABLE CALLED')
-            formAvailableBooks.bookName.data = request.form["bookname"]
-            formAvailableBooks.author.data = request.form["author"]
-            formAvailableBooks.pages.data = request.form["pages"]
-            formAvailableBooks.publisher.data = request.form["publisher"]
-            formAvailableBooks.pressyear.data = request.form["pressyear"]
-            formAvailableBooks.bookType.data = request.form["booktype"]
-            formAvailableBooks.additionalInfo.data = request.form["additionalinfo"]
+    elif  request.form["btn"] == "saveAvailable" :
+            print('SAVE AVAILABLE CALLED')
+            oldBookName = formUpdateBooks.oldBookName.data
+            oldAuthorName = formUpdateBooks.oldAuthor.data
+            bookName = formUpdateBooks.bookName.data
+            authorName = formUpdateBooks.author.data
+            pages = formUpdateBooks.pages.data
+            publisher = formUpdateBooks.publisher.data
+            pressYear = formUpdateBooks.pressyear.data
+            bookType = formUpdateBooks.bookType.data
+            additionalInfo = formUpdateBooks.additionalInfo.data
 
-            return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
+            print('Old name {} , new name {}'.format(oldBookName, bookName))
 
+            return render_template('availablebooks.html', form=formAvailableBooks, formUpdateBooks= formUpdateBooks, availableList=availableList)
 
-    return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
+    return render_template('availablebooks.html', form=formAvailableBooks, formUpdateBooks=formUpdateBooks, availableList=availableList)
 
 
 if __name__ == '__main__':

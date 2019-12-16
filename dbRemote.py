@@ -223,6 +223,15 @@ class Database:
             """ %(userId, book[0], book[1], book[2], book[3], book[4], book[5], book[6])
             cursor.execute(query)
 
+    # TODO: WRITE THIS METHOD
+    def updateBookAtAvailableBookList(self, userId, book, updatedBook):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = """UPDATE available_book_list SET
+            userid = , bookname, bookauthor, totalpages, publisher, pressyear, booktype, additionalinfo WHERE
+            userid = '%d' AND bookname = '%s' AND bookauthor = '%s';
+            """ %(userId, book[0], book[1])  # book[2], book[3], book[4], book[5], book[6]
+            cursor.execute(query)
+
 
     def getAllAvailableBooks(self):
         queryRes = []

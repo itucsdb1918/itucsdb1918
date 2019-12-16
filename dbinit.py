@@ -129,13 +129,13 @@ REFERENCES "user_list" ("userid");
 
 
 INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
-VALUES (101,'Istanbul Technical University','University','Turkey','Istanbul','02120000000');
+VALUES ('Istanbul Technical University','University','Turkey','Istanbul','02120000000');
 
 INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
-VALUES (102,'Bogazici University','University','Turkey','Istanbul','02120000001');
+VALUES ('Bogazici University','University','Turkey','Istanbul','02120000001');
 
 INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
-VALUES (103,'Middle East Technical University','University','Turkey','Ankara','03120000000');
+VALUES ('Middle East Technical University','University','Turkey','Ankara','03120000000');
 
 INSERT INTO user_list (username,password,firstname,lastname, email,schoolid,campusname,wishlistid)
 VALUES ('admin','12345','admin','admin','admin@interbooks.com',1 ,'Ayazaga',0);

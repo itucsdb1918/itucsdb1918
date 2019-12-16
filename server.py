@@ -14,7 +14,7 @@ db = Database()
 def homepage():
     userId = db.userid
 
-    if not session['userId']:
+    if session['userId']:
         userId = session['userId']
 
     if userId > 0:

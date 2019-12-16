@@ -87,6 +87,22 @@ CREATE TABLE IF NOT EXISTS "wish_list" (
 );
 
 
+CREATE TABLE IF NOT EXISTS "message_list" (
+    "messageid" SERIAL  NOT NULL,
+    "senderid" INTEGER   NOT NULL,
+    "receiverid" INTEGER   NOT NULL,
+    "sendername" VARCHAR(40)   NOT NULL,
+    "sendersurname" VARCHAR(40)   NOT NULL,
+    "topic" VARCHAR(40)   NOT NULL,
+    "message" VARCHAR(150)   NOT NULL,
+    "timestamp" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "priority" VARCHAR(20)   NOT NULL,
+    CONSTRAINT "pk_message_list" PRIMARY KEY (
+        "messageid"
+     )
+);
+
+
 ALTER TABLE "user_list" ADD CONSTRAINT "fk_user_list_schoolid" FOREIGN KEY("schoolid")
 REFERENCES "school_list" ("schoolid");
 
@@ -104,6 +120,12 @@ REFERENCES "user_list" ("wishlistid");
 
 ALTER TABLE "wish_list" ADD CONSTRAINT "fk_wish_list_bookid" FOREIGN KEY("bookid")
 REFERENCES "book_info_list" ("bookid");
+
+ALTER TABLE "message_list" ADD CONSTRAINT "fk_message_list_senderid" FOREIGN KEY("senderid")
+REFERENCES "user_list" ("userid");
+
+ALTER TABLE "message_list" ADD CONSTRAINT "fk_message_list_receiverid" FOREIGN KEY("receiverid")
+REFERENCES "user_list" ("userid");
 
 
 INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)

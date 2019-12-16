@@ -281,9 +281,9 @@ class Database:
 
 
     # This method returns bookId if the bok inserted successfully
-    def insertBookToBookInfoList(self, name, author, pages):
+    def insertBookToBookInfoList(self, name, author, pages, publisher, type, year):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "INSERT INTO book_info_list (bookname, bookauthor, totalpages) VALUES('%s', '%s', '%d');" %(name, author, pages)
+            query = "INSERT INTO book_info_list (bookname, bookauthor, totalpages, publisher, booktype, pressyear) VALUES('%s', '%s', '%d','%s', '%s', '%d');" %(name, author, pages,publisher, type, year)
             cursor.execute(query)
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = "SELECT bookid FROM book_info_list WHERE bookname='%s' AND bookauthor='%s' AND totalpages='%d'" %(name, author, pages)
@@ -307,7 +307,6 @@ class Database:
             """ %(userId, book[0], book[1], book[2], book[3], book[4], book[5], book[6])
             cursor.execute(query)
 
-            print('INSERT AVAILABLE RESULT IS: {}')
 
     # TODO: WRITE THIS METHOD
     def updateBookAtAvailableBookList(self, userId, oldName, oldAuthor, newBook):
@@ -349,3 +348,53 @@ class Database:
             return False
         else:
             return True
+
+    def insertMessage(self, messageInfo):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = """INSERT INTO message_list
+            (senderid, receiverid, sendername, sendersurname, topic, message, priority) VALUES
+            ('%d', '%d', '%s','%s', '%s', '%s', '%s');
+            """ %(messageInfo[0],messageInfo[1],messageInfo[2],messageInfo[3],messageInfo[4],messageInfo[5],messageInfo[6])
+            cursor.execute(query)
+
+
+    def getIncomingMessagesByUserId(self, userId):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT sendername, sendersurname, topic, message, timestamp, priority, messageid FROM message_list WHERE receiverid = '%d'"%(userId)
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+
+        print("MESSAGES: {}".format(queryRes))
+        return queryRes
+
+    def getUserIdByNameAndSurname(self, name, surname):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT userid FROM user_list WHERE firstname = '%s' AND lastname = '%s'"%(name, surname)
+            cursor.execute(query)
+            queryRes = cursor.fetchone()
+
+        return queryRes[0]
+
+
+
+    # This method returns all the books in book_info_list table
+    def getBookList(self):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT bookid,bookname, bookauthor, totalpages,publisher, booktype, pressyear FROM book_info_list"
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+        #print("QUERY RESULT: {}".format(queryRes))
+        return queryRes
+
+    def rmBook(self,bookid):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "DELETE FROM book_info_list WHERE bookid = {}".format(bookid)
+            cursor.execute(query)
+
+
+    def updateBook(self,form):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "UPDATE book_info_list SET bookname = '%s', bookauthor = '%s', totalpages = '%d', publisher = '%s', booktype = '%s', pressyear = '%d' WHERE bookid = '%d' AND bookname = '%s';"%(form.bookName.data,form.bookWriter.data,int(form.pages.data),form.publisher.data,form.bookType.data,int(form.pressYear.data),int(form.bookId.data),form.oldBookName.data)
+            cursor.execute(query)

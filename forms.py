@@ -51,6 +51,16 @@ class newSchoolForm(FlaskForm):
 class rmSchoolForm(FlaskForm):
     schoolname  = StringField(u'School Name that you want to delete', validators=[validators.input_required()])
 
+class UpdateBookForm(FlaskForm):
+    bookId = StringField('Book ID', validators=[validators.input_required()])
+    oldBookName = StringField('Old Book Name', validators=[validators.input_required()])
+    bookName = StringField('Book Name', validators=[validators.input_required()])
+    bookWriter = StringField('Author', validators=[validators.input_required()])
+    pages = StringField('Number of Pages', validators=[validators.input_required()])
+    publisher = StringField('Publisher', validators=[validators.input_required()])
+    pressYear = StringField('Press Year', validators=[validators.input_required()])
+    bookType = RadioField('Book Type', choices=[('Normal','Normal sized book'),('Mini','Mini book')], validators=[validators.input_required()])
+
 
 class AddBookToWishlist(FlaskForm):
     bookName = StringField('Book Name', validators=[validators.input_required()])
@@ -86,3 +96,11 @@ class UpdateAvailableBookForm(FlaskForm):
     bookType = RadioField('Book Type', choices=[('Normal','Normal sized book'),('Mini','Mini book')], validators=[validators.input_required()])
     additionalInfo = TextAreaField('Anything you want to add')
     addBook = SubmitField('Add to List')
+
+
+class SendMessageForm(FlaskForm):
+    receiverName = StringField('Receiver name', validators=[validators.input_required()])
+    receiverSurname = StringField('Receiver surname', validators=[validators.input_required()])
+    topic = StringField('Topic', validators=[validators.input_required()])
+    message = StringField('Message', validators=[validators.input_required()])
+    priority = StringField('Priority', validators=[validators.input_required()])

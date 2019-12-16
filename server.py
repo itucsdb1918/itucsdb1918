@@ -362,7 +362,7 @@ def messages():
 
             receiverId = db.getUserIdByNameAndSurname(receiverName, receiverSurname)
 
-            newMessage = [senderId, receiverId, senderName, senderSurname, topic, message]
+            newMessage = [senderId, receiverId, senderName, senderSurname, topic, message, priority]
 
             db.insertMessage(newMessage)
 

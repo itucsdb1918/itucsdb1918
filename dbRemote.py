@@ -352,9 +352,9 @@ class Database:
     def insertMessage(self, messageInfo):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = """INSERT INTO message_list
-            (senderid, receiverid, sendername, sendersurname, topic, message) VALUES
-            ('%d', '%d', '%s','%s', '%s', '%s');
-            """ %(messageInfo[0],messageInfo[1],messageInfo[2],messageInfo[3],messageInfo[4],messageInfo[5])
+            (senderid, receiverid, sendername, sendersurname, topic, message, priority) VALUES
+            ('%d', '%d', '%s','%s', '%s', '%s', '%s');
+            """ %(messageInfo[0],messageInfo[1],messageInfo[2],messageInfo[3],messageInfo[4],messageInfo[5],messageInfo[6])
             cursor.execute(query)
 
 

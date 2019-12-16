@@ -22,69 +22,182 @@ My Available Books
   tr {
     margin: 25px;
   }
-  h2 {
-    margin:25px;
-  }
-  button {
-    margin: 25px;
-  }
+  h1,h3,h6,input,button,form{
+      margin-left: 25px;
+    }
+
+    .tabs{
+        width: 1800px;
+        display: block;
+        margin: 40px auto;
+        position: relative;
+    }
+
+    .tabs .tab{
+        float: left;
+        display: block;
+    }
+
+    .tabs .tab>input[type="radio"] {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .tabs .tab>label {
+        display: block;
+        padding: 6px 21px;
+        font-size: 12px;
+        text-transform: uppercase;
+        cursor: pointer;
+        position: relative;
+        color: #fff;
+        background: #000;
+    }
+
+    .tabs .content {
+        z-index: 0;/* or display: none; */
+        overflow: hidden;
+        width: 1800px;
+        padding: 25px;
+        position: absolute;
+        top: 27px;
+        left: 0;
+        background: #dae1f0;
+        color: #000;
+
+        opacity:0;
+        transition: opacity 400ms ease-out;
+    }
+
+    .tabs>.tab>[id^="tab"]:checked + label {
+        top: 0;
+        background: #303030;
+        color: #ff0000;
+    }
+
+    .tabs>.tab>[id^="tab"]:checked ~ [id^="tab-content"] {
+        z-index: 1;/* or display: block; */
+
+        opacity: 1;
+        transition: opacity 400ms ease-out;
+    }
 </style>
+
 
 
 
 <h2> My Available Books </h2>
 
 
-<table class="table is-hoverable">
 
-  <tr>
-    <th>Book Name</th>
-    <th>Author</th>
-    <th>Total Pages</th>
-    <th>Publisher</th>
-    <th>Press Year</th>
-    <th>Book Type</th>
-    <th>Anything Else</th>
-  </tr>
-
-
-  {% for item in availableList %}
+  <table class="table is-hoverable">
 
     <tr>
-          <td >{{ item[0] }}</td>
-          <td >{{ item[1] }}</td>
-          <td >{{ item[2] }}</td>
-          <td >{{ item[3] }}</td>
-          <td >{{ item[4] }}</td>
-          <td >{{ item[5] }}</td>
-          <td >{{ item[6] }}</td>
-
+      <th>Book Name</th>
+      <th>Author</th>
+      <th>Total Pages</th>
+      <th>Publisher</th>
+      <th>Press Year</th>
+      <th>Book Type</th>
+      <th>Anything Else</th>
     </tr>
 
-  {% endfor %}
 
-</table>
+    {% for item in availableList %}
 
-<br>
-<br>
+      <tr>
+            <td >{{ item[0] }}</td>
+            <td >{{ item[1] }}</td>
+            <td >{{ item[2] }}</td>
+            <td >{{ item[3] }}</td>
+            <td >{{ item[4] }}</td>
+            <td >{{ item[5] }}</td>
+            <td >{{ item[6] }}</td>
+
+      </tr>
+
+    {% endfor %}
+
+  </table>
 
 
-<h2>Add Your Available Books to Interchange</h2>
-<form method=post>
-  <ul>
-    <li>{{ render_field(form.bookName) }}</li>
-    <li>{{ render_field(form.author) }}</li>
-    <li>{{ render_field(form.pages) }}</li>
-    <li>{{ render_field(form.publisher) }}</li>
-    <li>{{ render_field(form.pressyear) }}</li>
-    <li>{{ render_field(form.bookType) }}</li>
-    <li>{{ render_field(form.additionalInfo) }}</li>
+
+  <br>
+  <br>
+
+  <ul class="tabs">
+
+    <li class="tab">
+        <input type="radio" name="tabs" checked="checked" id="tab1" />
+        <label for="tab1">ADD TO LIST</label>
+        <div id="tab-content1" class="content">
+
+          <form method="POST">
+
+              <h2>Add Your Available Books to Interchange</h2>
+              <ul>
+                <li>{{ render_field(form.bookName) }}</li>
+                <li>{{ render_field(form.author) }}</li>
+                <li>{{ render_field(form.pages) }}</li>
+                <li>{{ render_field(form.publisher) }}</li>
+                <li>{{ render_field(form.pressyear) }}</li>
+                <li>{{ render_field(form.bookType) }}</li>
+                <li>{{ render_field(form.additionalInfo) }}</li>
+
+                <button type=submit class="btn btn-primary" action="submit" id="addAvailable" name="btn" value="addAvailable">
+                  ADD
+                </button>
+
+              </ul>
+
+
+
+
+
+          </form>
+      </div>
+    </li>
+
+
+    <li class="tab">
+      <input type="radio" name="tabs" id="tab2" />
+      <label for="tab2">UPDATE A BOOK</label>
+      <div id="tab-content2" class="content">
+
+        <form method="POST">
+        <h2>Edit A Book in Your List</h2>
+        <br>
+        <h3>Enter the Book Name and Author that You Want to Edit</h3>
+        <ul>
+          <li>{{ render_field(formUpdateBooks.oldBookName) }}</li>
+          <li>{{ render_field(formUpdateBooks.oldAuthor) }}</li>
+
+          <li>
+            <h3>Fill the Form with Edited Book Informations</h3>
+          </li>
+          <li>{{ render_field(formUpdateBooks.bookName) }}</li>
+          <li>{{ render_field(formUpdateBooks.author) }}</li>
+          <li>{{ render_field(formUpdateBooks.pages) }}</li>
+          <li>{{ render_field(formUpdateBooks.publisher) }}</li>
+          <li>{{ render_field(formUpdateBooks.pressyear) }}</li>
+          <li>{{ render_field(formUpdateBooks.bookType) }}</li>
+          <li>{{ render_field(formUpdateBooks.additionalInfo) }}</li>
+        </ul>
+
+
+          <button type=submit class="btn btn-primary" action="submit" id="saveAvailable" name="btn" value="saveAvailable">
+            SAVE
+          </button>
+        </form>
+
+      </div>
+    </li>
+
+
   </ul>
-  <button type=submit class="btn btn-primary" action="submit" id="addAvailable" name="btn" value="addAvailable">
-    ADD
-  </button>
-  <!-- TODO: Make the elements inline (listed horizontally)  -->
-</form>
+
+
 <br>
 
 

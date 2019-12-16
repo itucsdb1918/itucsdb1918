@@ -43,3 +43,17 @@ class AddBookToAvailableBooksList(FlaskForm):
     bookType = RadioField('Book Type', choices=[('Normal','Normal sized book'),('Mini','Mini book')], validators=[validators.input_required()])
     additionalInfo = TextAreaField('Anything you want to add')
     addBook = SubmitField('Add to List')
+
+
+
+class UpdateAvailableBookForm(FlaskForm):
+    oldBookName = StringField('Book Name', validators=[validators.input_required()])
+    oldAuthor = StringField('Author', validators=[validators.input_required()])
+    bookName = StringField('Book Name', validators=[validators.input_required()])
+    author = StringField('Author', validators=[validators.input_required()])
+    pages = StringField('Total Pages', validators=[validators.input_required()])
+    publisher = StringField('Publisher', validators=[validators.input_required()])
+    pressyear = StringField('Press Year', validators=[validators.input_required()])
+    bookType = RadioField('Book Type', choices=[('Normal','Normal sized book'),('Mini','Mini book')], validators=[validators.input_required()])
+    additionalInfo = TextAreaField('Anything you want to add')
+    addBook = SubmitField('Add to List')

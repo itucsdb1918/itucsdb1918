@@ -218,9 +218,21 @@ class Database:
     def insertBookToAvailableBookList(self, userId, book):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = """INSERT INTO available_book_list
-            (userid, bookname, bookauthor, totalpages, publisher, booktype, pressyear, additionalinfo) VALUES
-            ('%d', '%s', '%s','%d','%s', '%s', '%d', '%s');
+            (userid, bookname, bookauthor, totalpages, publisher, pressyear, booktype, additionalinfo) VALUES
+            ('%d', '%s', '%s','%d','%s', '%d', '%s', '%s');
             """ %(userId, book[0], book[1], book[2], book[3], book[4], book[5], book[6])
+            cursor.execute(query)
+
+            print('INSERT AVAILABLE RESULT IS: {}')
+
+    # TODO: WRITE THIS METHOD
+    def updateBookAtAvailableBookList(self, userId, oldName, oldAuthor, newBook):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = """UPDATE available_book_list SET
+            bookname = '%s', bookauthor = '%s', totalpages = '%d', publisher = '%s',
+            booktype = '%s', pressyear = '%d', additionalInfo = '%s' WHERE
+            userid = '%d' AND bookname = '%s' AND bookauthor = '%s';
+            """ %(newBook[0],newBook[1],newBook[2],newBook[3],newBook[4],newBook[5],newBook[6], userId, oldName, oldAuthor)  # book[2], book[3], book[4], book[5], book[6]
             cursor.execute(query)
 
 

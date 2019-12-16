@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList, UpdateAvailableBookForm
 from model.user import User
 
 app = Flask(__name__)
@@ -152,7 +152,7 @@ def wishlist():
                 wishlist.append(item)
             return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
 
-        elif  request.form["btn"] == "available" : # SHOW WISHLIST
+        elif  request.form["btn"] == "available" : # SHOW AVAILABLE LIST
             availableList = []
             #wl = db.getWishlist(wid)
             #wishlist = []
@@ -201,42 +201,62 @@ def availablebooks():
     for item in dbAvailableList:
         availableList.append(item)
 
+
     formAvailableBooks = AddBookToAvailableBooksList()
+    formUpdateBooks = UpdateAvailableBookForm()
 
-    # FILL AVAILABLE LIST USING DB METHOD HERE
+    if request.method == "POST":
 
+        if  request.form["btn"] == "addAvailable" :
+            print('ADD AVAILABLE CALLED')
+            bookname = formAvailableBooks.bookName.data
+            author = formAvailableBooks.author.data
+            totalpages = formAvailableBooks.pages.data
+            publisher = formAvailableBooks.publisher.data
+            pressyear = formAvailableBooks.pressyear.data
+            booktype = formAvailableBooks.bookType.data
+            additionalinfo = formAvailableBooks.additionalInfo.data
 
-    if  request.form["btn"] == "addAvailable" :
-        bookname = formAvailableBooks.bookName.data
-        author = formAvailableBooks.author.data
-        totalpages = formAvailableBooks.pages.data
-        publisher = formAvailableBooks.publisher.data
-        pressyear = formAvailableBooks.pressyear.data
-        booktype = formAvailableBooks.bookType.data
-        additionalinfo = formAvailableBooks.additionalInfo.data
+            newBook = [bookname, author, int(totalpages), publisher, int(pressyear), booktype, additionalinfo]
 
-        newBook = [bookname, author, int(totalpages), publisher, booktype, int(pressyear), additionalinfo]
+            if not db.isBookExistInAvailableBookList(bookname, author):
+                # Also add book into the available_book_list table
+                db.insertBookToAvailableBookList(userId, newBook)
+                # Add new book to the end of available list
+                availableList.append(newBook)
 
-        if not db.isBookExistInAvailableBookList(bookname, author):
-            # Also add book into the available_book_list table
-            db.insertBookToAvailableBookList(userId, newBook)
-            # Add new book to the end of available list
-            availableList.append(newBook)
-
-        #Clear form
-        formAvailableBooks.bookName.data = ""
-        formAvailableBooks.author.data = ""
-        formAvailableBooks.pages.data = ""
-        formAvailableBooks.publisher.data = ""
-        formAvailableBooks.pressyear.data = ""
-        formAvailableBooks.bookType.data = ""
-        formAvailableBooks.additionalInfo.data = ""
-
-
-        return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
+            #Clear form
+            formAvailableBooks.bookName.data = ""
+            formAvailableBooks.author.data = ""
+            formAvailableBooks.pages.data = ""
+            formAvailableBooks.publisher.data = ""
+            formAvailableBooks.pressyear.data = ""
+            formAvailableBooks.bookType.data = ""
+            formAvailableBooks.additionalInfo.data = ""
 
 
-    return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
+            return render_template('availablebooks.html', form=formAvailableBooks, formUpdateBooks = formUpdateBooks, availableList=availableList)
+
+
+        # If user clicks the update button, then fill the form with clicked book informations
+        elif  request.form["btn"] == "saveAvailable" :
+            oldBookName = formUpdateBooks.oldBookName.data
+            oldAuthorName = formUpdateBooks.oldAuthor.data
+            newBookName = formUpdateBooks.bookName.data
+            newAuthorName = formUpdateBooks.author.data
+            newPages = formUpdateBooks.pages.data
+            newPublisher = formUpdateBooks.publisher.data
+            newBookType = formUpdateBooks.bookType.data
+            newPressYear = formUpdateBooks.pressyear.data
+            newAdditionalInfo = formUpdateBooks.additionalInfo.data
+
+            newBook = [newBookName, newAuthorName, int(newPages), newPublisher, newBookType, int(newPressYear), newAdditionalInfo]
+
+            db.updateBookAtAvailableBookList(userId, oldBookName, oldAuthorName, newBook)
+
+            return render_template('availablebooks.html', form=formAvailableBooks, formUpdateBooks= formUpdateBooks, availableList=availableList)
+
+    return render_template('availablebooks.html', form=formAvailableBooks, formUpdateBooks=formUpdateBooks, availableList=availableList)
 
 
 if __name__ == '__main__':

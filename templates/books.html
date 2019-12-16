@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+
+
+{% block title%}
+My Flow
+{% endblock %}
+
+
+{% block content %}
+{% from "includes/formhelpers.html" import render_field %}
+<style>
+  p {
+    margin: 25px;
+    font-size: 200%;
+  }
+
+  table {
+    margin: 25px;
+  }
+  li {
+    display: inline;
+  }
+  tr {
+    margin: 25px;
+
+  }
+
+  * {
+      margin: 0;
+      padding: 0;
+  }
+
+  h1,h3,h6,input,button,form{
+      margin-left: 25px;
+    }
+
+    .tabs{
+        width: 1800px;
+        display: block;
+        margin: 40px auto;
+        position: relative;
+    }
+
+    .tabs .tab{
+        float: left;
+        display: block;
+    }
+
+    .tabs .tab>input[type="radio"] {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .tabs .tab>label {
+        display: block;
+        padding: 6px 21px;
+        font-size: 12px;
+        text-transform: uppercase;
+        cursor: pointer;
+        position: relative;
+        color: #fff;
+        background: #000;
+    }
+
+    .tabs .content {
+        z-index: 0;/* or display: none; */
+        overflow: hidden;
+        width: 1800px;
+        padding: 25px;
+        position: absolute;
+        top: 27px;
+        left: 0;
+        background: #dae1f0;
+        color: #000;
+
+        opacity:0;
+        transition: opacity 400ms ease-out;
+    }
+
+    .tabs>.tab>[id^="tab"]:checked + label {
+        top: 0;
+        background: #303030;
+        color: #ff0000;
+    }
+
+    .tabs>.tab>[id^="tab"]:checked ~ [id^="tab-content"] {
+        z-index: 1;/* or display: block; */
+
+        opacity: 1;
+        transition: opacity 400ms ease-out;
+    }
+
+  </style>
+
+
+  <ul class="tabs">
+
+    <li class="tab">
+        <input type="radio" name="tabs" checked="checked" id="tab1" />
+        <label for="tab1">Book Info</label>
+        <div id="tab-content1" class="content">
+          <h3>Book Info</h3>
+
+          <table class="table is-hoverable">
+            <tr>
+              <th>Book ID</th>
+              <th>Book Name</th>
+              <th>Book Author</th>
+              <th>Total Pages</th>
+              <th>Publisher</th>
+              <th>Book Type</th>
+              <th>Press Year</th>
+              <th>Action</th>
+            </tr>
+
+            {% if booklist != None %}
+
+            {% for item in booklist %}
+            <tr>
+              <td>{{ item[0] }}</td>
+              <td>{{ item[1] }}</td>
+              <td>{{ item[2] }}</td>
+              <td>{{ item[3] }}</td>
+              <td>{{ item[4] }}</td>
+              <td>{{ item[5] }}</td>
+              <td>{{ item[6] }}</td>
+              <td><form method="POST"  action="/books">
+                  <button class="button is-danger" action="submit" name="btn" value="{{ item[0] }}">DELETE</button>
+              </form></td>
+            </tr>
+
+            {% endfor %}
+
+            {% endif %}
+
+
+
+          </table>
+        </div>
+    </li>
+
+    <li class="tab">
+      <input type="radio" name="tabs" id="tab2" />
+      <label for="tab2">Update Books</label>
+      <div id="tab-content2" class="content">
+        <form action="/books" method="post">
+
+            <h6>UPDATE BOOKS</h6>
+
+            <dl>
+              {{ render_field(updBookForm.bookId) }}
+              {{ render_field(updBookForm.oldBookName) }}
+              {{ render_field(updBookForm.bookName) }}
+              {{ render_field(updBookForm.bookWriter) }}
+              {{ render_field(updBookForm.pages) }}
+              {{ render_field(updBookForm.publisher) }}
+              {{ render_field(updBookForm.pressYear) }}
+              {{ render_field(updBookForm.bookType) }}
+
+            </dl>
+
+            <button type=submit class="btn btn-primary" action="submit" name="btn" value="updateBook" style="margin-bottom:10px;">
+              UPDATE
+            </button>
+
+        </form>
+
+      </div>
+    </li>
+
+  </ul>
+
+{% endblock %}

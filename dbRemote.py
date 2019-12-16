@@ -281,9 +281,9 @@ class Database:
 
 
     # This method returns bookId if the bok inserted successfully
-    def insertBookToBookInfoList(self, name, author, pages):
+    def insertBookToBookInfoList(self, name, author, pages, publisher, type, year):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "INSERT INTO book_info_list (bookname, bookauthor, totalpages) VALUES('%s', '%s', '%d');" %(name, author, pages)
+            query = "INSERT INTO book_info_list (bookname, bookauthor, totalpages, publisher, booktype, pressyear) VALUES('%s', '%s', '%d','%s', '%s', '%d');" %(name, author, pages,publisher, type, year)
             cursor.execute(query)
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = "SELECT bookid FROM book_info_list WHERE bookname='%s' AND bookauthor='%s' AND totalpages='%d'" %(name, author, pages)
@@ -376,3 +376,25 @@ class Database:
             queryRes = cursor.fetchone()
 
         return queryRes[0]
+
+
+
+    # This method returns all the books in book_info_list table
+    def getBookList(self):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT bookid,bookname, bookauthor, totalpages,publisher, booktype, pressyear FROM book_info_list"
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+        #print("QUERY RESULT: {}".format(queryRes))
+        return queryRes
+
+    def rmBook(self,bookid):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "DELETE FROM book_info_list WHERE bookid = {}".format(bookid)
+            cursor.execute(query)
+
+
+    def updateBook(self,form):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "UPDATE book_info_list SET bookname = '%s', bookauthor = '%s', totalpages = '%d', publisher = '%s', booktype = '%s', pressyear = '%d' WHERE bookid = '%d' AND bookname = '%s';"%(form.bookName.data,form.bookWriter.data,int(form.pages.data),form.publisher.data,form.bookType.data,int(form.pressYear.data),int(form.bookId.data),form.oldBookName.data)
+            cursor.execute(query)

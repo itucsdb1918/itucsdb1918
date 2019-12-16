@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,UpdateAvailableBookForm,SendMessageForm, updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,UpdateAvailableBookForm,SendMessageForm, updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm,UpdateBookForm
 from model.user import User
 
 app = Flask(__name__)
@@ -187,6 +187,30 @@ def profile():
 
 
 
+@app.route('/books',methods = ["GET","POST"])
+def books():
+    booklist = db.getBookList()
+    updBookForm = UpdateBookForm()
+
+    print("BOOKS: {}".format(booklist))
+
+    if request.method == "POST":
+        print(request.form['btn'])
+
+        if request.form['btn'] == 'updateBook':
+            db.updateBook(updBookForm)
+            booklist = db.getBookList()
+            return render_template('books.html', booklist = booklist, updBookForm = updBookForm)
+        # IT IS DELETE
+        else:
+            #db.rmBook(request.form['deleteBook'])
+            db.rmBook(request.form['btn'])
+            booklist = db.getBookList()
+            return render_template('books.html', booklist = booklist, updBookForm = updBookForm)
+
+    return render_template('books.html', booklist = booklist, updBookForm = updBookForm)
+
+
 
 
 
@@ -205,6 +229,9 @@ def wishlist():
         bookname = request.form.get("bookname")
         author = request.form.get("author")
         pages = request.form.get("pages")
+        publisher = request.form.get("publisher")
+        type = request.form.get("type")
+        year = request.form.get("year")
 
 
         if request.form["btn"] == "removeValue" : #REMOVE FROM WISHLIST
@@ -243,8 +270,11 @@ def wishlist():
             bookName = formWishlist.bookName.data
             bookWriter = formWishlist.bookWriter.data
             bookPages = formWishlist.pages.data
+            publisher = formWishlist.publisher.data
+            bookType = formWishlist.bookType.data
+            pressYear = formWishlist.pressYear.data
 
-            newBook = [bookName, bookWriter, bookPages]
+            newBook = [bookName, bookWriter, bookPages, publisher, bookType, pressYear]
             wishlist = []
             for item in wl:
                 wishlist.append(item)
@@ -254,7 +284,7 @@ def wishlist():
 
             if not db.isBookExist(newBook):
                 # Add book into the book_info_list table
-                newBookId = db.insertBookToBookInfoList(name=newBook[0], author=newBook[1], pages=int(newBook[2]))
+                newBookId = db.insertBookToBookInfoList(name=newBook[0], author=newBook[1], pages=int(newBook[2]), publisher = newBook[3], type = newBook[4], year = int(newBook[5]))
 
                 # Also add book into the wish_list table
                 db.insertBookToWishlist(wishlistId, newBookId)

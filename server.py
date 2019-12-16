@@ -365,6 +365,7 @@ def messages():
             newMessage = [senderId, receiverId, senderName, senderSurname, topic, message, priority]
 
             db.insertMessage(newMessage)
+            messages = db.getIncomingMessagesByUserId(db.userid)
 
 
             return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm)

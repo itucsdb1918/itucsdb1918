@@ -350,10 +350,10 @@ def messages():
     if request.method == "POST":
         if  request.form["btn"] == "sendMessage" :
             receiverName = sendMessageForm.receiverName.data
-            receiverSurname = formUpdateBooks.receiverSurname.data
-            topic = formUpdateBooks.topic.data
-            message = formUpdateBooks.message.data
-            priority = formUpdateBooks.priority.data
+            receiverSurname = sendMessageForm.receiverSurname.data
+            topic = sendMessageForm.topic.data
+            message = sendMessageForm.message.data
+            priority = sendMessageForm.priority.data
 
             senderId = db.userid
             senderUser = db.getProfileInformations(senderId)

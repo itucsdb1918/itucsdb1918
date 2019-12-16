@@ -13,7 +13,10 @@ db = Database()
 @app.route('/homepage',methods = ["GET","POST"])
 def homepage():
     userId = db.userid
-    
+
+    if not session['userId']:
+        userId = session['userId']
+
     if userId > 0:
         allAvailableBooks = db.getAllAvailableBooks()
         userId = session['userId']

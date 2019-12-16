@@ -12,9 +12,11 @@ db = Database()
 @app.route('/')
 @app.route('/homepage',methods = ["GET","POST"])
 def homepage():
-
-    if db.userid > 0:
+    userId = db.userid
+    
+    if userId > 0:
         allAvailableBooks = db.getAllAvailableBooks()
+        userId = session['userId']
 
         # SET USER'S FULL NAME AT THE FIRST INDEX WHICH CONTAINS ID CURRENTLY
         for item in allAvailableBooks:
@@ -57,10 +59,12 @@ def login():
 
 
         db.wishlistid = currentUser.getWishlistId()
+        session['wishlistId'] = db.wishlistid
         #print('WISHLIST ID: {}'.format(db.wishlistid))
 
         # If there is an ID returned, then navigate user to the homepage
         if db.userid > 0:
+            session['userId'] = db.userid
             return redirect(url_for("homepage"))
 
 
@@ -74,6 +78,7 @@ def signup():
     #if request.method == "POST" and formSignUp.validate_on_submit():
         db.userid =  db.addNewUser(formSignUp)
         if db.userid > 0:
+            session['userId'] = db.userid
             return redirect(url_for("homepage"))# Go to login after signup
 
     return render_template("signup.html", form = formSignUp)
@@ -87,19 +92,22 @@ def signup_success():
 
 @app.route('/profile',methods = ["GET","POST"])
 def profile():
-    if db.userid is 0 or db.userid is None:
+    userId = session['userId']
+    if userId is 0 or userId is None:
          return redirect(url_for("login"))
 
     currentUser = db.getCurrentUser(db.userid)
     db.userid = currentUser.getId()
-    print("PROFILE UID: {}".format(db.userid))
+
+    print("PROFILE UID: {}".format(userId))
 
     # DELETE BUTTON AREA
     if request.method == "POST":
         if request.form["btn"] == "d0" : #REMOVE FROM WISHLIST
-            db.userid = db.rmCurrentUser(db.userid)
+            db.userid = db.rmCurrentUser(db.userid) # returns zero
+            session['userId'] = db.userid # set to zero
 
-    profile = db.getProfileInformations(db.userid)
+    profile = db.getProfileInformations(session['userId'])
     print("PROFILE: {}".format(profile))
     return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile)
 
@@ -108,7 +116,8 @@ def profile():
 def wishlist():
     currentUser = db.getCurrentUser(db.userid)
     # Get wishlistId from user object
-    wid = currentUser.getWishlistId()
+    wishlistId = session['wishlistId']
+    wid = wishlistId
     print('INSIDE wishlist func: wid={}'.format(wid))
 
     formWishlist = AddBookToWishlist()
@@ -126,7 +135,7 @@ def wishlist():
             book = [bookname, author, 0]
             bookId = db.getBookId(book)
             print('BOOK ID IS {}'.format(bookId))
-            db.deleteBookFromWishlist(db.wishlistid, bookId)
+            db.deleteBookFromWishlist(wishlistId, bookId)
 
             wl = db.getWishlist(wid)
             wishlist = []
@@ -169,7 +178,7 @@ def wishlist():
                 newBookId = db.insertBookToBookInfoList(name=newBook[0], author=newBook[1], pages=int(newBook[2]))
 
                 # Also add book into the wish_list table
-                db.insertBookToWishlist(currentUser.getWishlistId(), newBookId)
+                db.insertBookToWishlist(wishlistId, newBookId)
 
                 # Add book to the wishlist
                 wishlist.append(newBook)
@@ -184,6 +193,7 @@ def wishlist():
 @app.route('/availablebooks',methods = ["GET","POST"])
 def availablebooks():
     # FILL AVAILABLE LIST WITH CURRENT ITEMS AT DB
+    userId = session['userId']
     availableList = []
     dbAvailableList = db.getAvailableBookList(db.userid)
     for item in dbAvailableList:
@@ -195,7 +205,6 @@ def availablebooks():
 
 
     if  request.form["btn"] == "addAvailable" :
-        userId = db.userid
         bookname = formAvailableBooks.bookName.data
         author = formAvailableBooks.author.data
         totalpages = formAvailableBooks.pages.data

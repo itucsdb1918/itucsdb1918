@@ -220,8 +220,13 @@ def wishlist():
     # Get wishlistId from user object
     """wishlistId = session['wishlistId']"""
     wishlistId = db.wishlistid
-    wid = wishlistId
-    print('INSIDE wishlist func: wid={}'.format(wid))
+
+    #print('INSIDE wishlist func: wid={}'.format(wishlistId))
+
+    wl = db.getWishlist(wishlistId)
+    wishlist = []
+    for item in wl:
+        wishlist.append(item)
 
     formWishlist = AddBookToWishlist()
 
@@ -235,7 +240,7 @@ def wishlist():
 
 
         if request.form["btn"] == "removeValue" : #REMOVE FROM WISHLIST
-            #wl = db.rmWishlist(wid)
+            #wl = db.rmWishlist(wishlistId)
             #print('REMOVE BOOK NAME: {}'.format(request.form['bookname']))
             print('BOOK NAME: {} , AUTHOR: {}, PAGES: {}'.format(bookname, author, pages))
             book = [bookname, author, 0]
@@ -243,18 +248,16 @@ def wishlist():
             print('BOOK ID IS {}'.format(bookId))
             db.deleteBookFromWishlist(wishlistId, bookId)
 
-            wl = db.getWishlist(wid)
-            wishlist = []
-            for item in wl:
-                wishlist.append(item)
-            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
+            wishlist = db.getWishlist(wishlistId)
+
+            return render_template('wishlist.html', wishlist=wishlist, form = formWishlist)
 
         elif  request.form["btn"] == "p0" : # SHOW WISHLIST
-            wl = db.getWishlist(wid)
+            wl = db.getWishlist(wishlistId)
             wishlist = []
             for item in wl:
                 wishlist.append(item)
-            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
+            return render_template('wishlist.html', wishlist=wishlist, form = formWishlist)
 
         elif  request.form["btn"] == "available" : # SHOW AVAILABLE LIST
             availableList = []
@@ -262,7 +265,6 @@ def wishlist():
 
 
         elif  request.form["btn"] == "add" :
-            wl = db.getWishlist(wid)
             bookName = formWishlist.bookName.data
             bookWriter = formWishlist.bookWriter.data
             bookPages = formWishlist.pages.data
@@ -271,9 +273,6 @@ def wishlist():
             pressYear = formWishlist.pressYear.data
 
             newBook = [bookName, bookWriter, bookPages, publisher, bookType, pressYear]
-            wishlist = []
-            for item in wl:
-                wishlist.append(item)
 
             #book1984 = ["1984", "George Orwell"]
             #db.isBookExist(book1984)
@@ -282,17 +281,18 @@ def wishlist():
                 # Add book into the book_info_list table
                 newBookId = db.insertBookToBookInfoList(name=newBook[0], author=newBook[1], pages=int(newBook[2]), publisher = newBook[3], type = newBook[4], year = int(newBook[5]))
 
+                print('Wishlist id is {}, book id is {}'.format(wishlistId, newBookId))
                 # Also add book into the wish_list table
                 db.insertBookToWishlist(wishlistId, newBookId)
 
                 # Add book to the wishlist
-                wishlist.append(newBook)
+                wishlist = db.getWishlist(wishlistId)
 
-            return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl,wishlist=wishlist, shape = len(wl), form = formWishlist)
+            return render_template('wishlist.html', wishlist=wishlist, form = formWishlist)
 
 
-    wl = db.getWishlist(wid)
-    return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl), form = formWishlist)
+    wishlist = db.getWishlist(wishlistId)
+    return render_template('wishlist.html', wishlist=wishlist, form = formWishlist)
 
 
 @app.route('/availablebooks',methods = ["GET","POST"])

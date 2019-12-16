@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS "available_book_list" (
 );
 
 CREATE TABLE IF NOT EXISTS "wish_list" (
-    "wishlistid" SERIAL UNIQUE  NOT NULL,
+    "wishlistid" INTEGER  NOT NULL,
     "bookid" INTEGER   NOT NULL,
     CONSTRAINT "pk_wish_list" PRIMARY KEY (
         "wishlistid","bookid"

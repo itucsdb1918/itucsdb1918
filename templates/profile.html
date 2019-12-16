@@ -6,64 +6,326 @@ Profile
 
 
 {% block content %}
+{% from "includes/formhelpers.html" import render_field %}
+<style>
+  p {
+    margin: 25px;
+    font-size: 200%;
+  }
 
-<table class="table is-hoverable">
-    <tr>
-      <th>User ID</th>
-      <td>{{profile['userid']}}</td>
-    </tr>
+  table {
+    margin: 25px;
+  }
+  li {
+    display: inline;
+  }
+  tr {
+    margin: 25px;
+  }
+  h1,h3,h6,input,button,form{
+      margin-left: 25px;
+    }
 
-    <tr>
-        <th>Username</th>
-        <td>{{profile['username']}}</td>
-    </tr>
+    .tabs{
+        width: 1800px;
+        display: block;
+        margin: 40px auto;
+        position: relative;
+    }
 
-    <tr>
-        <th>Firstname</th>
-        <td>{{profile['firstname']}}</td>
-    </tr>
+    .tabs .tab{
+        float: left;
+        display: block;
+    }
+
+    .tabs .tab>input[type="radio"] {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .tabs .tab>label {
+        display: block;
+        padding: 6px 21px;
+        font-size: 12px;
+        text-transform: uppercase;
+        cursor: pointer;
+        position: relative;
+        color: #fff;
+        background: #000;
+    }
+
+    .tabs .content {
+        z-index: 0;/* or display: none; */
+        overflow: hidden;
+        width: 1800px;
+        padding: 25px;
+        position: absolute;
+        top: 27px;
+        left: 0;
+        background: #dae1f0;
+        color: #000;
+
+        opacity:0;
+        transition: opacity 400ms ease-out;
+    }
+
+    .tabs>.tab>[id^="tab"]:checked + label {
+        top: 0;
+        background: #303030;
+        color: #ff0000;
+    }
+
+    .tabs>.tab>[id^="tab"]:checked ~ [id^="tab-content"] {
+        z-index: 1;/* or display: block; */
+
+        opacity: 1;
+        transition: opacity 400ms ease-out;
+    }
+</style>
+
+
+<ul class="tabs">
+
+  <li class="tab">
+      <input type="radio" name="tabs" checked="checked" id="tab1" />
+      <label for="tab1">Profile Info</label>
+      <div id="tab-content1" class="content">
+
+        <h3>Profile Info</h3>
+
+        <table class="table is-hoverable">
+            <tr>
+              <th>User ID</th>
+              <td>{{profile['userid']}}</td>
+            </tr>
+
+            <tr>
+                <th>Username</th>
+                <td>{{profile['username']}}</td>
+            </tr>
+
+            <tr>
+                <th>Firstname</th>
+                <td>{{profile['firstname']}}</td>
+            </tr>
 
 
 
-    <tr>
-        <th>Lastname</th>
-        <td>{{profile['lastname']}}</td>
-    </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{profile['lastname']}}</td>
+            </tr>
 
-    <tr>
-        <th>E-mail</th>
-        <td>{{profile['email']}}</td>
-    </tr>
+            <tr>
+                <th>E-mail</th>
+                <td>{{profile['email']}}</td>
+            </tr>
 
-    <tr>
-        <th>School Name</th>
-        <td>{{profile['schoolid']}}</td>
-    </tr>
+            <tr>
+                <th>School Name</th>
+                <td>{{profile['schoolname']}}</td>
+            </tr>
 
-    <tr>
-        <th>Campus Name</th>
-        <td>{{profile['campusname']}}</td>
-    </tr>
+            <tr>
+                <th>Campus Name</th>
+                <td>{{profile['campusname']}}</td>
+            </tr>
 
-</table>
+        </table>
 
-<div class="form-group">
-  <form method="POST"  action="/wishlist">
-    <input type="hidden" name="p0" >
-      <button class="button is-danger" action="submit" id="p0" name="btn" value="p0">Wishlist</button>
-  </form>
-  <br>
-  <form method="POST"  action="/availablebooks">
-    <input type="hidden" name="available" >
-      <button class="button is-danger" action="submit" id="available" name="btn" value="available">My Available Books</button>
-  </form>
-  <br>
-  <form method="POST"  action="/profile">
-    <input type="hidden" name="d0" >
-      <button class="button is-danger" action="submit" id="d0" name="btn" value="d0">Delete Membership</button>
-  </form>
+        <div class="form-group">
+          <form method="POST"  action="/wishlist">
+            <input type="hidden" name="p0" >
+              <button class="button is-danger" action="submit" id="p0" name="btn" value="p0">Wishlist</button>
+          </form>
+          <br>
+          <form method="POST"  action="/availablebooks">
+            <input type="hidden" name="available" >
+              <button class="button is-danger" action="submit" id="available" name="btn" value="available">My Available Books</button>
+          </form>
+          <br>
+          <form method="POST"  action="/profile">
+            <input type="hidden" name="d0" >
+              <button class="button is-danger" action="submit" id="d0" name="btn" value="d0">Delete Membership</button>
+          </form>
 
-</div>
+        </div>
+
+
+
+      </div>
+  </li>
+
+  <li class="tab">
+    <input type="radio" name="tabs" id="tab2" />
+    <label for="tab2">Update Profile</label>
+    <div id="tab-content2" class="content">
+      <form action="/profile" method="post">
+
+          <h6>UPDATE PROFILE</h6>
+
+          <dl>
+            {{ render_field(updateprof.username) }}
+            {{ render_field(updateprof.firstname) }}
+            {{ render_field(updateprof.lastname) }}
+            {{ render_field(updateprof.email) }}
+            {{ render_field(updateprof.schoolname) }}
+            {{ render_field(updateprof.campusname) }}
+
+          </dl>
+
+
+
+          <button type=submit class="btn btn-primary" action="submit" name="btn" value="updateProfile" style="margin-bottom:10px;">
+            UPDATE
+          </button>
+
+      </form>
+
+
+     </div>
+  </li>
+
+
+  <li class="tab">
+    <input type="radio" name="tabs" id="tab3" />
+    <label for="tab3">Admin Only</label>
+    <div id="tab-content3" class="content">
+      {% if uid == 1 %}
+      <h3>User List</h3>
+      <i><h6>User List is only viewed by admin</h6></i>
+
+      <table class="table is-hoverable">
+          <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>School Name</th>
+            <th>Campus Name</th>
+            <th>Wishlist ID</th>
+          </tr>
+
+      {% for item in userlist %}
+
+          <tr>
+            <td>{{item['userid']}}</td>
+            <td>{{item['username']}}</td>
+            <td>{{item['firstname']}}</td>
+            <td>{{item['lastname']}}</td>
+            <td>{{item['schoolname']}}</td>
+            <td>{{item['campusname']}}</td>
+            <td>{{item['wishlistid']}}</td>
+          </tr>
+
+      {% endfor %}
+
+
+      </table>
+      <br>
+
+
+      {% if schoollist != None %}
+
+      <h3>School Info</h3>
+      <i><h6>School Info is only viewed by admin</h6></i>
+
+      <table class="table is-hoverable">
+          <tr>
+            <th>School ID</th>
+            <th>School Name</th>
+            <th>School Type</th>
+            <th>School Country</th>
+            <th>School City</th>
+            <th>School Phone Number</th>
+          </tr>
+
+      {% for item in schoollist %}
+
+          <tr>
+            <td>{{item['schoolid']}}</td>
+            <td>{{item['schoolname']}}</td>
+            <td>{{item['schooltype']}}</td>
+            <td>{{item['schoolcountry']}}</td>
+            <td>{{item['schoolcity']}}</td>
+            <td>{{item['schoolphonenumber']}}</td>
+          </tr>
+
+
+
+      {% endfor %}
+
+
+      </table>
+      <br>
+
+      <form method="POST" action="/profile">
+
+        <h6>ADD NEW SCHOOL</h6>
+        <dl>
+          {{ render_field(newschool.schoolname) }}
+          {{ render_field(newschool.schooltype) }}
+          {{ render_field(newschool.schoolcountry) }}
+          {{ render_field(newschool.schoolcity) }}
+          {{ render_field(newschool.schoolphonenumber) }}
+        </dl>
+
+        <button type=submit class="btn btn-primary" action="submit" name="btn" value="newschool">
+          ADD
+        </button>
+
+      </form>
+      <br>
+      <br>
+
+      <form method="POST" action="/profile">
+
+        <h6>DELETE SCHOOL</h6>
+        <dl>
+          {{ render_field(rmform.schoolname) }}
+        </dl>
+
+        <button type=submit class="btn btn-primary" action="submit" name="btn" value="removeID">
+          DELETE
+        </button>
+
+      </form>
+      <br>
+      <br>
+      <form action="/profile" method="post">
+
+          <h6>UPDATE SCHOOL</h6>
+
+          <dl>
+            {{ render_field(form.schoolid) }}
+            {{ render_field(form.schoolname) }}
+            {{ render_field(form.schooltype) }}
+            {{ render_field(form.schoolcountry) }}
+            {{ render_field(form.schoolcity) }}
+            {{ render_field(form.schoolphonenumber) }}
+
+          </dl>
+
+
+
+          <button type=submit class="btn btn-primary" action="submit" name="btn" value="updateID" style="margin-bottom:10px;">
+            UPDATE
+          </button>
+
+      </form>
+
+      {% endif %}
+
+{% endif %}
+     </div>
+  </li>
+
+
+</ul>
+
+
+
 
 
 <!-- <button type = "submit" href = "{{ url_for('wishlist') }}" class="btn btn-primary">Wish List</button></p> -->

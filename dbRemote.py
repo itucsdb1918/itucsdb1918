@@ -55,6 +55,21 @@ class Database:
 
         return 0
 
+    def updateProfile(self,form,uid):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT schoolid FROM school_list WHERE schoolname = '%s'"%(form.schoolname.data)
+            cursor.execute(query)
+            queryRes = cursor.fetchone()
+
+        if queryRes is None:
+            return 0
+        else:
+            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = "UPDATE user_list SET username = '%s', firstname = '%s', lastname = '%s', email = '%s', schoolid = '%d' ,campusname = '%s' WHERE userid = '%d';"%(form.username.data,form.firstname.data,form.lastname.data,form.email.data,queryRes[0],form.campusname.data,uid)
+                cursor.execute(query)
+
+
     def rmCurrentUser(self,userid):
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
@@ -62,6 +77,15 @@ class Database:
             cursor.execute(query)
 
         return 0
+
+    def getUsers(self):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT userid,username,firstname,lastname,email,schoolname,campusname,wishlistid FROM user_list JOIN school_list ON (user_list.schoolid = school_list.schoolid)"
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+
+        return queryRes
 
     def loginCheck(self,username,password):
         userid = 0
@@ -120,13 +144,66 @@ class Database:
 
         return (borrowed,lendered)
 
+    def addNewSchool(self,form):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT * FROM school_list WHERE schoolname = '%s';"%(form.schoolname.data)
+            cursor.execute(query)
+            queryRes = cursor.fetchone()
+
+
+        if queryRes is None:
+            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = "INSERT INTO school_list(schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber) VALUES ('%s','%s','%s','%s','%s','%s');"%(100,form.schoolname.data,form.schooltype.data,form.schoolcountry.data,form.schoolcity.data,form.schoolphonenumber.data)
+                cursor.execute(query)
+
+            with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                query = "SELECT * FROM school_list"
+                cursor.execute(query)
+                queryRes = cursor.fetchall()
+
+
+    def getSchoolInfo(self):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT schoolid, schoolname, schooltype, schoolcountry, schoolcity, schoolphonenumber FROM school_list"
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+
+            #print('Query result {}'.format(queryRes))
+        return queryRes
+
+
+    def rmSchoolInfo(self,form):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "DELETE FROM school_list WHERE schoolname = '%s';"%(form.schoolname.data)
+            cursor.execute(query)
+
+        print("DELETED")
+
+    def updateSchoolInfo(self,form):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            #query = "SELECT * FROM school_list WHERE '%s';"%(form.schoolid.data)
+            query = "SELECT * FROM school_list WHERE schoolid = {}".format(form.schoolid.data)
+            cursor.execute(query)
+            queryRes = cursor.fetchone()
+
+        print("SCHOOL FOUND: {}".format(queryRes))
+
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "UPDATE school_list SET schoolname = '%s', schooltype = '%s', schoolcountry = '%s', schoolcity = '%s', schoolphonenumber = '%s' WHERE schoolid = '%s';"%(form.schoolname.data,form.schooltype.data,form.schoolcountry.data,form.schoolcity.data,form.schoolphonenumber.data,queryRes[0])
+            cursor.execute(query)
+
+
+
 
 
     def getProfileInformations(self,userid):
         queryRes = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT userid, username, password, firstname, lastname, email, schoolid, campusname, wishlistid FROM user_list WHERE userid={}".format(userid)
+            query = "SELECT userid, username, password, firstname, lastname, email, schoolname, campusname, wishlistid FROM user_list JOIN school_list ON (user_list.schoolid = school_list.schoolid) WHERE userid={}".format(userid)
             cursor.execute(query)
             queryRes = cursor.fetchone()
 

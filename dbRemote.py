@@ -128,6 +128,13 @@ class Database:
 
         return ielistResult
 
+    def rmInterchangeEventList(self,ielid):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "DELETE FROM interchange_event_list WHERE interchangeid = {}".format(ielid)
+            cursor.execute(query)
+
+
+
     def getMyFlow(self,userid):
         borrowed = []
         lendered = []

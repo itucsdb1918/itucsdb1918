@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,UpdateAvailableBookForm,SendMessageForm, updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm,UpdateBookForm
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,UpdateAvailableBookForm,SendMessageForm, UpdateMessageForm, updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm,UpdateBookForm
 from model.user import User
 
 app = Flask(__name__)
@@ -369,9 +369,16 @@ def availablebooks():
 @app.route('/messages',methods = ["GET","POST"])
 def messages():
     messages = []
+    sentMessages = []
+
     sendMessageForm = SendMessageForm()
+    updateMessageForm = UpdateMessageForm()
 
     messages = db.getIncomingMessagesByUserId(db.userid)
+    sentMessages = db.getSentMessagesByUserId(db.userid)
+
+    testMessage = ["Emre", "Reyhanlioglu", "Test topic", "Test message", "16.12.2019: 16:39", "High", "4"]
+    sentMessages.append(testMessage)
 
     #testMessage = ["Emre R", "Test topic", "Test message", "16.12.2019: 16:39", "High"]
     #messages.append(testMessage)
@@ -385,6 +392,11 @@ def messages():
             message = sendMessageForm.message.data
             priority = sendMessageForm.priority.data
 
+            checkedUserId = db.getUserIdByNameAndSurname(receiverName, receiverSurname)
+            if checkedUserId is None:
+                print('USER DOES NOT EXIST')
+                return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm, updateMessageForm=updateMessageForm, sentMessages = sentMessages)
+
             senderId = db.userid
             senderUser = db.getProfileInformations(senderId)
             senderName = senderUser[3]
@@ -396,24 +408,42 @@ def messages():
 
             db.insertMessage(newMessage)
             messages = db.getIncomingMessagesByUserId(db.userid)
+            sentMessages = db.getSentMessagesByUserId(db.userid)
 
-            return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm)
+            return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm, updateMessageForm=updateMessageForm, sentMessages = sentMessages)
 
+        elif  request.form["btn"] == "updateMessage" :
+            print('UPDATE MESSAGE CALLED')
+
+            messageId = int(updateMessageForm.messageId.data)
+
+            topic = updateMessageForm.topic.data
+            message = updateMessageForm.message.data
+            priority = updateMessageForm.priority.data
+
+            newMessage = [topic, message, priority]
+
+            db.updateMessageByMessageId(messageId, newMessage)
+
+            #UPDATE UI AFTER EDITING A MESSAGE
+            sentMessages = db.getSentMessagesByUserId(db.userid)
+            messages = db.getIncomingMessagesByUserId(db.userid)
+
+            return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm, updateMessageForm=updateMessageForm, sentMessages = sentMessages)
 
         else:
             deletedMessageId = int(request.form['btn'])
-            print('DELETED MESSAGE ID is {}'.format(deletedMessageId))
+            #print('DELETED MESSAGE ID is {}'.format(deletedMessageId))
             db.deleteMessageById(deletedMessageId)
 
             messages = db.getIncomingMessagesByUserId(db.userid)
 
-            return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm)
-
-        
+            return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm, updateMessageForm=updateMessageForm, sentMessages = sentMessages)
 
 
 
-    return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm)
+
+    return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm, updateMessageForm=updateMessageForm, sentMessages = sentMessages)
 
 
 

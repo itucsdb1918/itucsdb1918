@@ -21,75 +21,67 @@ My Available Books
   }
   tr {
     margin: 25px;
-    color: #fff
   }
+  h1,h3,h6,input,button,form{
+      margin-left: 25px;
+    }
 
-  * {
-      margin: 0;
-      padding: 0;
-  }
+    .tabs{
+        width: 1800px;
+        display: block;
+        margin: 40px auto;
+        position: relative;
+    }
 
-  h1, h3{
-    text-transform: uppercase;
-    font-weight: normal;
-  }
+    .tabs .tab{
+        float: left;
+        display: block;
+    }
 
-  .tabs{
-      width: 1900px;
-      display: block;
-      margin: 40px auto;
-      position: relative;
-  }
+    .tabs .tab>input[type="radio"] {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
 
-  .tabs .tab{
-      float: left;
-      display: block;
-  }
+    .tabs .tab>label {
+        display: block;
+        padding: 6px 21px;
+        font-size: 12px;
+        text-transform: uppercase;
+        cursor: pointer;
+        position: relative;
+        color: #fff;
+        background: #000;
+    }
 
-  .tabs .tab>input[type="radio"] {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-  }
+    .tabs .content {
+        z-index: 0;/* or display: none; */
+        overflow: hidden;
+        width: 1800px;
+        padding: 25px;
+        position: absolute;
+        top: 27px;
+        left: 0;
+        background: #dae1f0;
+        color: #000;
 
-  .tabs .tab>label {
-      display: block;
-      padding: 6px 21px;
-      font-size: 12px;
-      text-transform: uppercase;
-      cursor: pointer;
-      position: relative;
-      color: #fff;
-      background: #4A83FD;
-  }
+        opacity:0;
+        transition: opacity 400ms ease-out;
+    }
 
-  .tabs .content {
-      z-index: 0;/* or display: none; */
-      overflow: hidden;
-      width: 1900px;
-      padding: 25px;
-      position: absolute;
-      top: 27px;
-      left: 0;
-      background: #000000;
-      color: #ffffff;
+    .tabs>.tab>[id^="tab"]:checked + label {
+        top: 0;
+        background: #303030;
+        color: #ff0000;
+    }
 
-      opacity:0;
-      transition: opacity 400ms ease-out;
-  }
+    .tabs>.tab>[id^="tab"]:checked ~ [id^="tab-content"] {
+        z-index: 1;/* or display: block; */
 
-  .tabs>.tab>[id^="tab"]:checked + label {
-      top: 0;
-      background: #303030;
-      color: #F5F5F5;
-  }
-
-  .tabs>.tab>[id^="tab"]:checked ~ [id^="tab-content"] {
-      z-index: 1;/* or display: block; */
-
-      opacity: 1;
-      transition: opacity 400ms ease-out;
-  }
+        opacity: 1;
+        transition: opacity 400ms ease-out;
+    }
 </style>
 
 
@@ -97,7 +89,7 @@ My Available Books
 
 <h2> My Available Books </h2>
 
-<form method="POST" action="/availablebooks">
+
 
   <table class="table is-hoverable">
 
@@ -142,24 +134,23 @@ My Available Books
         <div id="tab-content1" class="content">
 
           <form method="POST">
-            <tr>
-              <td>
-                <ul>
-                  <h2>Add Your Available Books to Interchange</h2>
-                  <li>{{ render_field(form.bookName) }}</li>
-                  <li>{{ render_field(form.author) }}</li>
-                  <li>{{ render_field(form.pages) }}</li>
-                  <li>{{ render_field(form.publisher) }}</li>
-                  <li>{{ render_field(form.pressyear) }}</li>
-                  <li>{{ render_field(form.bookType) }}</li>
-                  <li>{{ render_field(form.additionalInfo) }}</li>
 
-                  <button type=submit class="btn btn-primary" action="submit" id="addAvailable" name="btn" value="addAvailable">
-                    ADD
-                  </button>
+              <h2>Add Your Available Books to Interchange</h2>
+              <ul>
+                <li>{{ render_field(form.bookName) }}</li>
+                <li>{{ render_field(form.author) }}</li>
+                <li>{{ render_field(form.pages) }}</li>
+                <li>{{ render_field(form.publisher) }}</li>
+                <li>{{ render_field(form.pressyear) }}</li>
+                <li>{{ render_field(form.bookType) }}</li>
+                <li>{{ render_field(form.additionalInfo) }}</li>
 
-                </ul>
-              </td>
+                <button type=submit class="btn btn-primary" action="submit" id="addAvailable" name="btn" value="addAvailable">
+                  ADD
+                </button>
+
+              </ul>
+
 
 
 
@@ -175,22 +166,24 @@ My Available Books
       <div id="tab-content2" class="content">
 
         <form method="POST">
-          <ul>
-            <h2>Edit A Book in Your List</h2>
-            <br>
-            <h3>Enter the Book Name and Author that You Want to Edit</h3>
-            <li>{{ render_field(formUpdateBooks.oldBookName) }}</li>
-            <li>{{ render_field(formUpdateBooks.oldAuthor) }}</li>
-            <br>
+        <h2>Edit A Book in Your List</h2>
+        <br>
+        <h3>Enter the Book Name and Author that You Want to Edit</h3>
+        <ul>
+          <li>{{ render_field(formUpdateBooks.oldBookName) }}</li>
+          <li>{{ render_field(formUpdateBooks.oldAuthor) }}</li>
+
+          <li>
             <h3>Fill the Form with Edited Book Informations</h3>
-            <li>{{ render_field(formUpdateBooks.bookName) }}</li>
-            <li>{{ render_field(formUpdateBooks.author) }}</li>
-            <li>{{ render_field(formUpdateBooks.pages) }}</li>
-            <li>{{ render_field(formUpdateBooks.publisher) }}</li>
-            <li>{{ render_field(formUpdateBooks.pressyear) }}</li>
-            <li>{{ render_field(formUpdateBooks.bookType) }}</li>
-            <li>{{ render_field(formUpdateBooks.additionalInfo) }}</li>
-          </ul>
+          </li>
+          <li>{{ render_field(formUpdateBooks.bookName) }}</li>
+          <li>{{ render_field(formUpdateBooks.author) }}</li>
+          <li>{{ render_field(formUpdateBooks.pages) }}</li>
+          <li>{{ render_field(formUpdateBooks.publisher) }}</li>
+          <li>{{ render_field(formUpdateBooks.pressyear) }}</li>
+          <li>{{ render_field(formUpdateBooks.bookType) }}</li>
+          <li>{{ render_field(formUpdateBooks.additionalInfo) }}</li>
+        </ul>
 
 
           <button type=submit class="btn btn-primary" action="submit" id="saveAvailable" name="btn" value="saveAvailable">

@@ -341,10 +341,38 @@ def messages():
     messages = []
     sendMessageForm = SendMessageForm()
 
+    messages = db.getIncomingMessagesByUserId(db.userid)
+
     testMessage = ["Emre R", "Test topic", "Test message", "16.12.2019: 16:39", "High"]
     messages.append(testMessage)
 
+
+    if request.method == "POST":
+        if  request.form["btn"] == "sendMessage" :
+            receiverName = sendMessageForm.receiverName.data
+            receiverSurname = formUpdateBooks.receiverSurname.data
+            topic = formUpdateBooks.topic.data
+            message = formUpdateBooks.message.data
+            priority = formUpdateBooks.priority.data
+
+            senderId = db.userid
+            senderUser = db.getProfileInformations(senderId)
+            senderName = senderUser[3]
+            senderSurname = senderUser[4]
+
+            receiverId = db.getUserIdByNameAndSurname(receiverName, receiverSurname)
+
+            newMessage = [senderId, receiverId, senderName, senderSurname, topic, message]
+
+            db.insertMessage(newMessage)
+
+
+            return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm)
+
+
+
     return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm)
+
 
 
 if __name__ == '__main__':

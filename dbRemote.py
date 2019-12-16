@@ -307,7 +307,6 @@ class Database:
             """ %(userId, book[0], book[1], book[2], book[3], book[4], book[5], book[6])
             cursor.execute(query)
 
-            print('INSERT AVAILABLE RESULT IS: {}')
 
     # TODO: WRITE THIS METHOD
     def updateBookAtAvailableBookList(self, userId, oldName, oldAuthor, newBook):
@@ -349,3 +348,31 @@ class Database:
             return False
         else:
             return True
+
+    def insertMessage(self, messageInfo):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = """INSERT INTO message_list
+            (senderid, receiverid, sendername, sendersurname, topic, message) VALUES
+            ('%d', '%d', '%s','%s', '%s', '%s');
+            """ %(messageInfo[0],messageInfo[1],messageInfo[2],messageInfo[3],messageInfo[4],messageInfo[5])
+            cursor.execute(query)
+
+
+    def getIncomingMessagesByUserId(self, userId):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT sendername, sendersurname, topic, message, timestamp FROM message_list WHERE receiverid = {}".format(userId)
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+
+        print("MESSAGES: {}".format(queryRes))
+        return queryRes
+
+    def getUserIdByNameAndSurname(self, name, surname):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT userid FROM user_list WHERE firstname = {} AND lastname = {}".format(name, surname)
+            cursor.execute(query)
+            queryRes = cursor.fetchone()
+
+        return queryRes[0]

@@ -6,6 +6,31 @@ Profile
 
 
 {% block content %}
+{% from "includes/formhelpers.html" import render_field %}
+<style>
+  p {
+    margin: 25px;
+    font-size: 200%;
+  }
+
+  table {
+    margin: 25px;
+  }
+  li {
+    display: inline;
+  }
+  tr {
+    margin: 25px;
+  }
+  h1,h3,h6,input,button,form{
+      margin-left: 25px;
+    }
+</style>
+
+
+
+
+<h3>Profile Info</h3>
 
 <table class="table is-hoverable">
     <tr>
@@ -65,6 +90,110 @@ Profile
 
 </div>
 
+<br>
+<br>
+<br>
+
+{% if uid == 1 %}
+
+{% if schoollist != None %}
+
+<h3>School Info</h3>
+<i><h6>School Info is only viewed by admin</h6></i>
+
+<table class="table is-hoverable">
+    <tr>
+      <th>School ID</th>
+      <th>School Name</th>
+      <th>School Type</th>
+      <th>School Country</th>
+      <th>School City</th>
+      <th>School Phone Number</th>
+    </tr>
+
+{% for item in schoollist %}
+
+    <tr>
+      <td>{{item['schoolid']}}</td>
+      <td>{{item['schoolname']}}</td>
+      <td>{{item['schooltype']}}</td>
+      <td>{{item['schoolcountry']}}</td>
+      <td>{{item['schoolcity']}}</td>
+      <td>{{item['schoolphonenumber']}}</td>
+    </tr>
+
+
+
+{% endfor %}
+
+
+</table>
+<br>
+
+<form method="POST" action="/profile">
+
+  <h6>ADD NEW SCHOOL</h6>
+  <dl>
+    {{ render_field(newschool.schoolname) }}
+    {{ render_field(newschool.schooltype) }}
+    {{ render_field(newschool.schoolcountry) }}
+    {{ render_field(newschool.schoolcity) }}
+    {{ render_field(newschool.schoolphonenumber) }}
+  </dl>
+
+  <button type=submit class="btn btn-primary" action="submit" name="btn" value="newschool">
+    ADD
+  </button>
+
+</form>
+<br>
+<br>
+
+<form method="POST" action="/profile">
+
+  <h6>DELETE SCHOOL</h6>
+  <dl>
+    {{ render_field(rmform.schoolname) }}
+  </dl>
+
+  <button type=submit class="btn btn-primary" action="submit" name="btn" value="removeID">
+    DELETE
+  </button>
+
+</form>
+<br>
+<br>
+<form action="/profile" method="post">
+
+    <h6>UPDATE SCHOOL</h6>
+
+    <dl>
+      {{ render_field(form.schoolid) }}
+      {{ render_field(form.schoolname) }}
+      {{ render_field(form.schooltype) }}
+      {{ render_field(form.schoolcountry) }}
+      {{ render_field(form.schoolcity) }}
+      {{ render_field(form.schoolphonenumber) }}
+
+    </dl>
+
+
+
+    <button type=submit class="btn btn-primary" action="submit" name="btn" value="updateID" style="margin-bottom:10px;">
+      UPDATE
+    </button>
+
+</form>
+
+
+
+
+
+
+
+{% endif %}
+
+{% endif %}
 
 <!-- <button type = "submit" href = "{{ url_for('wishlist') }}" class="btn btn-primary">Wish List</button></p> -->
 

@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,updateSchoolForm,rmSchoolForm,newSchoolForm
 from model.user import User
 
 app = Flask(__name__)
@@ -79,8 +79,16 @@ def signup_success():
 
 @app.route('/profile',methods = ["GET","POST"])
 def profile():
+    updateSchool= updateSchoolForm()
+    rmform = rmSchoolForm()
+    newschool = newSchoolForm()
+    schoollist = db.getSchoolInfo()
+
     if db.userid is 0 or db.userid is None:
          return redirect(url_for("login"))
+
+    if db.userid is 1:
+        schoollist = db.getSchoolInfo()
 
     currentUser = db.getCurrentUser(db.userid)
     db.userid = currentUser.getId()
@@ -91,9 +99,34 @@ def profile():
         if request.form["btn"] == "d0" : #REMOVE FROM WISHLIST
             db.userid = db.rmCurrentUser(db.userid)
 
+        if request.form["btn"] == "newschool":
+            db.addNewSchool(newschool)
+            if db.userid is 1:
+                schoollist = db.getSchoolInfo()
+                profile = db.getProfileInformations(db.userid)
+                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid)
+
+        if request.form["btn"] == "removeID":
+            db.rmSchoolInfo(rmform)
+            if db.userid is 1:
+                schoollist = db.getSchoolInfo()
+                profile = db.getProfileInformations(db.userid)
+                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid)
+
+        if request.form["btn"] == "updateID":
+            db.updateSchoolInfo(updateSchool)
+            if db.userid is 1:
+                schoollist = db.getSchoolInfo()
+                profile = db.getProfileInformations(db.userid)
+                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid)
+
     profile = db.getProfileInformations(db.userid)
-    print("PROFILE: {}".format(profile))
-    return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile)
+
+    return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid)
+
+
+
+
 
 
 @app.route('/wishlist',methods = ["GET","POST"])

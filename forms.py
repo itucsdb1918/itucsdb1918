@@ -23,6 +23,26 @@ class logIn(FlaskForm):
     password = PasswordField("Password:",validators=[validators.DataRequired()])
     submit = SubmitField('Log In')
 
+
+class updateSchoolForm(FlaskForm):
+    schoolid  = StringField(u'School ID that you want to update', validators=[validators.input_required()])
+    schoolname  = StringField(u'School Name', validators=[validators.input_required()])
+    schooltype  = StringField(u'School Type', validators=[validators.input_required()])
+    schoolcountry = StringField(u'School Country', validators=[validators.input_required()])
+    schoolcity = StringField(u'School City', validators=[validators.input_required()])
+    schoolphonenumber = StringField(u'School Phone Number', validators=[validators.input_required()])
+
+class newSchoolForm(FlaskForm):
+    schoolname  = StringField(u'School Name', validators=[validators.input_required()])
+    schooltype  = StringField(u'School Type', validators=[validators.input_required()])
+    schoolcountry = StringField(u'School Country', validators=[validators.input_required()])
+    schoolcity = StringField(u'School City', validators=[validators.input_required()])
+    schoolphonenumber = StringField(u'School Phone Number', validators=[validators.input_required()])
+
+class rmSchoolForm(FlaskForm):
+    schoolname  = StringField(u'School Name that you want to delete', validators=[validators.input_required()])
+
+
 class AddBookToWishlist(FlaskForm):
     bookName = StringField('Book Name', validators=[validators.input_required()])
     bookWriter = StringField('Author', validators=[validators.input_required()])

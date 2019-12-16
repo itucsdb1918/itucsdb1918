@@ -14,7 +14,7 @@ db = Database()
 def homepage():
     userId = db.userid
 
-    """if session['userId'] :
+    """if session['userId'] is not None:
         userId = session['userId']
 
     if userId > 0:
@@ -258,10 +258,6 @@ def wishlist():
 
         elif  request.form["btn"] == "available" : # SHOW AVAILABLE LIST
             availableList = []
-            #wl = db.getWishlist(wid)
-            #wishlist = []
-            #for item in wl:
-            #    wishlist.append(item)
             return render_template('availablebooks.html', availableList=availableList)
 
 
@@ -297,7 +293,7 @@ def wishlist():
 
     wl = db.getWishlist(wid)
     return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, shape = len(wl), form = formWishlist)
-    # TODO: ADD wishlist parameter to render_template function
+
 
 @app.route('/availablebooks',methods = ["GET","POST"])
 def availablebooks():
@@ -316,7 +312,7 @@ def availablebooks():
     if request.method == "POST":
 
         if  request.form["btn"] == "addAvailable" :
-            print('ADD AVAILABLE CALLED')
+            #print('ADD AVAILABLE CALLED')
             bookname = formAvailableBooks.bookName.data
             author = formAvailableBooks.author.data
             totalpages = formAvailableBooks.pages.data
@@ -377,8 +373,8 @@ def messages():
     messages = db.getIncomingMessagesByUserId(db.userid)
     sentMessages = db.getSentMessagesByUserId(db.userid)
 
-    testMessage = ["Emre", "Reyhanlioglu", "Test topic", "Test message", "16.12.2019: 16:39", "High", "4"]
-    sentMessages.append(testMessage)
+    #testMessage = ["Emre", "Reyhanlioglu", "Test topic", "Test message", "16.12.2019: 16:39", "High", "4"]
+    #sentMessages.append(testMessage)
 
     #testMessage = ["Emre R", "Test topic", "Test message", "16.12.2019: 16:39", "High"]
     #messages.append(testMessage)
@@ -413,8 +409,7 @@ def messages():
             return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm, updateMessageForm=updateMessageForm, sentMessages = sentMessages)
 
         elif  request.form["btn"] == "updateMessage" :
-            print('UPDATE MESSAGE CALLED')
-
+            #print('UPDATE MESSAGE CALLED')
             messageId = int(updateMessageForm.messageId.data)
 
             topic = updateMessageForm.topic.data

@@ -24,7 +24,68 @@ Messages
   tr {
     margin: 25px;
   }
+  h1,h3,h6,input,button,form{
+      margin-left: 25px;
+  }
+
+  .tabs{
+      width: 1800px;
+      display: block;
+      margin: 40px auto;
+      position: relative;
+  }
+
+  .tabs .tab{
+      float: left;
+      display: block;
+  }
+
+  .tabs .tab>input[type="radio"] {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+  }
+
+  .tabs .tab>label {
+      display: block;
+      padding: 6px 21px;
+      font-size: 12px;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      color: #fff;
+      background: #000;
+  }
+
+  .tabs .content {
+      z-index: 0;/* or display: none; */
+      overflow: hidden;
+      width: 1800px;
+      padding: 25px;
+      position: absolute;
+      top: 27px;
+      left: 0;
+      background: #dae1f0;
+      color: #000;
+
+      opacity:0;
+      transition: opacity 400ms ease-out;
+  }
+
+  .tabs>.tab>[id^="tab"]:checked + label {
+      top: 0;
+      background: #303030;
+      color: #ff0000;
+  }
+
+  .tabs>.tab>[id^="tab"]:checked ~ [id^="tab-content"] {
+      z-index: 1;/* or display: block; */
+
+      opacity: 1;
+      transition: opacity 400ms ease-out;
+  }
 </style>
+
 
 
 
@@ -38,7 +99,7 @@ Messages
       <li>{{ render_field(sendMessageForm.message) }}</li>
       <li>{{ render_field(sendMessageForm.priority) }}</li>
 
-      <button type=submit class="btn btn-primary" action="submit" id="addAvailable" name="btn" value="sendMessage">
+      <button type=submit class="btn btn-primary" action="submit" name="btn" value="sendMessage">
         SEND MESSAGE
       </button>
 
@@ -48,106 +109,127 @@ Messages
 
 
 
-<p> Incoming Messages </p>
+<ul class="tabs">
 
-<table class="table is-hoverable">
+  <li class="tab">
+      <input type="radio" name="tabs" checked="checked" id="tab1" />
+      <label for="tab1">Inbox Messages</label>
+      <div id="tab-content1" class="content">
 
-  <tr>
-    <th>Sender Name</th>
-    <th>Sender Surname</th>
-    <th>Topic</th>
-    <th>Message</th>
-    <th>Date</th>
-    <th>Priority</th>
-  </tr>
+      <p> Inbox Messages </p>
+
+      <table class="table is-hoverable">
+
+        <tr>
+          <th>Sender Name</th>
+          <th>Sender Surname</th>
+          <th>Topic</th>
+          <th>Message</th>
+          <th>Date</th>
+          <th>Priority</th>
+        </tr>
 
 
 
-  {% for item in messages %}
-  <tr>
-    <td>{{ item[0] }}</td>
-    <td>{{ item[1] }}</td>
-    <td>{{ item[2] }}</td>
-    <td>{{ item[3] }}</td>
-    <td>{{ item[4] }}</td>
-    <td>{{ item[5] }}</td>
-    <td>
-      <form method="POST"  action="/messages">
-        <button class="button is-danger" action="submit" name="btn" value="{{ item[6] }}">DELETE</button>
+        {% for item in messages %}
+        <tr>
+          <td>{{ item[0] }}</td>
+          <td>{{ item[1] }}</td>
+          <td>{{ item[2] }}</td>
+          <td>{{ item[3] }}</td>
+          <td>{{ item[4] }}</td>
+          <td>{{ item[5] }}</td>
+          <td>
+            <form method="POST"  action="/messages">
+              <button class="button is-danger" action="submit" name="btn" value="{{ item[6] }}">DELETE</button>
+            </form>
+          </td>
+        </tr>
+
+        {% endfor %}
+
+
+      </table>
+
+    </div>
+  </li>
+
+
+
+  <li class="tab">
+    <input type="radio" name="tabs" id="tab2" />
+    <label for="tab2">Sent Messages</label>
+    <div id="tab-content2" class="content">
+
+
+      <p> Sent Messages </p>
+
+      <table class="table is-hoverable">
+
+        <tr>
+          <th>Message ID</th>
+          <th>Receiver Name</th>
+          <th>Receiver Surname</th>
+          <th>Topic</th>
+          <th>Message</th>
+          <th>Date</th>
+          <th>Priority</th>
+        </tr>
+
+
+
+        {% for item in sentMessages %}
+        <tr>
+          <td>{{ item[6] }}</td>
+          <td>{{ item[0] }}</td>
+          <td>{{ item[1] }}</td>
+          <td>{{ item[2] }}</td>
+          <td>{{ item[3] }}</td>
+          <td>{{ item[4] }}</td>
+          <td>{{ item[5] }}</td>
+        </tr>
+
+        {% endfor %}
+
+
+      </table>
+    </div>
+  </li>
+
+
+  <li class="tab">
+    <input type="radio" name="tabs" id="tab3" />
+    <label for="tab3">Update Messages</label>
+    <div id="tab-content3" class="content">
+
+
+      <form method="POST">
+
+          <p>Update Message</p>
+          <br>
+          <ul>
+            <li>
+              <h4>Enter the Message ID that you want to edit</h4>
+            </li>
+            <li>{{ render_field(updateMessageForm.messageId) }}</li>
+            <br>
+            <li>
+              <h4>Fill the fields with new message informations</h4>
+            </li>
+            <li>{{ render_field(updateMessageForm.topic) }}</li>
+            <li>{{ render_field(updateMessageForm.message) }}</li>
+            <li>{{ render_field(updateMessageForm.priority) }}</li>
+
+            <button type=submit class="btn btn-primary" action="submit" name="btn" value="updateMessage">
+              UPDATE MESSAGE
+            </button>
+
+          </ul>
+
       </form>
-    </td>
-  </tr>
+    </div>
+  </li>
 
-  {% endfor %}
-
-
-</table>
-
-<br>
-
-
-
-<p> Sent Messages </p>
-
-<table class="table is-hoverable">
-
-  <tr>
-    <th>Message ID</th>
-    <th>Receiver Name</th>
-    <th>Receiver Surname</th>
-    <th>Topic</th>
-    <th>Message</th>
-    <th>Date</th>
-    <th>Priority</th>
-  </tr>
-
-
-
-  {% for item in sentMessages %}
-  <tr>
-    <td>{{ item[6] }}</td>
-    <td>{{ item[0] }}</td>
-    <td>{{ item[1] }}</td>
-    <td>{{ item[2] }}</td>
-    <td>{{ item[3] }}</td>
-    <td>{{ item[4] }}</td>
-    <td>{{ item[5] }}</td>
-  </tr>
-
-  {% endfor %}
-
-
-</table>
-
-
-<br>
-
-
-
-<form method="POST">
-
-    <p>Update Message</p>
-    <br>
-    <ul>
-      <li>
-        <h4>Enter the Message ID that you want to edit</h4>
-      </li>
-      <li>{{ render_field(updateMessageForm.messageId) }}</li>
-      <br>
-      <li>
-        <h4>Fill the fields with new message informations</h4>
-      </li>
-      <li>{{ render_field(updateMessageForm.topic) }}</li>
-      <li>{{ render_field(updateMessageForm.message) }}</li>
-      <li>{{ render_field(updateMessageForm.priority) }}</li>
-
-      <button type=submit class="btn btn-primary" action="submit" name="btn" value="updateMessage">
-        UPDATE MESSAGE
-      </button>
-
-    </ul>
-
-</form>
-
+</ul>
 
 {% endblock %}

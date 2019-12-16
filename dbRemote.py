@@ -358,6 +358,12 @@ class Database:
             cursor.execute(query)
 
 
+    def deleteMessageById(self, messageId):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "DELETE FROM message_list WHERE messageid = '%d'"%(messageId)
+            cursor.execute(query)
+
+
     def getIncomingMessagesByUserId(self, userId):
         queryRes = []
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
@@ -367,6 +373,7 @@ class Database:
 
         print("MESSAGES: {}".format(queryRes))
         return queryRes
+
 
     def getUserIdByNameAndSurname(self, name, surname):
         queryRes = []

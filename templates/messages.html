@@ -72,8 +72,8 @@ Messages
     <td>{{ item[4] }}</td>
     <td>{{ item[5] }}</td>
     <td>
-      <form method="POST"  action="/flow">
-        <button class="button is-danger" action="submit" id="p0" name="deleteMessage" value="{{ item[6] }}">DELETE</button>
+      <form method="POST"  action="/messages">
+        <button class="button is-danger" action="submit" name="btn" value="{{ item[6] }}">DELETE</button>
       </form>
     </td>
   </tr>

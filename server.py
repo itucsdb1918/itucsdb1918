@@ -397,8 +397,19 @@ def messages():
             db.insertMessage(newMessage)
             messages = db.getIncomingMessagesByUserId(db.userid)
 
+            return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm)
+
+
+        else:
+            deletedMessageId = int(request.form['btn'])
+            print('DELETED MESSAGE ID is {}'.format(deletedMessageId))
+            db.deleteMessageById(deletedMessageId)
+
+            messages = db.getIncomingMessagesByUserId(db.userid)
 
             return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm)
+
+        
 
 
 

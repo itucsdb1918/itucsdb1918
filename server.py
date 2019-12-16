@@ -14,7 +14,7 @@ db = Database()
 def homepage():
     userId = db.userid
 
-    if session['userId']:
+    if session['userId'] :
         userId = session['userId']
 
     if userId > 0:
@@ -47,7 +47,6 @@ def flow():
 
 @app.route('/login',methods = ["GET","POST"])
 def login():
-    db.userid = 0
     # Create a form object
     formLogIn = logIn()
     #if request.method == "POST" and formLogIn.validate_on_submit():

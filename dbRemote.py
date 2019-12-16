@@ -161,7 +161,7 @@ class Database:
 
         if queryRes is None:
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-                query = "INSERT INTO school_list(schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber) VALUES ('%s','%s','%s','%s','%s','%s');"%(form.schoolname.data,form.schooltype.data,form.schoolcountry.data,form.schoolcity.data,form.schoolphonenumber.data)
+                query = "INSERT INTO school_list(schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber) VALUES ('%s','%s','%s','%s','%s');"%(form.schoolname.data,form.schooltype.data,form.schoolcountry.data,form.schoolcity.data,form.schoolphonenumber.data)
                 cursor.execute(query)
 
             with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:

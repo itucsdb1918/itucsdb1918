@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS "message_list" (
     "topic" VARCHAR(40)   NOT NULL,
     "message" VARCHAR(150)   NOT NULL,
     "timestamp" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "priority" VARCHAR(20)   NOT NULL,
     CONSTRAINT "pk_message_list" PRIMARY KEY (
         "messageid"
      )

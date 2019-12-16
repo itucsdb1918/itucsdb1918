@@ -343,8 +343,8 @@ def messages():
 
     messages = db.getIncomingMessagesByUserId(db.userid)
 
-    testMessage = ["Emre R", "Test topic", "Test message", "16.12.2019: 16:39", "High"]
-    messages.append(testMessage)
+    #testMessage = ["Emre R", "Test topic", "Test message", "16.12.2019: 16:39", "High"]
+    #messages.append(testMessage)
 
 
     if request.method == "POST":

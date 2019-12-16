@@ -361,7 +361,7 @@ class Database:
     def getIncomingMessagesByUserId(self, userId):
         queryRes = []
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT sendername, sendersurname, topic, message, timestamp FROM message_list WHERE receiverid = '%d'"%(userId)
+            query = "SELECT sendername, sendersurname, topic, message, timestamp, priority, messageid FROM message_list WHERE receiverid = '%d'"%(userId)
             cursor.execute(query)
             queryRes = cursor.fetchall()
 

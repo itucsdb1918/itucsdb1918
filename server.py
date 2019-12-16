@@ -14,12 +14,30 @@ db = Database()
 def homepage():
     userId = db.userid
 
-    if session['userId'] :
+    """if session['userId'] :
         userId = session['userId']
 
     if userId > 0:
         allAvailableBooks = db.getAllAvailableBooks()
         userId = session['userId']
+
+        # SET USER'S FULL NAME AT THE FIRST INDEX WHICH CONTAINS ID CURRENTLY
+        for item in allAvailableBooks:
+            user = db.getProfileInformations(userid = item[0])
+            userName = user[3]
+            userSurname = user[4]
+            fullname = userName + ' ' +userSurname
+            item[0] = fullname
+
+        return render_template('index.html', allAvailableBooks = allAvailableBooks)
+
+    else:
+        flash("Please log in to see interchange event list!",category="message")
+        return render_template('index.html')"""
+
+    if db.userid > 0:
+        allAvailableBooks = db.getAllAvailableBooks()
+        userId = db.userid
 
         # SET USER'S FULL NAME AT THE FIRST INDEX WHICH CONTAINS ID CURRENTLY
         for item in allAvailableBooks:
@@ -41,6 +59,9 @@ def flow():
     ielist = db.getInterchangeEventList()
     flowlist = db.getMyFlow(db.userid)
 
+    if request.method == "POST":
+        db.rmInterchangeEventList(request.form['deleteFlow'])
+
     return render_template('flow.html', ielist = ielist, lendered = flowlist[0], borrowed = flowlist[1])
 
 
@@ -61,12 +82,12 @@ def login():
 
 
         db.wishlistid = currentUser.getWishlistId()
-        session['wishlistId'] = db.wishlistid
+        """session['wishlistId'] = db.wishlistid"""
         #print('WISHLIST ID: {}'.format(db.wishlistid))
 
         # If there is an ID returned, then navigate user to the homepage
         if db.userid > 0:
-            session['userId'] = db.userid
+            """session['userId'] = db.userid"""
             return redirect(url_for("homepage"))
 
 
@@ -80,7 +101,7 @@ def signup():
     #if request.method == "POST" and formSignUp.validate_on_submit():
         db.userid =  db.addNewUser(formSignUp)
         if db.userid > 0:
-            session['userId'] = db.userid
+            """session['userId'] = db.userid"""
             return redirect(url_for("homepage"))# Go to login after signup
 
     return render_template("signup.html", form = formSignUp)
@@ -95,7 +116,8 @@ def signup_success():
 @app.route('/profile',methods = ["GET","POST"])
 def profile():
 
-    userId = session['userId']
+    """userId = session['userId']"""
+    userId = db.userid
     if userId is 0 or userId is None:
         return redirect(url_for("login"))
 
@@ -122,45 +144,45 @@ def profile():
     if request.method == "POST":
         if request.form["btn"] == "d0" : #REMOVE FROM WISHLIST
             db.userid = db.rmCurrentUser(db.userid) # returns zero
-            session['userId'] = db.userid # set to zero
+            """session['userId'] = db.userid # set to zero"""
 
         if request.form["btn"] == "newschool":
             db.addNewSchool(newschool)
             if db.userid is 1:
                 schoollist = db.getSchoolInfo()
-                #profile = db.getProfileInformations(db.userid)
-                profile = db.getProfileInformations(session['userId'])
+                profile = db.getProfileInformations(db.userid)
+                #profile = db.getProfileInformations(session['userId'])
                 return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist,updateprof = updateprof)
 
         if request.form["btn"] == "removeID":
             db.rmSchoolInfo(rmform)
             if db.userid is 1:
                 schoollist = db.getSchoolInfo()
-                #profile = db.getProfileInformations(db.userid)
-                profile = db.getProfileInformations(session['userId'])
+                profile = db.getProfileInformations(db.userid)
+                #profile = db.getProfileInformations(session['userId'])
                 return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist,updateprof = updateprof)
 
         if request.form["btn"] == "updateID":
             db.updateSchoolInfo(updateSchool)
             if db.userid is 1:
                 schoollist = db.getSchoolInfo()
-                #profile = db.getProfileInformations(db.userid)
-                profile = db.getProfileInformations(session['userId'])
+                profile = db.getProfileInformations(db.userid)
+                #profile = db.getProfileInformations(session['userId'])
                 return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist, updateprof = updateprof)
 
 
         if request.form["btn"] == "updateProfile":
             print("00000000000000000000000000000000000000000000000000")
-            #db.updateProfile(updateprof,db.userid)
-            db.updateProfile(updateprof,session['userId'])
+            db.updateProfile(updateprof,db.userid)
+            #db.updateProfile(updateprof,session['userId'])
             if db.userid is 1:
                 schoollist = db.getSchoolInfo()
-                #profile = db.getProfileInformations(db.userid)
-                profile = db.getProfileInformations(session['userId'])
+                profile = db.getProfileInformations(db.userid)
+                #profile = db.getProfileInformations(session['userId'])
                 return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist, updateprof = updateprof)
 
-    #profile = db.getProfileInformations(db.userid)
-    profile = db.getProfileInformations(session['userId'])
+    profile = db.getProfileInformations(db.userid)
+    #profile = db.getProfileInformations(session['userId'])
     return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist, updateprof = updateprof)
 
 
@@ -172,7 +194,8 @@ def profile():
 def wishlist():
     currentUser = db.getCurrentUser(db.userid)
     # Get wishlistId from user object
-    wishlistId = session['wishlistId']
+    """wishlistId = session['wishlistId']"""
+    wishlistId = db.wishlistid
     wid = wishlistId
     print('INSIDE wishlist func: wid={}'.format(wid))
 
@@ -249,7 +272,8 @@ def wishlist():
 @app.route('/availablebooks',methods = ["GET","POST"])
 def availablebooks():
     # FILL AVAILABLE LIST WITH CURRENT ITEMS AT DB
-    userId = session['userId']
+    """userId = session['userId']"""
+    userId = db.userid
     availableList = []
     dbAvailableList = db.getAvailableBookList(db.userid)
     for item in dbAvailableList:

@@ -112,6 +112,7 @@ My Flow
               <th>Book Author</th>
               <th>Total Pages</th>
               <th>Publisher</th>
+
             </tr>
 
             {% if lendered != None %}
@@ -126,6 +127,7 @@ My Flow
               <td>{{ item[5] }}</td>
               <td>{{ item[6] }}</td>
               <td>{{ item[7] }}</td>
+
             </tr>
 
             {% endfor %}
@@ -149,6 +151,7 @@ My Flow
                 <th>Book Author</th>
                 <th>Total Pages</th>
                 <th>Publisher</th>
+                <th>Action</th>
               </tr>
 
               {% if borrowed != None %}
@@ -203,6 +206,9 @@ My Flow
           <td>{{ item[4] }}</td>
           <td>{{ item[5] }}</td>
           <td>{{ item[6] }}</td>
+          <td><form method="POST"  action="/flow">
+              <button class="button is-danger" action="submit" id="p0" name="deleteFlow" value="{{ item[0] }}">DELETE</button>
+          </form></td>
         </tr>
 
         {% endfor %}

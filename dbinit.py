@@ -128,13 +128,13 @@ ALTER TABLE "message_list" ADD CONSTRAINT "fk_message_list_receiverid" FOREIGN K
 REFERENCES "user_list" ("userid");
 
 
-INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
+INSERT INTO school_list (schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
 VALUES ('Istanbul Technical University','University','Turkey','Istanbul','02120000000');
 
-INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
+INSERT INTO school_list (schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
 VALUES ('Bogazici University','University','Turkey','Istanbul','02120000001');
 
-INSERT INTO school_list (schoolid,schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
+INSERT INTO school_list (schoolname,schooltype,schoolcountry,schoolcity,schoolphonenumber)
 VALUES ('Middle East Technical University','University','Turkey','Ankara','03120000000');
 
 INSERT INTO user_list (username,password,firstname,lastname, email,schoolid,campusname,wishlistid)

@@ -18,6 +18,15 @@ class signUp(FlaskForm):
     campusname = StringField(u'Campus Name', validators=[validators.input_required(),validators.Length(min = 2)])
     submit = SubmitField('Sign Up')
 
+class updateProfileForm(FlaskForm):
+    username = StringField(u'User Name', validators=[validators.input_required(),validators.Length(min = 2, max = 20)])
+    firstname  = StringField(u'First Name', validators=[validators.input_required()])
+    lastname  = StringField(u'Last Name', validators=[validators.input_required()])
+    email = StringField(u'E-mail', validators=[validators.input_required(),validators.Email(message = "Please enter a valid e-mail address!")])
+    schoolname = StringField(u'School Name', validators=[validators.input_required()])
+    campusname = StringField(u'Campus Name', validators=[validators.input_required()])
+
+
 class logIn(FlaskForm):
     username = StringField(u'User Name', validators=[validators.input_required()])
     password = PasswordField("Password:",validators=[validators.DataRequired()])

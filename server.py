@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,updateSchoolForm,rmSchoolForm,newSchoolForm
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm
 from model.user import User
 
 app = Flask(__name__)
@@ -82,7 +82,9 @@ def profile():
     updateSchool= updateSchoolForm()
     rmform = rmSchoolForm()
     newschool = newSchoolForm()
+    updateprof = updateProfileForm()
     schoollist = db.getSchoolInfo()
+    userlist = db.getUsers()
 
     if db.userid is 0 or db.userid is None:
          return redirect(url_for("login"))
@@ -104,25 +106,34 @@ def profile():
             if db.userid is 1:
                 schoollist = db.getSchoolInfo()
                 profile = db.getProfileInformations(db.userid)
-                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid)
+                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist,updateprof = updateprof)
 
         if request.form["btn"] == "removeID":
             db.rmSchoolInfo(rmform)
             if db.userid is 1:
                 schoollist = db.getSchoolInfo()
                 profile = db.getProfileInformations(db.userid)
-                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid)
+                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist,updateprof = updateprof)
 
         if request.form["btn"] == "updateID":
             db.updateSchoolInfo(updateSchool)
             if db.userid is 1:
                 schoollist = db.getSchoolInfo()
                 profile = db.getProfileInformations(db.userid)
-                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid)
+                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist, updateprof = updateprof)
+
+
+        if request.form["btn"] == "updateProfile":
+            print("00000000000000000000000000000000000000000000000000")
+            db.updateProfile(updateprof,db.userid)
+            if db.userid is 1:
+                schoollist = db.getSchoolInfo()
+                profile = db.getProfileInformations(db.userid)
+                return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist, updateprof = updateprof)
 
     profile = db.getProfileInformations(db.userid)
 
-    return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid)
+    return render_template('profile.html', Status=db.userid, title = "Profile", profile=profile, schoollist = schoollist, form = updateSchool, rmform = rmform,newschool = newschool,uid = db.userid,userlist = userlist, updateprof = updateprof)
 
 
 

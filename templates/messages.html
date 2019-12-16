@@ -2,11 +2,13 @@
 
 
 {% block title%}
-Interchange Event List
+Messages
 {% endblock %}
 
 
 {% block content %}
+{% from "includes/formhelpers.html" import render_field %}
+
 <style>
   p {
     margin: 25px;
@@ -24,38 +26,53 @@ Interchange Event List
   }
 </style>
 
-<p> Available Books to Interchange </p>
+
+
+<form method="POST">
+
+    <h2>Send Message</h2>
+    <ul>
+      <li>{{ render_field(sendMessageForm.receiverName) }}</li>
+      <li>{{ render_field(sendMessageForm.receiverSurname) }}</li>
+      <li>{{ render_field(sendMessageForm.topic) }}</li>
+      <li>{{ render_field(sendMessageForm.message) }}</li>
+      <li>{{ render_field(sendMessageForm.priority) }}</li>
+
+      <button type=submit class="btn btn-primary" action="submit" id="addAvailable" name="btn" value="sendMessage">
+        SEND MESSAGE
+      </button>
+
+    </ul>
+
+</form>
+
+
+
+<p> Incoming Messages </p>
 
 <table class="table is-hoverable">
 
   <tr>
-    <th>Owner</th>
-    <th>Book Name</th>
-    <th>Book Author</th>
-    <th>Total Pages</th>
-    <th>Publisher</th>
-    <th>Press Year</th>
-    <th>Book Type</th>
-    <th>Additional Informations</th>
+    <th>Sender</th>
+    <th>Topic</th>
+    <th>Message</th>
+    <th>Date</th>
+    <th>Priority</th>
   </tr>
 
-  {% if allAvailableBooks != None %}
 
-  {% for item in allAvailableBooks %}
+
+  {% for item in messages %}
   <tr>
     <td>{{ item[0] }}</td>
     <td>{{ item[1] }}</td>
     <td>{{ item[2] }}</td>
     <td>{{ item[3] }}</td>
     <td>{{ item[4] }}</td>
-    <td>{{ item[5] }}</td>
-    <td>{{ item[6] }}</td>
-    <td>{{ item[7] }}</td>
   </tr>
 
   {% endfor %}
 
-  {% endif %}
 
 </table>
 

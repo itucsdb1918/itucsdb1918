@@ -86,3 +86,11 @@ class UpdateAvailableBookForm(FlaskForm):
     bookType = RadioField('Book Type', choices=[('Normal','Normal sized book'),('Mini','Mini book')], validators=[validators.input_required()])
     additionalInfo = TextAreaField('Anything you want to add')
     addBook = SubmitField('Add to List')
+
+
+class SendMessageForm(FlaskForm):
+    receiverName = StringField('Receiver name', validators=[validators.input_required()])
+    receiverSurname = StringField('Receiver surname', validators=[validators.input_required()])
+    topic = StringField('Topic', validators=[validators.input_required()])
+    message = StringField('Message', validators=[validators.input_required()])
+    priority = StringField('Priority', validators=[validators.input_required()])

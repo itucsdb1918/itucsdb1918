@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,UpdateAvailableBookForm,updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,UpdateAvailableBookForm,SendMessageForm, updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm
 from model.user import User
 
 app = Flask(__name__)
@@ -311,6 +311,16 @@ def availablebooks():
             return render_template('availablebooks.html', form=formAvailableBooks, formUpdateBooks= formUpdateBooks, availableList=availableList)
 
     return render_template('availablebooks.html', form=formAvailableBooks, formUpdateBooks=formUpdateBooks, availableList=availableList)
+
+@app.route('/messages',methods = ["GET","POST"])
+def messages():
+    messages = []
+    sendMessageForm = SendMessageForm()
+
+    testMessage = ["Emre R", "Test topic", "Test message", "16.12.2019: 16:39", "High"]
+    messages.append(testMessage)
+
+    return render_template('messages.html', messages = messages, sendMessageForm = sendMessageForm)
 
 
 if __name__ == '__main__':

@@ -140,12 +140,12 @@ class Database:
         lendered = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT interchangeid, username AS lendername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.borrowerid = user_list.userid) WHERE borrowerid = {}) as borrowername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.lenderid = user_list.userid) where borrowerid = {}".format(userid,userid)
+            query = "SELECT interchangeid, username AS lendername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.borrowerid = user_list.userid) WHERE borrowerid = {}) as borrowername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.lenderid = user_list.userid) where borrowerid = {} ORDER BY time".format(userid,userid)
             cursor.execute(query)
             borrowed = cursor.fetchall()
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT interchangeid, username AS borrowername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.lenderid = user_list.userid) WHERE lenderid = {}) as lendername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.borrowerid = user_list.userid) where lenderid = {}".format(userid,userid)
+            query = "SELECT interchangeid, username AS borrowername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.lenderid = user_list.userid) WHERE lenderid = {}) as lendername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.borrowerid = user_list.userid) where lenderid = {} ORDER BY time".format(userid,userid)
             cursor.execute(query)
             lendered = cursor.fetchall()
 
@@ -173,7 +173,7 @@ class Database:
     def getSchoolInfo(self):
         queryRes = []
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT schoolid, schoolname, schooltype, schoolcountry, schoolcity, schoolphonenumber FROM school_list"
+            query = "SELECT schoolid, schoolname, schooltype, schoolcountry, schoolcity, schoolphonenumber FROM school_list ORDER BY schoolname"
             cursor.execute(query)
             queryRes = cursor.fetchall()
 
@@ -308,7 +308,7 @@ class Database:
             cursor.execute(query)
 
 
-    # TODO: WRITE THIS METHOD
+
     def updateBookAtAvailableBookList(self, userId, oldName, oldAuthor, newBook):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = """UPDATE available_book_list SET
@@ -358,15 +358,54 @@ class Database:
             cursor.execute(query)
 
 
+    def getMessageByMessageId(self, messageId):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT sendername, sendersurname, topic, message, timestamp, priority, messageid FROM message_list WHERE messageid = '%d'"%(messageId)
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+
+        return queryRes
+
+
+
+    def updateMessageByMessageId(self, messageId, newMessage):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = """UPDATE message_list SET
+            topic = '%s', message = '%s', priority = '%s' WHERE
+            messageid = '%d';
+            """ %(newMessage[0],newMessage[1],newMessage[2], messageId)
+            cursor.execute(query)
+
+
+
+    def deleteMessageById(self, messageId):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "DELETE FROM message_list WHERE messageid = '%d'"%(messageId)
+            cursor.execute(query)
+
+
     def getIncomingMessagesByUserId(self, userId):
         queryRes = []
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT sendername, sendersurname, topic, message, timestamp, priority, messageid FROM message_list WHERE receiverid = '%d'"%(userId)
+            query = "SELECT sendername, sendersurname, topic, message, timestamp, priority, messageid FROM message_list WHERE receiverid = '%d' ORDER BY timestamp, priority DESC"%(userId)
             cursor.execute(query)
             queryRes = cursor.fetchall()
 
         print("MESSAGES: {}".format(queryRes))
         return queryRes
+
+
+    def getSentMessagesByUserId(self, userId):
+        queryRes = []
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = "SELECT sendername, sendersurname, topic, message, timestamp, priority, messageid FROM message_list WHERE senderid = '%d' ORDER BY timestamp, priority DESC"%(userId)
+            cursor.execute(query)
+            queryRes = cursor.fetchall()
+
+        print("MESSAGES: {}".format(queryRes))
+        return queryRes
+
 
     def getUserIdByNameAndSurname(self, name, surname):
         queryRes = []
@@ -374,6 +413,9 @@ class Database:
             query = "SELECT userid FROM user_list WHERE firstname = '%s' AND lastname = '%s'"%(name, surname)
             cursor.execute(query)
             queryRes = cursor.fetchone()
+
+        if queryRes is None:
+            return None
 
         return queryRes[0]
 

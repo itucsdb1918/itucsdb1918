@@ -72,8 +72,8 @@ Messages
     <td>{{ item[4] }}</td>
     <td>{{ item[5] }}</td>
     <td>
-      <form method="POST"  action="/flow">
-        <button class="button is-danger" action="submit" id="p0" name="deleteMessage" value="{{ item[6] }}">DELETE</button>
+      <form method="POST"  action="/messages">
+        <button class="button is-danger" action="submit" name="btn" value="{{ item[6] }}">DELETE</button>
       </form>
     </td>
   </tr>
@@ -82,5 +82,72 @@ Messages
 
 
 </table>
+
+<br>
+
+
+
+<p> Sent Messages </p>
+
+<table class="table is-hoverable">
+
+  <tr>
+    <th>Message ID</th>
+    <th>Receiver Name</th>
+    <th>Receiver Surname</th>
+    <th>Topic</th>
+    <th>Message</th>
+    <th>Date</th>
+    <th>Priority</th>
+  </tr>
+
+
+
+  {% for item in sentMessages %}
+  <tr>
+    <td>{{ item[6] }}</td>
+    <td>{{ item[0] }}</td>
+    <td>{{ item[1] }}</td>
+    <td>{{ item[2] }}</td>
+    <td>{{ item[3] }}</td>
+    <td>{{ item[4] }}</td>
+    <td>{{ item[5] }}</td>
+  </tr>
+
+  {% endfor %}
+
+
+</table>
+
+
+<br>
+
+
+
+<form method="POST">
+
+    <p>Update Message</p>
+    <br>
+    <ul>
+      <li>
+        <h4>Enter the Message ID that you want to edit</h4>
+      </li>
+      <li>{{ render_field(updateMessageForm.messageId) }}</li>
+      <br>
+      <li>
+        <h4>Fill the fields with new message informations</h4>
+      </li>
+      <li>{{ render_field(updateMessageForm.topic) }}</li>
+      <li>{{ render_field(updateMessageForm.message) }}</li>
+      <li>{{ render_field(updateMessageForm.priority) }}</li>
+
+      <button type=submit class="btn btn-primary" action="submit" name="btn" value="updateMessage">
+        UPDATE MESSAGE
+      </button>
+
+    </ul>
+
+</form>
+
 
 {% endblock %}

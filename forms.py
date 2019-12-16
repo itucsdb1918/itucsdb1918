@@ -102,5 +102,13 @@ class SendMessageForm(FlaskForm):
     receiverName = StringField('Receiver name', validators=[validators.input_required()])
     receiverSurname = StringField('Receiver surname', validators=[validators.input_required()])
     topic = StringField('Topic', validators=[validators.input_required()])
-    message = StringField('Message', validators=[validators.input_required()])
+    message = TextAreaField('Message', validators=[validators.input_required()])
+    priority = StringField('Priority', validators=[validators.input_required()])
+
+
+
+class UpdateMessageForm(FlaskForm):
+    messageId = StringField('Message ID', validators=[validators.input_required()])
+    topic = StringField('Topic', validators=[validators.input_required()])
+    message = TextAreaField('Message', validators=[validators.input_required()])
     priority = StringField('Priority', validators=[validators.input_required()])

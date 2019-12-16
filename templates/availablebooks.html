@@ -32,59 +32,93 @@ My Available Books
 
 
 
+
 <h2> My Available Books </h2>
 
+<form method="POST" action="/availablebooks">
 
-<table class="table is-hoverable">
-
-  <tr>
-    <th>Book Name</th>
-    <th>Author</th>
-    <th>Total Pages</th>
-    <th>Publisher</th>
-    <th>Press Year</th>
-    <th>Book Type</th>
-    <th>Anything Else</th>
-  </tr>
-
-
-  {% for item in availableList %}
+  <table class="table is-hoverable">
 
     <tr>
-          <td >{{ item[0] }}</td>
-          <td >{{ item[1] }}</td>
-          <td >{{ item[2] }}</td>
-          <td >{{ item[3] }}</td>
-          <td >{{ item[4] }}</td>
-          <td >{{ item[5] }}</td>
-          <td >{{ item[6] }}</td>
-
+      <th>Book Name</th>
+      <th>Author</th>
+      <th>Total Pages</th>
+      <th>Publisher</th>
+      <th>Press Year</th>
+      <th>Book Type</th>
+      <th>Anything Else</th>
     </tr>
 
-  {% endfor %}
 
-</table>
+    {% for item in availableList %}
 
-<br>
-<br>
+      <tr>
+            <td >{{ item[0] }}</td>
+            <td >{{ item[1] }}</td>
+            <td >{{ item[2] }}</td>
+            <td >{{ item[3] }}</td>
+            <td >{{ item[4] }}</td>
+            <td >{{ item[5] }}</td>
+            <td >{{ item[6] }}</td>
+            <td>
+              <button type=submit class="btn btn-primary" action="submit" name="btn" value="updateAvailable">
+                UPDATE
+              </button>
+              <input type="text" name="bookname" value="{{ item[0] }}" hidden="True">
+              <input type="text" name="author" value="{{ item[1] }}" hidden="True">
+              <input type="text" name="pages" value="{{ item[2] }}" hidden="True">
+              <input type="text" name="publisher" value="{{ item[3] }}" hidden="True">
+              <input type="text" name="pressyear" value="{{ item[4] }}" hidden="True">
+              <input type="text" name="booktype" value="{{ item[5] }}" hidden="True">
+              <input type="text" name="additionalinfo" value="{{ item[6] }}" hidden="True">
+            </td>
 
+      </tr>
 
-<h2>Add Your Available Books to Interchange</h2>
-<form method=post>
-  <ul>
-    <li>{{ render_field(form.bookName) }}</li>
-    <li>{{ render_field(form.author) }}</li>
-    <li>{{ render_field(form.pages) }}</li>
-    <li>{{ render_field(form.publisher) }}</li>
-    <li>{{ render_field(form.pressyear) }}</li>
-    <li>{{ render_field(form.bookType) }}</li>
-    <li>{{ render_field(form.additionalInfo) }}</li>
-  </ul>
-  <button type=submit class="btn btn-primary" action="submit" id="addAvailable" name="btn" value="addAvailable">
-    ADD
-  </button>
-  <!-- TODO: Make the elements inline (listed horizontally)  -->
+    {% endfor %}
+
+  </table>
+
 </form>
+
+<br>
+<br>
+
+
+
+<form method="POST">
+  <h2>Add Your Available Books to Interchange</h2>
+
+    <ul>
+      <li>{{ render_field(form.bookName) }}</li>
+      <li>{{ render_field(form.author) }}</li>
+      <li>{{ render_field(form.pages) }}</li>
+      <li>{{ render_field(form.publisher) }}</li>
+      <li>{{ render_field(form.pressyear) }}</li>
+      <li>{{ render_field(form.bookType) }}</li>
+      <li>{{ render_field(form.additionalInfo) }}</li>
+
+
+      <tr>
+
+          <td>
+            <button type=submit class="btn btn-primary" action="submit" id="addAvailable" name="btn" value="addAvailable">
+              ADD
+            </button>
+          </td>
+
+          <td>
+            <button type=submit class="btn btn-primary" action="submit" id="saveAvailable" name="btn" value="saveAvailable">
+              SAVE
+            </button>
+          </td>
+      </tr>
+
+    </ul>
+
+</form>
+
+
 <br>
 
 

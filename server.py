@@ -152,7 +152,7 @@ def wishlist():
                 wishlist.append(item)
             return render_template('wishlist.html', Status=db.wishlistid, title = "Wishlist", wl=wl, wishlist=wishlist, shape = len(wl), form = formWishlist)
 
-        elif  request.form["btn"] == "available" : # SHOW WISHLIST
+        elif  request.form["btn"] == "available" : # SHOW AVAILABLE LIST
             availableList = []
             #wl = db.getWishlist(wid)
             #wishlist = []
@@ -204,36 +204,51 @@ def availablebooks():
     formAvailableBooks = AddBookToAvailableBooksList()
 
     # FILL AVAILABLE LIST USING DB METHOD HERE
+    if request.method == "POST":
+
+        if  request.form["btn"] == "addAvailable" :
+            print('ADD AVAILABLE CALLED')
+            bookname = formAvailableBooks.bookName.data
+            author = formAvailableBooks.author.data
+            totalpages = formAvailableBooks.pages.data
+            publisher = formAvailableBooks.publisher.data
+            pressyear = formAvailableBooks.pressyear.data
+            booktype = formAvailableBooks.bookType.data
+            additionalinfo = formAvailableBooks.additionalInfo.data
+            print('PRESS YEAR IS {}'.format(pressyear))
+            newBook = [bookname, author, int(totalpages), publisher, int(pressyear), booktype, additionalinfo]
+
+            if not db.isBookExistInAvailableBookList(bookname, author):
+                # Also add book into the available_book_list table
+                db.insertBookToAvailableBookList(userId, newBook)
+                # Add new book to the end of available list
+                availableList.append(newBook)
+
+            #Clear form
+            formAvailableBooks.bookName.data = ""
+            formAvailableBooks.author.data = ""
+            formAvailableBooks.pages.data = ""
+            formAvailableBooks.publisher.data = ""
+            formAvailableBooks.pressyear.data = ""
+            formAvailableBooks.bookType.data = ""
+            formAvailableBooks.additionalInfo.data = ""
 
 
-    if  request.form["btn"] == "addAvailable" :
-        bookname = formAvailableBooks.bookName.data
-        author = formAvailableBooks.author.data
-        totalpages = formAvailableBooks.pages.data
-        publisher = formAvailableBooks.publisher.data
-        pressyear = formAvailableBooks.pressyear.data
-        booktype = formAvailableBooks.bookType.data
-        additionalinfo = formAvailableBooks.additionalInfo.data
-
-        newBook = [bookname, author, int(totalpages), publisher, booktype, int(pressyear), additionalinfo]
-
-        if not db.isBookExistInAvailableBookList(bookname, author):
-            # Also add book into the available_book_list table
-            db.insertBookToAvailableBookList(userId, newBook)
-            # Add new book to the end of available list
-            availableList.append(newBook)
-
-        #Clear form
-        formAvailableBooks.bookName.data = ""
-        formAvailableBooks.author.data = ""
-        formAvailableBooks.pages.data = ""
-        formAvailableBooks.publisher.data = ""
-        formAvailableBooks.pressyear.data = ""
-        formAvailableBooks.bookType.data = ""
-        formAvailableBooks.additionalInfo.data = ""
+            return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
 
 
-        return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
+        # If user clicks the update button, then fill the form with clicked book informations
+        elif  request.form["btn"] == "updateAvailable" :
+            print('UPDATE AVAILABLE CALLED')
+            formAvailableBooks.bookName.data = request.form["bookname"]
+            formAvailableBooks.author.data = request.form["author"]
+            formAvailableBooks.pages.data = request.form["pages"]
+            formAvailableBooks.publisher.data = request.form["publisher"]
+            formAvailableBooks.pressyear.data = request.form["pressyear"]
+            formAvailableBooks.bookType.data = request.form["booktype"]
+            formAvailableBooks.additionalInfo.data = request.form["additionalinfo"]
+
+            return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)
 
 
     return render_template('availablebooks.html', form=formAvailableBooks, availableList=availableList)

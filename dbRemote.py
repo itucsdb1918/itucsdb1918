@@ -218,8 +218,8 @@ class Database:
     def insertBookToAvailableBookList(self, userId, book):
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
             query = """INSERT INTO available_book_list
-            (userid, bookname, bookauthor, totalpages, publisher, booktype, pressyear, additionalinfo) VALUES
-            ('%d', '%s', '%s','%d','%s', '%s', '%d', '%s');
+            (userid, bookname, bookauthor, totalpages, publisher, pressyear, booktype, additionalinfo) VALUES
+            ('%d', '%s', '%s','%d','%s', '%d', '%s', '%s');
             """ %(userId, book[0], book[1], book[2], book[3], book[4], book[5], book[6])
             cursor.execute(query)
 

@@ -1,7 +1,7 @@
 #from flask import Flask, render_template
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 from dbRemote import Database
-from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,UpdateAvailableBookForm,SendMessageForm, UpdateMessageForm, updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm,UpdateBookForm
+from forms import signUp, logIn, AddBookToWishlist, AddBookToAvailableBooksList,UpdateAvailableBookForm,SendMessageForm, UpdateMessageForm, updateSchoolForm,rmSchoolForm,newSchoolForm,updateProfileForm,UpdateBookForm,InterchangeUserInfoForm
 from model.user import User
 
 app = Flask(__name__)
@@ -229,6 +229,7 @@ def wishlist():
         wishlist.append(item)
 
     formWishlist = AddBookToWishlist()
+    userInfoForm = InterchangeUserInfoForm()
 
     if request.method == "POST":
         bookname = request.form.get("bookname")
@@ -239,7 +240,8 @@ def wishlist():
         year = request.form.get("year")
 
 
-        if request.form["btn"] == "removeValue" : #REMOVE FROM WISHLIST
+
+        if request.form["btn"] == "removeValue" : #REMOVE FROM WISHLIST (BY USING INTERCHANGED BUTTON)
             #wl = db.rmWishlist(wishlistId)
             #print('REMOVE BOOK NAME: {}'.format(request.form['bookname']))
             print('BOOK NAME: {} , AUTHOR: {}, PAGES: {}'.format(bookname, author, pages))
@@ -250,14 +252,30 @@ def wishlist():
 
             wishlist = db.getWishlist(wishlistId)
 
-            return render_template('wishlist.html', wishlist=wishlist, form = formWishlist)
+            # Add this operation to interchange event list
+            borrowerName = userInfoForm.name.data
+            borrowerSurname = userInfoForm.surname.data
+
+            borrowerId = db.getUserIdByNameAndSurname(borrowerName, borrowerSurname)
+            #If user does not exist, then return
+            if borrowerId is None:
+                return render_template('wishlist.html', wishlist=wishlist, form = formWishlist, userForm=userInfoForm)
+
+            lenderId = db.userid
+
+            newEvent = [lenderId, borrowerId, bookname, author, int(pages), publisher]
+
+            #print('LID:{}, BID:{}, name:{}, author:{}, pages:{}, publisher:{}'.format(lenderId, borrowerId, bookname, author, int(pages), publisher))
+            db.insertEventToInterchangeEventList(newEvent)
+
+            return render_template('wishlist.html', wishlist=wishlist, form = formWishlist, userForm=userInfoForm)
 
         elif  request.form["btn"] == "p0" : # SHOW WISHLIST
             wl = db.getWishlist(wishlistId)
             wishlist = []
             for item in wl:
                 wishlist.append(item)
-            return render_template('wishlist.html', wishlist=wishlist, form = formWishlist)
+            return render_template('wishlist.html', wishlist=wishlist, form = formWishlist, userForm=userInfoForm)
 
         elif  request.form["btn"] == "available" : # SHOW AVAILABLE LIST
             availableList = []
@@ -288,11 +306,11 @@ def wishlist():
                 # Add book to the wishlist
                 wishlist = db.getWishlist(wishlistId)
 
-            return render_template('wishlist.html', wishlist=wishlist, form = formWishlist)
+            return render_template('wishlist.html', wishlist=wishlist, form = formWishlist, userForm=userInfoForm)
 
 
     wishlist = db.getWishlist(wishlistId)
-    return render_template('wishlist.html', wishlist=wishlist, form = formWishlist)
+    return render_template('wishlist.html', wishlist=wishlist, form = formWishlist, userForm=userInfoForm)
 
 
 @app.route('/availablebooks',methods = ["GET","POST"])

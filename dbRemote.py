@@ -134,6 +134,15 @@ class Database:
             cursor.execute(query)
 
 
+    def insertEventToInterchangeEventList(self, newEvent):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = """INSERT INTO interchange_event_list
+            (lenderid, borrowerid, bookname, bookauthor, totalpages, publisher) VALUES
+            ('%d', '%d', '%s','%s', '%d', '%s');""" %(newEvent[0], newEvent[1],newEvent[2],newEvent[3],newEvent[4],newEvent[5])
+            cursor.execute(query)
+
+
+
 
     def getMyFlow(self,userid):
         borrowed = []
@@ -221,7 +230,7 @@ class Database:
         queryRes = []
         #print('wishlist id is -> {}'.format(wishlistid))
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN wish_list ON (book_info_list.bookid = wish_list.bookid) WHERE wishlistid = {}".format(wishlistid)
+            query = "SELECT bookname, bookauthor, totalpages, publisher, booktype, pressyear FROM book_info_list JOIN wish_list ON (book_info_list.bookid = wish_list.bookid) WHERE wishlistid = {}".format(wishlistid)
             cursor.execute(query)
             queryRes = cursor.fetchall()
         #print("QUERY RESULT: {}".format(queryRes))

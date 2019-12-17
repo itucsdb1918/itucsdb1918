@@ -61,9 +61,11 @@ def flow():
 
     if request.method == "POST":
         db.rmInterchangeEventList(request.form['deleteFlow'])
+        ielist = db.getInterchangeEventList()
+        flowlist = db.getMyFlow(db.userid)
+        return render_template('flow.html', ielist = ielist, lendered = flowlist[0], borrowed = flowlist[1])
 
     return render_template('flow.html', ielist = ielist, lendered = flowlist[0], borrowed = flowlist[1])
-
 
 
 @app.route('/login',methods = ["GET","POST"])

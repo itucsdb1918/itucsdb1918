@@ -149,12 +149,12 @@ class Database:
         lendered = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT interchangeid, username AS lendername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.borrowerid = user_list.userid) WHERE borrowerid = {}) as borrowername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.lenderid = user_list.userid) where borrowerid = {} ORDER BY time".format(userid,userid)
+            query = "SELECT interchangeid, username AS lendername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.borrowerid = user_list.userid) WHERE borrowerid = {} LIMIT 1) as borrowername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.lenderid = user_list.userid) where borrowerid = {} ORDER BY time".format(userid,userid)
             cursor.execute(query)
             borrowed = cursor.fetchall()
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT interchangeid, username AS borrowername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.lenderid = user_list.userid) WHERE lenderid = {}) as lendername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.borrowerid = user_list.userid) where lenderid = {} ORDER BY time".format(userid,userid)
+            query = "SELECT interchangeid, username AS borrowername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.lenderid = user_list.userid) WHERE lenderid = {} LIMIT 1) as lendername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.borrowerid = user_list.userid) where lenderid = {} ORDER BY time".format(userid,userid)
             cursor.execute(query)
             lendered = cursor.fetchall()
 

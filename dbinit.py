@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS "user_list" (
 
 CREATE TABLE IF NOT EXISTS "interchange_event_list" (
     "interchangeid" SERIAL   NOT NULL,
-    "lenderid" INTEGER UNIQUE   NOT NULL,
-    "borrowerid" INTEGER UNIQUE  NOT NULL,
+    "lenderid" INTEGER  NOT NULL,
+    "borrowerid" INTEGER NOT NULL,
     "time" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     "bookname" VARCHAR(40)   NOT NULL,
     "bookauthor" VARCHAR(40)   NOT NULL,

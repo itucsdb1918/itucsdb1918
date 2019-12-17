@@ -50,6 +50,11 @@ Wish List
     <th>Book Name</th>
     <th>Author</th>
     <th>Total Pages</th>
+    <th>Publisher</th>
+    <th>Book Type</th>
+    <th>Press Year</th>
+    <th>Borrower Name</th>
+    <th>Borrower Surname</th>
   </tr>
 
 
@@ -64,6 +69,9 @@ Wish List
           <td >{{ item[3] }}</td>
           <td >{{ item[4] }}</td>
           <td >{{ item[5] }}</td>
+
+          <td>{{ render_field(userForm.name) }}</td>
+          <td>{{ render_field(userForm.surname) }}</td>
 
 
           <td>

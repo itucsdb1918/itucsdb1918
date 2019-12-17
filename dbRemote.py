@@ -134,18 +134,27 @@ class Database:
             cursor.execute(query)
 
 
+    def insertEventToInterchangeEventList(self, newEvent):
+        with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            query = """INSERT INTO interchange_event_list
+            (lenderid, borrowerid, bookname, bookauthor, totalpages, publisher) VALUES
+            ('%d', '%d', '%s','%s', '%d', '%s');""" %(newEvent[0], newEvent[1],newEvent[2],newEvent[3],newEvent[4],newEvent[5])
+            cursor.execute(query)
+
+
+
 
     def getMyFlow(self,userid):
         borrowed = []
         lendered = []
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT interchangeid, username AS lendername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.borrowerid = user_list.userid) WHERE borrowerid = {}) as borrowername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.lenderid = user_list.userid) where borrowerid = {} ORDER BY time".format(userid,userid)
+            query = "SELECT interchangeid, username AS lendername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.borrowerid = user_list.userid) WHERE borrowerid = {} LIMIT 1) as borrowername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.lenderid = user_list.userid) where borrowerid = {} ORDER BY time".format(userid,userid)
             cursor.execute(query)
             borrowed = cursor.fetchall()
 
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT interchangeid, username AS borrowername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.lenderid = user_list.userid) WHERE lenderid = {}) as lendername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.borrowerid = user_list.userid) where lenderid = {} ORDER BY time".format(userid,userid)
+            query = "SELECT interchangeid, username AS borrowername, (SELECT username FROM user_list JOIN interchange_event_list ON (interchange_event_list.lenderid = user_list.userid) WHERE lenderid = {} LIMIT 1) as lendername,  time, bookname, bookauthor, totalpages, publisher FROM interchange_event_list JOIN user_list ON (interchange_event_list.borrowerid = user_list.userid) where lenderid = {} ORDER BY time".format(userid,userid)
             cursor.execute(query)
             lendered = cursor.fetchall()
 
@@ -221,7 +230,7 @@ class Database:
         queryRes = []
         #print('wishlist id is -> {}'.format(wishlistid))
         with self.con.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
-            query = "SELECT bookname, bookauthor, totalpages FROM book_info_list JOIN wish_list ON (book_info_list.bookid = wish_list.bookid) WHERE wishlistid = {}".format(wishlistid)
+            query = "SELECT bookname, bookauthor, totalpages, publisher, booktype, pressyear FROM book_info_list JOIN wish_list ON (book_info_list.bookid = wish_list.bookid) WHERE wishlistid = {}".format(wishlistid)
             cursor.execute(query)
             queryRes = cursor.fetchall()
         #print("QUERY RESULT: {}".format(queryRes))

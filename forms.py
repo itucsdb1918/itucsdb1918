@@ -112,3 +112,7 @@ class UpdateMessageForm(FlaskForm):
     topic = StringField('Topic', validators=[validators.input_required()])
     message = TextAreaField('Message', validators=[validators.input_required()])
     priority = StringField('Priority', validators=[validators.input_required()])
+
+class InterchangeUserInfoForm(FlaskForm):
+    name = StringField('Name', validators=[validators.input_required()])
+    surname = StringField('Surname', validators=[validators.input_required()])
